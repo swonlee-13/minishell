@@ -1,5 +1,4 @@
 #include "parse.h"
-#include <stdio.h>				//이건 나중에 삭제 또는 헤더에 편입.
 
 void	queue_init(t_queue *q)
 {

@@ -1,5 +1,4 @@
-#include "minishell.h"
-#include <stdio.h>						//허용함수인가?? 아직 몰라서 임시 선언함.
+#include "parse.h"
 
 t_node	*tree_insert(t_node *root, t_type type, char *token)
 {
