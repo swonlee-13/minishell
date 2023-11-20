@@ -41,6 +41,7 @@ char	*env_var_replace(char *str, char **env)
 		tmp = ft_strjoin(str, "=");
 		free(str);
 		str = env_var_replace_sub(tmp, env);
+		free(tmp);
 		return (str);
 	}
 }
@@ -116,11 +117,6 @@ char	*merge_splitted_cmd(char **strs)
 	return (res);
 }
 
-void	leaks()
-{
-	system("leaks --list a.out");
-}
-
 /*
    main 함수까지 합해서 하나의 기능이니까 나중에 main을 함수로 바꿔야 한다.
 */
@@ -139,5 +135,4 @@ int main(int ac, char **av, char **env)
 	printf("%s\n", ret);
 	free(ret);
 	free(cmd);
-	atexit(leaks);
 }
