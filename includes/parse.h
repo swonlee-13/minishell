@@ -14,7 +14,7 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include <stdio.h>
-# include "../libft/libft.h"
+# include "../srcs/libft/libft.h"
 # include <readline/readline.h>
 # define TRUE 1
 # define FALSE 0
