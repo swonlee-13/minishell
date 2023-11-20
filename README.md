@@ -2,6 +2,7 @@
 
 ## 과제 목표
 
+## Commit Convention
 - feat : 새로운 기능 추가
 - modify : 기존 기능 수정
 - fix : 버그 수정
