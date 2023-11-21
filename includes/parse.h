@@ -18,7 +18,7 @@
 # include <readline/readline.h>
 # define TRUE 1
 # define FALSE 0
-# define SYNTAX_ERROR -1           //이거 숫자 나중에 회의해서 바꿔야함;
+# define SYNTAX_ERROR 258           //이거 숫자 나중에 회의해서 바꿔야함;
 
 typedef enum e_type	 //tree 구조에서 상태를 구분하기 위해 만든 열거형 편의성을 위해 << 다음에 < 를받는다 주의
 {
