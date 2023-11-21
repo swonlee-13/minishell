@@ -117,22 +117,32 @@ char	*merge_splitted_cmd(char **strs)
 	return (res);
 }
 
-/*
-   main 함수까지 합해서 하나의 기능이니까 나중에 main을 함수로 바꿔야 한다.
-*/
-int main(int ac, char **av, char **env)
+char	*string_formatting(char *str, char **env_copy)
 {
-	(void)ac;	(void)av;
-	char	*cmd = readline("shell$>");
 	int		i = 0;
-	char	**tmp = shell_split_quote(cmd);
+	char	**tmp;
 	char	*ret;
 
 	ret = NULL;
+	tmp = shell_split_quote(str);
 	remove_and_replace(tmp, env);
 	ret = merge_splitted_cmd(tmp);
 	ft_free(tmp);
-	printf("%s\n", ret);
-	free(ret);
 	free(cmd);
+	return (ret);
+}
+
+void	node_data_formatting(t_queue *q, char **env_copy)
+{
+	t_node	node;
+	char	*tmp;
+
+	node = q->front;
+	while (node)
+	{
+		tmp = node->data;
+		node->data = stirng_formatting(tmp, env_copy);
+		free(tmp);
+		node = node->right;
+	}
 }

@@ -63,42 +63,18 @@ void	command_enqueue(t_queue *q, char *cmd, char *token_string)
 		if (node->type != PASS)
 		{
 			node->data = ft_substr(cmd, start, i - start);
-			node->token = ft_substr(token_string, start, i - start);
 			node_enqueue(q, node);
+			if (node->type == PIPE)
+				q->total_cmd_num++;
 		}
 		else
 			free(node);
 	}
+	if (q->front != NULL)
+		q->total_cmd_num++;
 }
 
-void	print_queue_tok(t_queue *q)		//테스트용함수
-{
-	t_node *ptr;
-
-	ptr = q->front;
-	while (ptr)
-	{
-		printf("[%s]", ptr->token);
-		printf("->");
-		ptr = ptr->right;
-	}
-	printf("NULL");
-}
-void	print_queue_type(t_queue *q)	//큐 에 데이터 타입 확인할라고 만든 임시 함수
-{
-	t_node *ptr;
-
-	ptr = q->front;
-	while (ptr)
-	{
-		printf("[%d]", (int)ptr->type);
-		printf("->");
-		ptr = ptr->right;
-	}
-	printf("NULL");
-}
-
-char	*parsing_cmd(char *cmd)
+char	*make_token_string(char *cmd)
 {
 	char	*token_string;
 
@@ -113,24 +89,20 @@ char	*parsing_cmd(char *cmd)
 	return (token_string);
 }
 
-int main(int ac, char **av, char **env)
+t_tree parser(char *cmd, char **env_copy)
 {
 	char	*cmd;
 	char	*token_string;
 	t_queue q;
+	t_tree	tree;
 
-	(void)ac, (void)av, (void)env;
 	cmd = readline("minishell$> ");
-	token_string = parsing_cmd(cmd);
+	token_string = make_token_string(cmd);
 	if(token_string == NULL)
 		return (SYNTAX_ERROR);
 	queue_init(&q);
 	command_enqueue(&q, cmd, token_string);
-	printf("%s\n", cmd);						//test
-	printf("%s\n\n", token_string);				//test
-	print_queue(&q);							//test
-	printf("\n");								//test
-	print_queue_tok(&q);						//test
-	printf("\n");								//test
-	print_queue_type(&q);						//test
+	free(token_string);
+	node_data_formatting(&q, env_copy);
+	tree = switch_to_tree(&q);
 }
