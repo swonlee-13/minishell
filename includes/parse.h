@@ -37,7 +37,7 @@ typedef struct s_queue
 	t_node	*front;
 	t_node	*rear;
 	int		node_count;
-	int		total_pipe_num;
+	int		total_cmd_num;
 }	t_queue;
 
 typedef struct s_tree	//이걸 최종적으로 쓸지는 고민중
