@@ -38,7 +38,6 @@ typedef struct s_node	//parsing 에서 사용할 node. tree 와 임시 queue에 
 {
 	t_type				type;
 	char				*data;
-	char				*token;
 	struct s_node		*left;
 	struct s_node		*right;
 	int					pipe_index;
