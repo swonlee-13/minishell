@@ -1,4 +1,4 @@
-#include "../include/parse.h"
+#include "parse.h"
 
 t_type	node_type_setter(char *token_string, int i)
 {
