@@ -1,37 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_free.c                                          :+:      :+:    :+:   */
+/*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yeolee2 <yeolee2@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/08/03 20:36:18 by seongwol          #+#    #+#             */
-/*   Updated: 2023/11/22 02:17:36 by yeolee2          ###   ########.fr       */
+/*   Created: 2023/11/22 02:51:10 by yeolee2           #+#    #+#             */
+/*   Updated: 2023/11/22 03:45:00 by yeolee2          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "../includes/minishell.h"
 
-// static int	count_len(char **strs)
-// {
-// 	int	i;
-
-// 	i = 0;
-// 	if(strs)
-// 		while (strs[i] != NULL)
-// 			i++;
-// 	return (i);
-// }
-
-void	ft_free(char **strs)
+void    return_directory_name(char **vector)
 {
-	int	i;
-
-	i = 0;
-	while (strs[i])
-	{
-		free(strs[i]);
-		i++;
-	}
-	free(strs);
+    ft_printf("%s\n", getcwd(NULL, NULL));
 }
