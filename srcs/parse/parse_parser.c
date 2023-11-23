@@ -89,20 +89,27 @@ char	*make_token_string(char *cmd)
 	return (token_string);
 }
 
-t_tree parser(char *cmd, char **env_copy)
+t_tree *parser(char *cmd, char **env_copy)
 {
-	char	*cmd;
 	char	*token_string;
-	t_queue q;
-	t_tree	tree;
+	t_queue *q;
+	t_tree	*tree;
 
 	cmd = readline("minishell$> ");
 	token_string = make_token_string(cmd);
 	if(token_string == NULL)
-		return (SYNTAX_ERROR);
-	queue_init(&q);
-	command_enqueue(&q, cmd, token_string);
+		return (NULL);
+	q = (t_queue *)malloc(sizeof(t_queue));
+	queue_init(q);
+	command_enqueue(q, cmd, token_string);
 	free(token_string);
-	node_data_formatting(&q, env_copy);
-	tree = switch_to_tree(&q);
+	node_data_formatting(q, env_copy);
+	tree = switch_to_tree(q);
+	free(q);
+	return (tree);
+}
+
+int main(int ac, char **av, char **env)
+{
+	
 }

@@ -5,7 +5,7 @@ void	queue_init(t_queue *q)
 	q->front = NULL;
 	q->rear = NULL;
 	q->node_count = 0;
-	q->total_pipe_num = 0;
+	q->total_cmd_num = 0;
 }
 
 int	queue_is_empty(t_queue *q)
@@ -24,25 +24,24 @@ void	node_enqueue(t_queue *q, t_node *new)
 		q->rear->right = new;
 	q->rear = new;
 	q->node_count++;
-	new->pipe_index = q->total_pipe_num;
+	new->pipe_index = q->total_cmd_num;
 }
 
-void	dequeue(t_queue *q)
+t_node	*dequeue(t_queue *q)
 {
 	t_node	*ptr;
 	
 	if (queue_is_empty(q))
-		return ;
+		return (NULL);
 	ptr = q->front;
 	q->front = q->front->right;
-	free(ptr->data);
-	free(ptr);
 	q->node_count--;
 	if (q->node_count == 0)
 	{
 		q->front = NULL;
 		q->rear = NULL;
 	}
+	return (ptr);
 }
 
 void	print_queue(t_queue *q)
@@ -70,8 +69,6 @@ t_node	*node_init(void)
 	t_node *new;
 
 	new = malloc(sizeof(t_node));
-	new->data = NULL;
-	new->token = NULL;
 	new->left = NULL;
 	new->right = NULL;
 	new->pipe_index = 0;
