@@ -16,10 +16,10 @@ typedef enum e_type	 //tree 구조에서 상태를 구분하기 위해 만든 �
 	REDIR_SINGLE_IN,
 	REDIR_DOUBLE_OUT,
 	REDIR_SINGLE_OUT,
-	ARGS,
 	REDIRECTION_ROOT,
-	ARGUMENT_ROOT,
 	CMD,
+	ARGUMENT_ROOT,
+	ARGS,
 	PIPE,
 }	t_type;
 
@@ -44,7 +44,7 @@ typedef struct s_tree	//이걸 최종적으로 쓸지는 고민중
 {
 	t_node	*root;
 	int		pipe_count;
-}	t_root;
+}	t_tree;
 
 //tokenizer.c
 int		redirection_tokenizer(char *cmd, int i, char *token_string, char c);
@@ -70,6 +70,11 @@ void	queue_init(t_queue *q);
 void	node_enqueue(t_queue *q, t_node *new);
 void	empty_queue(t_queue *q);
 t_node	*node_init(void);
+t_node	*dequeue(t_queue *q);
+t_node	*enqueue(t_queue *q);
+
+//data_structure/tree.c
+t_node	*tree_insert(t_node *root, t_type type, char *str);
 
 
 //parse_utils.c
@@ -85,8 +90,14 @@ int		dollar_sign_setter_quote(char *cmd, char *token_string, int i);
 void	dollar_sign_setter(char *cmd, char *token_string);
 void	token_setter(char *cmd, char *token_string);
 
+//parse_formatting.c
+void	node_data_formatting(t_queue *q, char **env_copy);
+
 //split_dollar.c
 char	**shell_split_dollar(char *str);
+
+//parse_tree.c
+t_tree	*switch_to_tree(t_queue *q);
 
 //split_quote.c
 char	**shell_split_quote(char *str);
