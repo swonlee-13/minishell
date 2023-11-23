@@ -125,23 +125,23 @@ char	*string_formatting(char *str, char **env_copy)
 
 	ret = NULL;
 	tmp = shell_split_quote(str);
-	remove_and_replace(tmp, env);
+	remove_and_replace(tmp, env_copy);
 	ret = merge_splitted_cmd(tmp);
 	ft_free(tmp);
-	free(cmd);
+	free(str);
 	return (ret);
 }
 
 void	node_data_formatting(t_queue *q, char **env_copy)
 {
-	t_node	node;
+	t_node	*node;
 	char	*tmp;
 
 	node = q->front;
 	while (node)
 	{
 		tmp = node->data;
-		node->data = stirng_formatting(tmp, env_copy);
+		node->data = string_formatting(tmp, env_copy);
 		free(tmp);
 		node = node->right;
 	}
