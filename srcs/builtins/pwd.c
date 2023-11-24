@@ -6,13 +6,13 @@
 /*   By: yeolee2 <yeolee2@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 02:51:10 by yeolee2           #+#    #+#             */
-/*   Updated: 2023/11/24 00:12:32 by yeolee2          ###   ########.fr       */
+/*   Updated: 2023/11/24 20:01:50 by yeolee2          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void    print_working_directory(char **vector)
+void    print_working_directory(void)
 {
-    ft_printf("%s\n", getcwd(NULL, NULL));
+    printf("%s\n", getcwd(NULL, NULL));
 }
