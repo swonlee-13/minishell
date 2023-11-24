@@ -4,14 +4,14 @@
 #include <string.h>
 #include <unistd.h>
 
-char	*find_pwd_env(char **env)
+char	*find_env(char **env, char *str)
 {
 	int	i;
 
 	i = 0;
 	while (env[i])
 	{
-		if (strncmp("PWD=", env[i], 4) == 0)
+		if (strncmp(str, env[i], strlen(str)) == 0)
 			break;
 		i++;
 	}
@@ -26,12 +26,17 @@ int main(int ac, char **av, char **env)
 
 	getcwd(tmp, 1024);
 	printf("current directory : %s\n", tmp);
-	str = find_pwd_env(env);
-	printf("current PWD : %s\n", str);
+	str = find_env(env, "PWD=");
+	printf("%s\n", str);
+	str = find_env(env, "OLDPWD=");
+	printf("%s\n", str);
+	printf("\n\n-----------------------------\n\n\n");
 	chdir("..");
 	getcwd(tmp, 1024);
-	str = find_pwd_env(env);
 	printf("after chdir : %s\n", tmp);
-	printf("current PWD : %s\n", str);
+	str = find_env(env, "PWD=");
+	printf("%s\n", str);
+	str = find_env(env, "OLDPWD=");
+	printf("%s\n", str);
 	free(tmp);
 }
