@@ -1,38 +1,65 @@
 #include "parse.h"
 
-t_node	*tree_insert(t_node *root, t_type type, char *str)
+void	tree_action(t_node **ptr, t_node *target)
 {
-	if (root == NULL)
+	if (*ptr == NULL)
 	{
-		root = (t_node *)malloc(sizeof(t_node));
-		root->left = NULL;
-		root->right = NULL;
-		root->data = str;
-		root->type = type;
-		return (root);
-	}
-	else
-	{
-		if (type < root->type)
-			tree_insert(root->left, type, str);
-		else
-			tree_insert(root->right, type, str);
-	}
-	return (root);
-}
-
-void	print(t_node *root)
-{
-	if (root == NULL)
+		*ptr = target;
 		return ;
-	print(root->left);
-	printf("node data = %s, node type = %d\n", root->data, root->type);
-	print(root->right);
+	}
+	if (target->type < (*ptr)->type)
+		tree_action(&(*ptr)->left, target);
+	else
+		tree_action(&(*ptr)->right, target);
 }
 
-//t_node *preorder_collect(t_node *root, t_queue *q)	//tree 분석이 끝나면 트리node 를 queue 에 순서대로 담는다.
-//{
-//	if (root == NULL)
-//		return (NULL);
-//	enqueue(q, root->data);
-//}
+void	tree_insert_pipe(t_node **root, t_node *target)
+{
+	t_node	*ptr;
+	int		i;
+
+	if (*root == NULL)
+	{
+		*root = target;
+		return;
+	}
+	ptr = *root;
+	i = -1;
+	while (++i < target->pipe_index - 1)
+		ptr = ptr->right;
+	ptr->right = target;
+}
+
+void	tree_insert(t_node **root, t_node *target)
+{
+	t_node	*ptr;
+	int		i;
+
+	if (*root == NULL)
+	{
+		*root = target;
+		return ;
+	}
+	ptr = *root;
+	i = -1;
+	while (++i < target->pipe_index)
+		ptr = ptr->right;
+	tree_action(&ptr, target);
+}
+
+void	print_tree(t_node* root)
+{
+	if(root == NULL)
+		return;
+	printf("%d\n", root->type);
+	print_tree(root->left);
+	print_tree(root->right);
+}
+
+void	target_init(t_node **target, int type)
+{
+	*target = (t_node *)malloc(sizeof(t_node));
+	(*target)->left = NULL;
+	(*target)->right = NULL;
+	(*target)->type = type;
+}

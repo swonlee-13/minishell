@@ -142,7 +142,6 @@ void	node_data_formatting(t_queue *q, char **env_copy)
 	{
 		tmp = node->data;
 		node->data = string_formatting(tmp, env_copy);
-		free(tmp);
 		node = node->right;
 	}
 }
