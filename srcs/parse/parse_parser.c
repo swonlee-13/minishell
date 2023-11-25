@@ -89,13 +89,29 @@ char	*make_token_string(char *cmd)
 	return (token_string);
 }
 
-t_tree *parser(char *cmd, char **env_copy)
+void    print_queue(t_queue *q);
+void    print_queue_type(t_queue *q)
+{
+	t_node *node;
+
+	node = q->front;
+	printf("\n---------------------------\n");
+	while (node)
+	{
+		printf("[%d]", node->pipe_index);
+		printf(" -> ");
+		node = node->right;
+	}
+	printf("NULL");
+	printf("\n");
+}
+
+t_node *parser(char *cmd, char **env_copy)
 {
 	char	*token_string;
 	t_queue *q;
-	t_tree	*tree;
+	t_node	*root;
 
-	cmd = readline("minishell$> ");
 	token_string = make_token_string(cmd);
 	if(token_string == NULL)
 		return (NULL);
@@ -104,12 +120,28 @@ t_tree *parser(char *cmd, char **env_copy)
 	command_enqueue(q, cmd, token_string);
 	free(token_string);
 	node_data_formatting(q, env_copy);
-	tree = switch_to_tree(q);
+	if (q->front == NULL)
+	{
+		free(q);
+		return (NULL);
+	}
+	print_queue(q);
+	print_queue_type(q);
+	root = switch_to_tree(q);
 	free(q);
-	return (tree);
+	return (root);
 }
+
+void	print_tree(t_node* root);
 
 int main(int ac, char **av, char **env)
 {
-	
+	(void)ac; (void)av;
+
+	t_node	*tree;
+
+	char *cmd = readline("minishell$> ");
+	tree = parser(cmd, env);
+	if (tree != NULL)
+		print_tree(tree);
 }

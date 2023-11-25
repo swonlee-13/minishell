@@ -40,12 +40,6 @@ typedef struct s_queue
 	int		total_cmd_num;
 }	t_queue;
 
-typedef struct s_tree	//이걸 최종적으로 쓸지는 고민중
-{
-	t_node	*root;
-	int		pipe_count;
-}	t_tree;
-
 //tokenizer.c
 int		redirection_tokenizer(char *cmd, int i, char *token_string, char c);
 int		pipe_tokenizer(int i, char *token_string);
@@ -74,7 +68,9 @@ t_node	*dequeue(t_queue *q);
 t_node	*enqueue(t_queue *q);
 
 //data_structure/tree.c
-t_node	*tree_insert(t_node *root, t_type type, char *str);
+void	tree_insert(t_node **root, t_node *node);
+void	tree_insert_pipe(t_node **root, t_node *target);
+void	print_node(t_node *root);
 
 
 //parse_utils.c
@@ -97,7 +93,7 @@ void	node_data_formatting(t_queue *q, char **env_copy);
 char	**shell_split_dollar(char *str);
 
 //parse_tree.c
-t_tree	*switch_to_tree(t_queue *q);
+t_node	*switch_to_tree(t_queue *q);
 
 //split_quote.c
 char	**shell_split_quote(char *str);
