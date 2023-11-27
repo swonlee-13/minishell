@@ -70,7 +70,7 @@ t_node	*enqueue(t_queue *q);
 //data_structure/tree.c
 void	tree_insert(t_node **root, t_node *node);
 void	tree_insert_pipe(t_node **root, t_node *target);
-void	print_node(t_node *root);
+void	free_tree(t_node* root);
 
 
 //parse_utils.c
@@ -97,8 +97,10 @@ t_node	*switch_to_tree(t_queue *q);
 
 //split_quote.c
 char	**shell_split_quote(char *str);
-
 char	*merge_splitted_cmd(char **strs);
+
+//parse_vector_conversion.c
+char	**vector_conversion(t_node **root, int cmd_num);
 //temp
 void	print_queue(t_queue *q);
 

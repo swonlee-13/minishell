@@ -130,16 +130,20 @@ t_node *parser(char *cmd, char **env_copy)
 	return (root);
 }
 
-void	print_tree(t_node* root);
-
 int main(int ac, char **av, char **env)
 {
-	(void)ac; (void)av;
-
 	t_node	*tree;
 	char	**cmd_vector;
 
 	char *cmd = readline("minishell$> ");
 	tree = parser(cmd, env);
-	cmd_vector = vector_conversion(tree, 1);
+	for(int i = 1; i <= ft_atoi(av[1]); i++){
+		cmd_vector = vector_conversion(&tree, i);
+		for (int j = 0; cmd_vector[j]; j++)
+			printf("%s\n", cmd_vector[j]);
+		printf("---------------------------------------------\n");
+		ft_free(cmd_vector);
+	}
+	free_tree(tree);
+	free(cmd);
 }
