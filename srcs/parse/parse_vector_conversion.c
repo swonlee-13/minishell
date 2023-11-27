@@ -1,4 +1,4 @@
-#include "minishell.h"
+#include "parse.h"
 
 static int	count_argument(t_node *ptr)
 {
@@ -15,7 +15,7 @@ static int	count_argument(t_node *ptr)
 char	**vector_conversion(t_node **root, int cmd_num)
 {
 	char	**ret;
-	t_node	ptr;
+	t_node	*ptr;
 	int		i;
 	int		num;
 
@@ -23,17 +23,17 @@ char	**vector_conversion(t_node **root, int cmd_num)
 	i = 1;
 	while (i < cmd_num)
 	{
-		ptr->root->right;
+		ptr = ptr->right;
 		i++;
 	}
 	ptr = ptr->left->right;
-	num = count_argunemt(ptr);
-	ret = (char **)malloc(sizeof(char *) * num + 1);
+	num = count_argument(ptr);
+	ret = (char **)malloc(sizeof(char *) * (num + 1));
 	ptr = ptr->right;
 	i = 0;
 	while (ptr)
 	{
-		ret[i] == ft_strdup(ptr->data);
+		ret[i] = ft_strdup(ptr->data);
 		ptr = ptr->right;
 		i++;
 	}

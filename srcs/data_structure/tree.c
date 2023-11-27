@@ -47,6 +47,16 @@ void	tree_insert(t_node **root, t_node *target)
 	tree_action(&ptr, target);
 }
 
+void	free_tree(t_node* root)
+{
+	if(root == NULL)
+		return;
+	free_tree(root->left);
+	free_tree(root->right);
+	free(root->data);
+	free(root);
+}
+
 void	print_tree(t_node* root)
 {
 	if(root == NULL)
