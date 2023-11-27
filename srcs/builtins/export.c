@@ -6,11 +6,14 @@
 /*   By: yeolee2 <yeolee2@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 20:03:24 by yeolee2           #+#    #+#             */
-/*   Updated: 2023/11/25 01:13:29 by yeolee2          ###   ########.fr       */
+/*   Updated: 2023/11/27 09:23:21 by yeolee2          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+
+void	build_env(char ***env);
+char** build_vector(const char* arg);
 
 void	add_env_data(char ***env, char *path)
 {
@@ -19,48 +22,58 @@ void	add_env_data(char ***env, char *path)
 
 	len = ft_strslen(*env) + 1;
 	res = malloc(sizeof(char *) * (len + 1));
-	//FIXME: Return an error code
+	//TODO: Return an error code
 	if (!res)
 		return ;
-	ft_memcpy(res, *env, ft_strslen(*env));
-	ft_memcpy(res[len], path, ft_strlen(path));
-	res[len + 1] = NULL;
+	ft_memcpy(res, *env, sizeof(char *) * ft_strslen(*env));
+	res[len - 1] = ft_strdup(path);
+	res[len] = NULL;
 	free(*env);
-	env = &res;
+	*env = res;
 }
 
-void    set_export_attribute(char **env, char **vector)
+void    set_export_attribute(char ***env, char *path)
 {
 	int     idx;
 	int		len;
 
 	len = 0;
-	//FIXME: What if vector[1] doesn't contain '='?
-	while (vector[1][len] && vector[1][len] != '=')
+	while (path[len] && path[len] != '=')
 		len++;
 	idx = 0;
-	while (env[idx])
+	while ((*env)[idx])
 	{
-		if (!ft_strncmp(env[idx], vector[1], len))
+		if (!ft_strncmp((*env)[idx], path, len))
 		{
-			free(env[idx]);
-			//FIXME: The function always adds the new environment variable even if it replaces an existing one.
-			env[idx] = ft_strdup(vector[1]);
+			free((*env)[idx]);
+			(*env)[idx] = ft_strdup(path);
 			break ;
 		}
 		idx++;
 	}
-	if (idx == ft_strslen(env) + 1)
-		add_env_data(&env, vector[1]);
+	if (!(*env)[idx])
+		add_env_data(env, path);
 }
 
-int main(void)
-{
-    char *env[] = {"PATH=/usr/bin", "HOME=/home/user", NULL};
-    char *vector[] = {"set", "HOME=/home/newuser", NULL};
+// #include <string.h>
 
-    printf("Before set_export_attribute: HOME=%s\n", env[1]);
-    set_export_attribute(env, vector);
-    printf("After set_export_attribute: HOME=%s\n", env[1]);
-    return 0;
-}
+// int main(void)
+// {
+//     char    **env;
+// 	char** vector = malloc(3 * sizeof(char *));
+	
+// 	vector[0] = strdup("export");
+// 	vector[1] = strdup("PATH=/Users/iyeonjae/Desktop/minishell/srcs");
+// 	vector[2] = NULL;
+// 	env = malloc(3 * sizeof(char *));
+// 	build_env(&env);
+//     printf("Before set_export_attribute:\n");
+// 	for (int i = 0; env[i]; i++)
+// 		printf("%s\n", env[i]);
+// 	if (!ft_strcmp(vector[0], "export"))
+// 	    set_export_attribute(&env, vector[1]);
+//     printf("After set_export_attribute:\n");
+// 	for (int i = 0; env[i]; i++)
+// 		printf("%s\n", env[i]);
+//     return 0;
+// }
