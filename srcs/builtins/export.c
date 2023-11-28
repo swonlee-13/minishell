@@ -6,14 +6,14 @@
 /*   By: yeolee2 <yeolee2@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 20:03:24 by yeolee2           #+#    #+#             */
-/*   Updated: 2023/11/27 09:23:21 by yeolee2          ###   ########.fr       */
+/*   Updated: 2023/11/27 11:23:57 by yeolee2          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void	build_env(char ***env);
-char** build_vector(const char* arg);
+// void	build_env(char ***env);
+// char** build_vector(const char* arg);
 
 void	add_env_data(char ***env, char *path)
 {
