@@ -41,6 +41,7 @@ t_node	*dequeue(t_queue *q)
 		q->front = NULL;
 		q->rear = NULL;
 	}
+	ptr->right = NULL;
 	return (ptr);
 }
 
@@ -71,6 +72,6 @@ t_node	*node_init(void)
 	new = malloc(sizeof(t_node));
 	new->left = NULL;
 	new->right = NULL;
-	new->pipe_index = 0;
+	new->data = NULL;
 	return (new);
 }
