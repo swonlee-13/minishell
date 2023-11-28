@@ -1,24 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strslen.c                                       :+:      :+:    :+:   */
+/*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yeolee2 <yeolee2@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/08/04 01:20:12 by seongwol          #+#    #+#             */
-/*   Updated: 2023/11/24 20:56:20 by yeolee2          ###   ########.fr       */
+/*   Created: 2023/11/28 14:32:11 by yeolee2           #+#    #+#             */
+/*   Updated: 2023/11/28 14:59:47 by yeolee2          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "../../includes/minishell.h"
 
-int	ft_strslen(char **strs)
+int main(int argc, char *argv[], char **env)
 {
-	int	len;
+    char    *cmd;
+    t_node  *tree;
 
-	len = 0;
-	if (strs)
-		while (strs[len])
-			len++;
-	return (len);
+    while (TRUE)
+    {
+        cmd = readline("minishell> ");
+    }
 }
