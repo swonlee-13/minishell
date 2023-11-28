@@ -6,7 +6,7 @@
 /*   By: yeolee2 <yeolee2@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 19:52:51 by yeolee2           #+#    #+#             */
-/*   Updated: 2023/11/27 11:17:21 by yeolee2          ###   ########.fr       */
+/*   Updated: 2023/11/27 17:42:08 by yeolee2          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int check_the_rest_of_arg(char *arg)
     return (SUCCESS);
 }
 
-int check_n_option(char *arg)
+int is_n_option(char *arg)
 {
     size_t  idx;
 
@@ -48,7 +48,7 @@ void    write_arg_to_stdout(char **vector)
     int idx;
 
     idx = 1;
-    while (check_n_option(vector[idx]) == TRUE)
+    while (is_n_option(vector[idx]) == TRUE)
         idx++;
     while (vector[idx])
     {
@@ -57,7 +57,7 @@ void    write_arg_to_stdout(char **vector)
             printf(" ");
         idx++;
     }
-    if (check_n_option(vector[1]) == FALSE)
+    if (is_n_option(vector[1]) == FALSE)
         printf("\n");
 }
 
