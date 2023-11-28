@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strslen.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seongwol <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: yeolee2 <yeolee2@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 01:20:12 by seongwol          #+#    #+#             */
-/*   Updated: 2023/08/04 01:28:51 by seongwol         ###   ########.fr       */
+/*   Updated: 2023/11/24 20:56:20 by yeolee2          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,11 @@
 
 int	ft_strslen(char **strs)
 {
-	int	i;
+	int	len;
 
-	i = 0;
+	len = 0;
 	if (strs)
-		while (strs[i])
-			i++;
-	return (i);
+		while (strs[len])
+			len++;
+	return (len);
 }
