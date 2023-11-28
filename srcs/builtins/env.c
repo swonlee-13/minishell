@@ -6,20 +6,20 @@
 /*   By: yeolee2 <yeolee2@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 04:05:23 by yeolee2           #+#    #+#             */
-/*   Updated: 2023/11/24 00:12:24 by yeolee2          ###   ########.fr       */
+/*   Updated: 2023/11/27 11:41:03 by yeolee2          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void    print_env_list(char **vector)
+void    print_env_list(char **env)
 {
-    size_t  idx;
+	size_t  idx;
 
-    idx = 0;
-    while (vector[idx])
-    {
-        ft_printf("%s\n", vector[idx]);
-        idx++;
-    }
+	idx = 0;
+	while (env[idx])
+	{
+		printf("%s\n", env[idx]);
+		idx++;
+	}
 }
