@@ -1,55 +1,139 @@
-CC = cc
-CFLAGS = -Wall -Wextra -Werror
-CLIB = -Llibft -lft
-NAME = pipex
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: yeolee2 <yeolee2@student.42.fr>            +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2023/11/29 22:14:25 by yeolee2           #+#    #+#              #
+#    Updated: 2023/11/30 02:04:54 by yeolee2          ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
+SRCS			=	srcs/data_structure/queue.c \
+					srcs/data_structure/linked_list.c \
+					srcs/data_structure/tree.c \
+					srcs/parse/parse_parser.c \
+					srcs/parse/split_dollar.c \
+					srcs/parse/parse_lexer.c \
+					srcs/parse/parse_utils.c \
+					srcs/parse/split_quote.c \
+					srcs/parse/parse_tokenize.c \
+					srcs/parse/parse_vector_conversion.c \
+					srcs/parse/parse_tree.c \
+					srcs/parse/parse_formatting.c \
+					srcs/parse/parse_setter.c \
+					srcs/utils/copy_env_list.c \
+					srcs/heredoc/main.c \
+					srcs/builtins/exit.c \
+					srcs/builtins/unset.c \
+					srcs/builtins/env.c \
+					srcs/builtins/pwd.c \
+					srcs/builtins/export.c \
+					srcs/builtins/cd.c \
+					srcs/builtins/echo.c \
+
+OBJS			=	${SRCS:.c	=.o}
+
+NAME			=	minishell
+
+LIBFT			=	srcs/libft
+
+ARCHIVE			=	libft.a
+
+CC				=	cc
+
+INCLUDES		=	./includes/
+
+CFLAGS			=	-Werror -Wall -Wextra -g
+
+Black   		=	\033[0;30m
+
+Red     		=	\033[1;31m
+
+Green   		=	\033[0;32m
+
+Yellow  		=	\033[0;33m
+
+Blue    		=	\033[0;34m
+
+Purple  		=	\033[1;35m
+
+Cyan    		=	\033[0;36m
+
+White   		=	\033[1;37m
+
+Gray    		=	\033[0;90m
+
+DEF_COLOR 		=	\033[0;39m
+
+LF				=	\e[1K\r
+
+TOTAL_FILES 	=	 $(words $(SRCS))
+
+CURRENT_FILE 	=	 1
+
+progress_bar 	=	printf "$(LF)$(Red)[ ♔Compiling...♔ ]$(DEF_COLOR) $(Cyan)[$(1)/$(2)]$(DEF_COLOR) [$(Yellow)%0.1f%%$(DEF_COLOR)] $(DEF_COLOR)\b" $(shell echo "scale=1; ($(1) / $(2)) * 100" | bc); \
+        			printf " $(White)[%-*s%s]$(DEF_COLOR)" 25 "$(shell printf '%0.*s' $$(($(1) * 25 / $(2))) '=========================================================================')>" ""; \
+					printf "\n\033[2K$(DEF_COLOR)  ✔️ $(Cyan)Compiling... $< $(DEF_COLOR) \033[A\033[999C\e[?25l" \
+
+all			: 	$(NAME)
+
+%.o			: 	%.c $(INCLUDES)
+				@echo "$(YELLOW)Compiling..."
+				@$(CC) $(CFLAGS) -I$(INCLUDES) -c -o $@ $<
+				@$(call progress_bar,$(CURRENT_FILE),$(TOTAL_FILES))
+				@$(eval CURRENT_FILE=$(shell echo $$(($(CURRENT_FILE)+1))))
+				@sleep 0.05
+
+$(NAME)		: 	$(OBJS) $(LIBFT)/$(ARCHIVE)
+				@$(CC) $(CFLAGS) -o $(NAME) $(OBJS) -L$(LIBFT) -lft
+				@echo "$(GREEN)Mandatory Compilation done"
+				@printf "$(LF)"
+				@printf "\n\033[1;32m✅ Compilation complete. $(NAME) has been created. ✅\033[0m\n\n\e[?25h"
 
 ifdef BONUS
-	OBJS = $(BONUS_OBJS)
+				@sleep 0.5
+				@echo "$(Green)===============================================$(DEF_COLOR)"
+				@echo "$(Green)|    🎉 minishell bonus compile succsess. 🎉    |$(DEF_COLOR)"
+				@echo "$(Green)===============================================$(DEF_COLOR)"
 else
-	OBJS = $(MAN_OBJS)
+				@sleep 0.5
+				@echo "$(Green)===============================================$(DEF_COLOR)"
+				@echo "$(Green)|  🥳 minishell mandatory compile succsess. 🥳  |$(DEF_COLOR)"
+				@echo "$(Green)===============================================$(DEF_COLOR)"
 endif
 
-MAN_DIR = ./srcs
-BONUS_DIR = ./bonus
-MAN_FILE = main.c
-BONUS_FILE = main_bonus.c here_doc_bonus.c
-MAN_SRCS = $(addprefix $(MAN_DIR)/, $(MAN_FILE))
-BONUS_SRCS = $(addprefix $(BONUS_DIR)/, $(BONUS_FILE))
-MAN_OBJS = $(MAN_SRCS:.c=.o)
-BONUS_OBJS = $(BONUS_SRCS:.c=.o)
+# $(BOBJS)	:	$(BINCLUDES)
 
-LIBFT_NAME = libft
-LIBFT_DIR = ./libft
-LIBFT = $(addprefix $(LIBFT_DIR)/, libft.a)
+# bonus		: 	$(BOBJS) $(LIBFT)/$(ARCHIVE)
+# 				@$(CC) $(CFLAGS) -o minishell $^ -L$(LIBFT) -lft
+# 				@echo "$(GREEN)Bonus compilation done"
 
-all: $(NAME)
+$(LIBFT)/$(ARCHIVE):
+				@make -C $(LIBFT)
 
-%.o:%.c
-	${CC} $(CFLAGS) -c $< -o $@
+clean		:
+				@$(RM) $(OBJS) $(BOBJS)
+				@make clean -C $(LIBFT)
+				@printf "$(LF)🚧 $(Yellow)Cleaning...🚨 $(Purple)libft$(White) $(OBJ) $(DEF_COLOR)\n"
 
-$(NAME): $(OBJS)
-	@$(MAKE) -C $(LIBFT_DIR) all
-	@$(CC) $(CFLAGS) $(CLIB) $^ -o $@
+fclean		: 	clean
+				@$(RM) $(NAME)
+				@$(RM) minishell
+				@make fclean -C $(LIBFT)
+				@echo "\n🚧 $(Yellow)Cleaning...🚨 $(White)$(NAME)\n"
+				@echo "$(Cyan)Clearing terminal in [3seconds]...$(DEFAULT_COLOR)"
+				@sleep 1
+				@clear
 
-$(BONUS_NAME): $(OBJS)
-	@$(MAKE) -C $(LIBFT_DIR) all
-	@$(CC) $(CFLAGS) $(CLIB) $^ -o $@
+re			:	fclean all
+				@sleep 0.5
+				@clear
+				@printf "$(Purple)♻️ REBUILD ♻️\n\n"
+				@$(MAKE) all
 
-bonus:
-	@$(MAKE) BONUS=1 $(NAME)
-
-clean:
-	@$(MAKE) -C $(LIBFT_DIR) fclean
-	@rm -f $(MAN_OBJS)
-	@rm -f $(BONUS_OBJS)
-
-fclean: clean
-	@rm -f pipex
-
-re:	
-	@$(MAKE) fclean
-	@$(MAKE) all
-
-.PHONY: all bonus clean fclean re
-
-gcc -g parser.c parser_utils.c get_next_line/get_next_line.c get_next_line/get_next_line_utils.c tokenize.c lexer.c setter.c data_structure/queue.c -lreadline -fsanitize=address
+bonus		:
+				@make BONUS=1 $(NAME)
+				
+.PHONY		: 	all clean fclean re bonus .c.o
