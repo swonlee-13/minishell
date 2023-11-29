@@ -1,18 +1,18 @@
 #include "parse.h"
 
-char	**copy_env(char **env)
+char	**copy_env_list(char **env)
 {
 	char		**ret;
-	int			i;
+	int			idx;
 	const int	len = ft_strslen(env);
 
-	i = 0;
+	idx = 0;
 	ret = (char **)malloc(sizeof(char *) * (len + 1));
-	while (i < len)
+	while (idx < len)
 	{
-		ret[i] = ft_strdup(env[i]);
-		i++;
+		ret[idx] = ft_strdup(env[idx]);
+		idx++;
 	}
-	ret[i] = NULL;
+	ret[idx] = NULL;
 	return (ret);
 }
