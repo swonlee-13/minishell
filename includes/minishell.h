@@ -6,7 +6,7 @@
 /*   By: yeolee2 <yeolee2@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 03:09:36 by yeolee2           #+#    #+#             */
-/*   Updated: 2023/11/28 14:45:44 by yeolee2          ###   ########.fr       */
+/*   Updated: 2023/11/29 21:52:17 by yeolee2          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,28 @@
 # define MINISHELL_H
 # include <unistd.h>
 # include <stdlib.h>
+# include <string.h>
 # include <stdio.h>
+# include <errno.h>
 # include "../srcs/libft/libft.h"
 # include "parse.h"
+# define READ       0
+# define WRITE      1
 # define TRUE       1
 # define FALSE      0
 # define SUCCESS    0
 # define FAILURE    -1
 # define PATH_MAX   1024
 
+typedef struct s_file
+{
+    int in;
+    int out;
+}       t_file;
+
+
 /* UTILS */
-char	**copy_env(char **env);
+char	**copy_env_list(char **env);
 char	*find_env_data(char **env, char *str);
 
 /* CD.C */
