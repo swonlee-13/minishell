@@ -119,7 +119,6 @@ char	*merge_splitted_cmd(char **strs)
 
 char	*string_formatting(char *str, char **env_copy)
 {
-	int		i = 0;
 	char	**tmp;
 	char	*ret;
 

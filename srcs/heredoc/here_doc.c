@@ -37,7 +37,7 @@ void	here_doc_write(t_node *node)
 	free(buffer);
 	free(end);
 }
-	
+
 void	activate_here_doc(t_node *node);
 {
 	char	*file_name;
