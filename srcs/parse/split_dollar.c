@@ -14,9 +14,6 @@
 
 static int	split_indexing(char *str, int i)
 {
-	char	c;
-
-	c = str[i];
 	if (str[i] == '$' && str[i + 1] == '?')
 		return (i + 1);
 	if (str[i] == '$')

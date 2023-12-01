@@ -38,11 +38,9 @@ void	sub_tree_insert(t_node **root, int cmd_idx)
 
 t_node	*switch_to_tree(t_queue *q)
 {
-	int		i;
 	t_node	*root;
 	t_node	*tmp;
 
-	i = 0;
 	if (q == NULL)
 		return (NULL);
 	root = NULL;

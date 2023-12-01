@@ -82,7 +82,6 @@ char	*r_n_r_double_quote(char *str, char **env)
 void	remove_and_replace(char **strs, char **env)
 {
 	int		i;
-	int		j;
 	char	*tmp;
 
 	i = 0;
