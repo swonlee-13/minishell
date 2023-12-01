@@ -6,11 +6,11 @@
 /*   By: yeolee2 <yeolee2@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 19:21:43 by yeolee2           #+#    #+#             */
-/*   Updated: 2023/12/01 19:21:46 by yeolee2          ###   ########.fr       */
+/*   Updated: 2023/12/01 21:03:56 by yeolee2          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/parse.h"
+#include "parse.h"
 
 char	*env_var_replace_sub(char *str, char **env)
 {

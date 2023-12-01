@@ -72,6 +72,8 @@ void	tree_insert(t_node **root, t_node *node);
 void	tree_insert_pipe(t_node **root, t_node *target);
 void	free_tree(t_node* root);
 
+//parse_parser.c
+t_node *parser(char *cmd, char **env_copy);
 
 //parse_utils.c
 int		ft_is_redirection(char c);
