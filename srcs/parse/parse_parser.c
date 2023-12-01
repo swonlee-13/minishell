@@ -141,7 +141,22 @@ t_node *parser(char *cmd, char **env_copy)
 	free(q);
 	return (root);
 }
-/*
+
+t_node	*find_redirection_root(t_node *root, int cmd_num);
+void	print_redirection(t_node **tree, int cmd_num)
+{
+	t_node	*ptr;
+
+	ptr = find_redirection_root(*tree, cmd_num);
+	ptr = ptr->left;
+	while (ptr)
+	{
+		printf("type = %d, name = %s\n", (int)ptr->type, ptr->data);
+		ptr = ptr->left;
+	}
+	printf("\n");
+}
+
 int main(int ac, char **av, char **env)
 {
 	(void)ac;
@@ -150,8 +165,10 @@ int main(int ac, char **av, char **env)
 
 	char *cmd = readline("minishell$> ");
 	tree = parser(cmd, env);
+	printf("타입 넘버는 헤더파일 보고 알아서 이해하쇼\n\n");
 	for(int i = 1; i <= ft_atoi(av[1]); i++){
 		cmd_vector = vector_conversion(&tree, i);
+		print_redirection(&tree, i);
 		for (int j = 0; cmd_vector[j]; j++)
 			printf("%s\n", cmd_vector[j]);
 		printf("---------------------------------------------\n");
@@ -160,4 +177,4 @@ int main(int ac, char **av, char **env)
 	free_tree(tree);
 	free(cmd);
 }
-*/
+
