@@ -141,9 +141,10 @@ t_node *parser(char *cmd, char **env_copy)
 	free(q);
 	return (root);
 }
-
+/*
 int main(int ac, char **av, char **env)
 {
+	(void)ac;
 	t_node	*tree;
 	char	**cmd_vector;
 
@@ -159,3 +160,4 @@ int main(int ac, char **av, char **env)
 	free_tree(tree);
 	free(cmd);
 }
+*/

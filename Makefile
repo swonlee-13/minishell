@@ -11,7 +11,6 @@
 # **************************************************************************** #
 
 SRCS			=	srcs/data_structure/queue.c \
-					srcs/data_structure/linked_list.c \
 					srcs/data_structure/tree.c \
 					srcs/parse/parse_parser.c \
 					srcs/parse/split_dollar.c \
@@ -87,7 +86,7 @@ all			: 	$(NAME)
 				@sleep 0.05
 
 $(NAME)		: 	$(OBJS) $(LIBFT)/$(ARCHIVE)
-				@$(CC) $(CFLAGS) -o $(NAME) $(OBJS) -L$(LIBFT) -lft
+				@$(CC) $(CFLAGS) -o $(NAME) $(OBJS) -I$(INCLUDES) -L$(LIBFT) -lft
 				@echo "$(GREEN)Mandatory Compilation done"
 				@printf "$(LF)"
 				@printf "\n\033[1;32m✅ Compilation complete. $(NAME) has been created. ✅\033[0m\n\n\e[?25h"
