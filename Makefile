@@ -6,7 +6,7 @@
 #    By: yeolee2 <yeolee2@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/29 22:14:25 by yeolee2           #+#    #+#              #
-#    Updated: 2023/11/30 02:04:54 by yeolee2          ###   ########.fr        #
+#    Updated: 2023/12/01 19:29:52 by yeolee2          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,7 +33,7 @@ SRCS			=	srcs/data_structure/queue.c \
 					srcs/builtins/cd.c \
 					srcs/builtins/echo.c \
 
-OBJS			=	${SRCS:.c	=.o}
+OBJS			=	${SRCS:.c=.o}
 
 NAME			=	minishell
 
