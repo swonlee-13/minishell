@@ -6,7 +6,7 @@
 /*   By: yeolee2 <yeolee2@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 03:09:36 by yeolee2           #+#    #+#             */
-/*   Updated: 2023/11/29 21:52:17 by yeolee2          ###   ########.fr       */
+/*   Updated: 2023/12/01 22:53:18 by yeolee2          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,9 @@
 # include <string.h>
 # include <stdio.h>
 # include <errno.h>
+# include <signal.h>
+# include <fcntl.h>
+# include <readline/readline.h>
 # include "../srcs/libft/libft.h"
 # include "parse.h"
 # define READ       0
@@ -37,6 +40,8 @@ typedef struct s_file
 /* UTILS */
 char	**copy_env_list(char **env);
 char	*find_env_data(char **env, char *str);
+
+void    init_sig();
 
 /* CD.C */
 char    *get_env(char **env, char *str);
