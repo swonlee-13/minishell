@@ -6,7 +6,7 @@
 /*   By: yeolee2 <yeolee2@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 02:51:10 by yeolee2           #+#    #+#             */
-/*   Updated: 2023/11/24 20:01:50 by yeolee2          ###   ########.fr       */
+/*   Updated: 2023/12/01 23:08:47 by yeolee2          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,5 +14,10 @@
 
 void    print_working_directory(void)
 {
-    printf("%s\n", getcwd(NULL, NULL));
+    char    *pwd;
+
+    pwd = getcwd(NULL, 0);
+    //TODO: getcwd error handling
+    // if (pwd == NULL)
+    printf("%s\n", pwd);
 }
