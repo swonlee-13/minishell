@@ -16,7 +16,7 @@ void	create_here_doc_file(t_node *node)
 		file_name = ft_strjoin("/tmp/minishell/my_here_doc", ft_itoa(number));
 	}
 	file_name = set_file_name();
-	node->fd = open(filename, O_WRONLY | O_CREAT | O_EXCL | O_TRUNK);
+	node->fd = open(file_name, O_WRONLY | O_CREAT | O_EXCL | O_TRUNK);
 }
 
 void	here_doc_write(t_node *node)
