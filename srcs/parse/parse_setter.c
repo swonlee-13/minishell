@@ -95,7 +95,8 @@ void	dollar_sign_setter(char *cmd, char *token_string)
 			i = dollar_sign_setter_quote(cmd, token_string, i);
 		else if (token_string[i] == 'A' && cmd[i] == '$')
 		{
-			token_string[i] = '$';
+			if (cmd[i + 1] != '\0')
+				token_string[i] = '$';
 			i++;
 		}
 		else

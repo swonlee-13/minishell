@@ -173,6 +173,8 @@ int	dollar_sign_lexer_double(char *cmd, int i)
 	i++;
 	if (cmd[i] == '$')
 		return (SYNTAX_ERROR);
+	if (cmd[i] == ' ' || cmd[i] == '\0')
+		return (i);
 	if ((cmd[i] != '?' && cmd[i] != '"') && (!ft_isalpha(cmd[i]) && cmd[i] != '_'))
 		return (SYNTAX_ERROR);
 	else
