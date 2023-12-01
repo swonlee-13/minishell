@@ -88,6 +88,8 @@ void	token_setter(char *cmd, char *token_string);
 
 //parse_formatting.c
 void	node_data_formatting(t_queue *q, char **env_copy);
+char	*merge_splitted_cmd(char **strs);
+char	*env_var_replace(char *str, char **env);
 
 //split_dollar.c
 char	**shell_split_dollar(char *str);
@@ -101,6 +103,9 @@ char	*merge_splitted_cmd(char **strs);
 
 //parse_vector_conversion.c
 char	**vector_conversion(t_node **root, int cmd_num);
+
+//split_here_doc.c
+char	**shell_split_here_doc(char *str);
 //temp
 void	print_queue(t_queue *q);
 

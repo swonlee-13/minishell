@@ -1,7 +1,7 @@
 #include "minishell.h"
 #include "parse.h"
 
-void	create_here_doc_file(t_node *node)
+char	*create_here_doc_file(t_node *node)
 {
 	char		*file_name;
 	int			ret;
@@ -15,11 +15,11 @@ void	create_here_doc_file(t_node *node)
 		number++;
 		file_name = ft_strjoin("/tmp/minishell/my_here_doc", ft_itoa(number));
 	}
-	file_name = set_file_name();
 	node->fd = open(filename, O_WRONLY | O_CREAT | O_EXCL | O_TRUNK);
+	return (file_name);
 }
 
-void	here_doc_write(t_node *node)
+void	write_here_doc(t_node *node, char **env_copy)
 {
 	char	*end;
 	char	*buffer;
@@ -31,6 +31,7 @@ void	here_doc_write(t_node *node)
 		buffer = get_next_line(STDIN_FILENO);
 		if (*buffer == 0 || ft_strcmp(buffer, end) == 0)
 			break;
+		buffer = here_doc_formatting(buffer, env_copy)
 		ft_putstr_fd(buffer, node->fd);
 		free(buffer);
 	}
@@ -38,7 +39,7 @@ void	here_doc_write(t_node *node)
 	free(end);
 }
 
-void	activate_here_doc(t_node *node);
+void	activate_here_doc(t_node *node, char **env_copy);
 {
 	char	*file_name;
 
@@ -60,10 +61,10 @@ void	activate_here_doc(t_node *node);
 	free(file_name);
 }
 
-void	open_here_doc(t_node *root)
+void	open_here_doc(t_node *root, char **env_copy)
 {
 	if (root->type == REDIR_DOUBLE_IN)
-		activate_here_doc(root);
+		activate_here_doc(root, env_copy);
 	open_here_doc(root->left);
 	open_here_doc(root->right);
 }
