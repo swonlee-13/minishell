@@ -6,7 +6,7 @@
 /*   By: yeolee2 <yeolee2@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 14:32:11 by yeolee2           #+#    #+#             */
-/*   Updated: 2023/11/30 02:31:51 by yeolee2          ###   ########.fr       */
+/*   Updated: 2023/12/01 23:30:38 by yeolee2          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ t_node	*get_command_tree(t_node *root, int idx)
 {
 	t_node	*ptr;
 
+	ptr = root;
 	while (idx--)
 		ptr = ptr->right;
 	return (ptr);
@@ -51,7 +52,7 @@ void    execute_builtin(char **command_vector, char ***env_copy)
 	else if (!ft_strcmp(command_vector[0], "export"))
 		set_export_attribute(env_copy, command_vector[1]);
 	else if (!ft_strcmp(command_vector[0], "pwd"))
-		print_working_directory;
+		print_working_directory();
 	else if (!ft_strcmp(command_vector[0], "unset"))
 		remove_env_data(env_copy, command_vector[1]);
 }
@@ -131,14 +132,19 @@ void	setup_parent_redirection(int infile, int fd[2])
 	close(fd[WRITE]);
 }
 
+void	setup_file(int idx, t_node *root)
+{
+	
+}
+
 void    execute_pipeline(int idx, t_node *root, char ***env_copy)
 {
 	pid_t	pid;
 	t_file	file;
 	int		fd[2];
-	int     tmp;
 
 	//TODO: Open file in accordance
+	file.in = 
 	pipe(fd);
 	pid = fork();
 	if (pid < 0)
@@ -169,7 +175,7 @@ void    execute_commands(t_node *parsed_commands, char ***env_copy)
 	idx = 0;
 	while (idx < cnt)
 	{
-		command_vector = vector_conversion(parsed_commands, idx);
+		command_vector = vector_conversion(&parsed_commands, idx);
 		if (cnt == 1 && is_builtin(command_vector[0]))
 			execute_builtin(command_vector, env_copy);
 		else
@@ -185,9 +191,13 @@ int main(int argc, char *argv[], char **env)
 	char    **env_copy;
 	t_node  *parsed_commands;
 
+	(void)argc;
+	(void)argv;
 	env_copy = copy_env_list(env);
 	while (TRUE)
 	{
+		// init_sig()
+		init_sig();
 		command_line = readline("minishell> ");
 		// if (/* !ft_strcmp(command_line, SIGNAL)*/ || !ft_strcmp(command_line, "exit"))
 		// {
