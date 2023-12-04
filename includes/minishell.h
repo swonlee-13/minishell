@@ -6,7 +6,7 @@
 /*   By: yeolee2 <yeolee2@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 03:09:36 by yeolee2           #+#    #+#             */
-/*   Updated: 2023/12/01 22:53:18 by yeolee2          ###   ########.fr       */
+/*   Updated: 2023/12/04 21:19:54 by yeolee2          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,11 +36,10 @@ typedef struct s_file
     int out;
 }       t_file;
 
-
 /* UTILS */
 char	**copy_env_list(char **env);
 char	*find_env_data(char **env, char *str);
-
+t_node  *find_redirection_root(t_node *root, int cmd_idx);
 void    init_sig();
 
 /* CD.C */
@@ -66,7 +65,7 @@ void    set_export_attribute(char ***env, char *path);
 void    print_working_directory(void);
 
 /* UNSET.C */
-int	check_bash_var_name_convention(char *name);
+int     check_bash_var_name_convention(char *name);
 void	remove_env_data(char ***env, char *name);
 
 #endif

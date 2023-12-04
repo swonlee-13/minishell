@@ -6,11 +6,11 @@
 /*   By: yeolee2 <yeolee2@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 21:32:27 by yeolee2           #+#    #+#             */
-/*   Updated: 2023/12/01 21:32:36 by yeolee2          ###   ########.fr       */
+/*   Updated: 2023/12/04 21:12:53 by yeolee2          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../../includes/parse.h"
 
 t_node	*find_redirection_root(t_node *root, int cmd_idx)
 {

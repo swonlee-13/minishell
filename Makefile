@@ -6,7 +6,7 @@
 #    By: yeolee2 <yeolee2@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/29 22:14:25 by yeolee2           #+#    #+#              #
-#    Updated: 2023/12/01 23:38:26 by yeolee2          ###   ########.fr        #
+#    Updated: 2023/12/04 21:20:31 by yeolee2          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,7 +23,8 @@ SRCS				=	srcs/data_structure/queue.c \
 						srcs/parse/parse_formatting.c \
 						srcs/parse/parse_setter.c \
 						srcs/utils/copy_env_list.c \
-						srcs/utils/sig.c				\
+						srcs/utils/tree_find_redirection.c \
+						srcs/utils/sig.c \
 						srcs/heredoc/main.c \
 						srcs/builtins/exit.c \
 						srcs/builtins/unset.c \
