@@ -30,6 +30,7 @@ typedef struct s_node	//parsing 에서 사용할 node. tree 와 임시 queue에 
 	struct s_node		*left;
 	struct s_node		*right;
 	int					pipe_index;
+	int					fd;
 }	t_node;
 
 typedef struct s_queue
@@ -108,6 +109,7 @@ char	**vector_conversion(t_node **root, int cmd_num);
 
 //split_here_doc.c
 char	**shell_split_here_doc(char *str);
+
 //temp
 void	print_queue(t_queue *q);
 

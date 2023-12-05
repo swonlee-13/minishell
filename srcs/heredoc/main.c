@@ -6,7 +6,7 @@
 /*   By: yeolee2 <yeolee2@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 14:32:11 by yeolee2           #+#    #+#             */
-/*   Updated: 2023/12/01 23:30:38 by yeolee2          ###   ########.fr       */
+/*   Updated: 2023/12/02 04:44:01 by yeolee2          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,25 +76,6 @@ int is_builtin(char *command)
 	return (FALSE);
 }
 
-// void	setup_redirections(t_node *root, int fd[2])
-// {
-// 	t_node	*curr;
-// 	int	idx;
-
-// 	idx = 0;
-// 	curr = root;
-// 	while (curr->left)
-// 	{
-// 		if (curr->left)
-// 		{
-// 			/* code */
-// 		}
-		
-// 		curr = curr->left;
-// 	}
-	
-// }
-
 void	execute_command(int fd[2], int idx, t_node *root, char ***env_copy)
 {
 	char	**command_vector;
@@ -108,43 +89,57 @@ void	execute_command(int fd[2], int idx, t_node *root, char ***env_copy)
 	// exit(EXIT_FAILURE);
 }
 
-void	setup_child_redirection(t_file file, int fd[2], int idx, t_node *root)
+t_file	setup_cmd_redirection(int idx, t_node *parsed_commands)
 {
-	if (dup2(file.in, STDIN_FILENO) == FAILURE)
-			printf("%s\n", strerror(errno));
-	if (idx == count_commands(root) - 1)
+	t_node	*temp;
+	t_file	fd = { .in = STDIN_FILENO, .out = STDOUT_FILENO };
+
+	temp = find_redirection_root(parsed_commands, idx);
+	while (temp)
 	{
-		//TODO: How to setup redirections when outfile doesn't exist in the last pipeline
-		if (dup2(file.out, STDOUT_FILENO) == FAILURE)
-			printf("%s\n", strerror(errno));	
+		if (temp->type == REDIR_DOUBLE_IN)
+		{
+			fd.in = temp->fd;
+			dup2(fd.in, STDIN_FILENO);
+			close(fd.in);
+		}
+		else if (temp->type == REDIR_SINGLE_IN)
+		{
+			fd.in = open(temp->data, O_RDONLY);
+			dup2(fd.in, STDIN_FILENO);
+			close(fd.in);
+		}
+		else if (temp->type == REDIR_DOUBLE_OUT)
+		{
+			fd.out = open(temp->data, O_RDWR | O_CREAT | O_APPEND, 0644);
+			dup2(fd.out, STDOUT_FILENO);
+			close(fd.out);
+		}
+		else if (temp->type == REDIR_SINGLE_OUT)
+		{
+			fd.out = open(temp->data, O_RDWR | O_CREAT | O_TRUNC, 0644);
+			dup2(fd.out, STDOUT_FILENO);
+			close(fd.out);
+		}
+		temp = temp->left;
 	}
-	else
-	{
-		if (dup2(fd[WRITE], STDOUT_FILENO))
-			printf("%s\n", strerror(errno));
-	}
+	return (fd);
 }
 
-void	setup_parent_redirection(int infile, int fd[2])
+void	setup_parent_redirection(t_file redir, int fd[2])
 {
-	dup2(fd[READ], infile);
+	//FIXME: Parent redirection needs to be revised
+	dup2(fd[READ], STDIN_FILENO);
 	close(fd[READ]);
 	close(fd[WRITE]);
 }
 
-void	setup_file(int idx, t_node *root)
+void    execute_pipeline(int idx, t_node *parsed_commands, char ***env_copy)
 {
-	
-}
-
-void    execute_pipeline(int idx, t_node *root, char ***env_copy)
-{
+	t_file	redir;
 	pid_t	pid;
-	t_file	file;
 	int		fd[2];
 
-	//TODO: Open file in accordance
-	file.in = 
 	pipe(fd);
 	pid = fork();
 	if (pid < 0)
@@ -152,16 +147,33 @@ void    execute_pipeline(int idx, t_node *root, char ***env_copy)
         printf("%s\n", strerror(errno));
 		return ;
 	}
+	// Child process
 	if (pid == 0)
 	{
-		// Child process
-		setup_child_redirection(file, fd, idx, root);
-		execute_command(fd, idx, root, env_copy);
+		// Setup command-specific redirections
+		redir = setup_cmd_redirection(idx, parsed_commands);
+		if (idx > 0)
+			// If this is not the first command in the pipeline,
+            // use the read end of the previous command's pipe as standard input
+			dup2(fd[READ], STDIN_FILENO);
+		else
+			// If this is the first command in the pipeline,
+            // use the standard input redirection specified by the command itself
+			dup2(redir.in, STDIN_FILENO);
+		if (idx < count_commands(parsed_commands) - 1)
+			// If this is not the last command in the pipeline,
+            // use the write end of the current command's pipe as standard output
+			dup2(fd[WRITE], STDOUT_FILENO);
+		else
+			// If this is the last command in the pipeline,
+            // use the standard output redirection specified by the command itself
+			dup2(redir.out, STDOUT_FILENO);
+		execute_command(fd, idx, parsed_commands, env_copy);
 		exit(0);
 		// setup_redirections();
 	}
 	else
-		setup_parent_redirection(file.in, fd);
+		setup_parent_redirection(redir, fd);
 	while (waitpid(0, NULL, 0) >= 0)
 		;
 }
