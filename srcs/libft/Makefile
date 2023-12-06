@@ -18,16 +18,16 @@ ARFLAGS = src
 all : ${NAME}
 
 ${NAME} : ${OBJS}
-	ar ${ARFLAGS} $@ $^
+	@ar ${ARFLAGS} $@ $^
 
 .c.o :
-	${CC} ${CFLAGS} -c $< -o $@
+	@${CC} ${CFLAGS} -c $< -o $@
 
 clean :
-	rm -f ${OBJS}
+	@rm -f ${OBJS}
 
 fclean : clean 
-	rm -f ${NAME}
+	@rm -f ${NAME}
 
 re : fclean all
 

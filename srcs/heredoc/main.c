@@ -6,11 +6,11 @@
 /*   By: yeolee2 <yeolee2@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 14:32:11 by yeolee2           #+#    #+#             */
-/*   Updated: 2023/12/02 04:44:01 by yeolee2          ###   ########.fr       */
+/*   Updated: 2023/12/04 23:49:29 by yeolee2          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "minishell.h"
 
 int count_commands(t_node *root)
 {
@@ -76,11 +76,37 @@ int is_builtin(char *command)
 	return (FALSE);
 }
 
+char	*get_command_path(char **command, char **env_copy)
+{
+	int		idx;
+	char	*temp;
+	char	**path;
+
+	path = ft_split(get_env(env_copy, "PATH"), ':');
+	temp = ft_strjoin("/", *command);
+	free(*command);
+	idx = -1;
+	while (path[++idx])
+	{
+		*command = ft_strjoin(path[idx], temp);
+		if (!access(*command, X_OK))
+		{
+			free(temp);
+			ft_free(path);
+			return (*command);
+		}
+		else
+			free(*command);
+	}
+	return (NULL);
+}
+
 void	execute_command(int fd[2], int idx, t_node *root, char ***env_copy)
 {
 	char	**command_vector;
 
 	command_vector = vector_conversion(&root, idx);
+	command_vector[0] = get_command_path(&command_vector[0], *env_copy);
 	close(fd[READ]);
 	close(fd[WRITE]);
 	execve(command_vector[0], command_vector, *env_copy);
@@ -89,44 +115,61 @@ void	execute_command(int fd[2], int idx, t_node *root, char ***env_copy)
 	// exit(EXIT_FAILURE);
 }
 
+void	apply_cmd_redirection(t_node *temp, t_file fd)
+{
+	if (temp->type == REDIR_DOUBLE_IN)
+		dup2(temp->fd, STDIN_FILENO);
+	else if (temp->type == REDIR_SINGLE_IN)
+	{
+		fd.in = open(temp->data, O_RDONLY);
+		dup2(fd.in, STDIN_FILENO);
+	}
+	else if (temp->type == REDIR_DOUBLE_OUT)
+	{
+		fd.out = open(temp->data, O_RDWR | O_CREAT | O_APPEND, 0644);
+		dup2(fd.out, STDOUT_FILENO);
+	}
+	else if (temp->type == REDIR_SINGLE_OUT)
+	{
+		fd.out = open(temp->data, O_RDWR | O_CREAT | O_TRUNC, 0644);
+		dup2(fd.out, STDOUT_FILENO);
+	}
+}
+
 t_file	setup_cmd_redirection(int idx, t_node *parsed_commands)
 {
+	t_file	fd;
 	t_node	*temp;
-	t_file	fd = { .in = STDIN_FILENO, .out = STDOUT_FILENO };
-
+	
+	fd.in = STDIN_FILENO;
+	fd.out = STDOUT_FILENO;
 	temp = find_redirection_root(parsed_commands, idx);
 	while (temp)
 	{
-		if (temp->type == REDIR_DOUBLE_IN)
-		{
-			fd.in = temp->fd;
-			dup2(fd.in, STDIN_FILENO);
-			close(fd.in);
-		}
-		else if (temp->type == REDIR_SINGLE_IN)
-		{
-			fd.in = open(temp->data, O_RDONLY);
-			dup2(fd.in, STDIN_FILENO);
-			close(fd.in);
-		}
-		else if (temp->type == REDIR_DOUBLE_OUT)
-		{
-			fd.out = open(temp->data, O_RDWR | O_CREAT | O_APPEND, 0644);
-			dup2(fd.out, STDOUT_FILENO);
-			close(fd.out);
-		}
-		else if (temp->type == REDIR_SINGLE_OUT)
-		{
-			fd.out = open(temp->data, O_RDWR | O_CREAT | O_TRUNC, 0644);
-			dup2(fd.out, STDOUT_FILENO);
-			close(fd.out);
-		}
+		apply_cmd_redirection(temp, fd);
 		temp = temp->left;
 	}
 	return (fd);
 }
 
-void	setup_parent_redirection(t_file redir, int fd[2])
+void	setup_child_redirection(int fd[2], int idx, t_node *parsed_commands)
+{
+	t_file	redir;
+
+	redir = setup_cmd_redirection(idx, parsed_commands);
+	if (idx > 0 && redir.in == STDIN_FILENO)
+	{
+		dup2(fd[READ], STDIN_FILENO);
+		close(fd[READ]);
+	}
+	if (idx < count_commands(parsed_commands) - 1 && redir.out == STDOUT_FILENO)
+	{
+		dup2(fd[WRITE], STDOUT_FILENO);
+		close(fd[WRITE]);
+	}
+}
+
+void	setup_parent_redirection(int fd[2])
 {
 	//FIXME: Parent redirection needs to be revised
 	dup2(fd[READ], STDIN_FILENO);
@@ -136,7 +179,6 @@ void	setup_parent_redirection(t_file redir, int fd[2])
 
 void    execute_pipeline(int idx, t_node *parsed_commands, char ***env_copy)
 {
-	t_file	redir;
 	pid_t	pid;
 	int		fd[2];
 
@@ -151,31 +193,15 @@ void    execute_pipeline(int idx, t_node *parsed_commands, char ***env_copy)
 	if (pid == 0)
 	{
 		// Setup command-specific redirections
-		redir = setup_cmd_redirection(idx, parsed_commands);
-		if (idx > 0)
-			// If this is not the first command in the pipeline,
-            // use the read end of the previous command's pipe as standard input
-			dup2(fd[READ], STDIN_FILENO);
-		else
-			// If this is the first command in the pipeline,
-            // use the standard input redirection specified by the command itself
-			dup2(redir.in, STDIN_FILENO);
-		if (idx < count_commands(parsed_commands) - 1)
-			// If this is not the last command in the pipeline,
-            // use the write end of the current command's pipe as standard output
-			dup2(fd[WRITE], STDOUT_FILENO);
-		else
-			// If this is the last command in the pipeline,
-            // use the standard output redirection specified by the command itself
-			dup2(redir.out, STDOUT_FILENO);
+		setup_child_redirection(fd, idx, parsed_commands);
 		execute_command(fd, idx, parsed_commands, env_copy);
 		exit(0);
-		// setup_redirections();
 	}
 	else
-		setup_parent_redirection(redir, fd);
+		setup_parent_redirection(fd);
 	while (waitpid(0, NULL, 0) >= 0)
 		;
+	//TODO: waitpid with an exit code
 }
 
 void    execute_commands(t_node *parsed_commands, char ***env_copy)
