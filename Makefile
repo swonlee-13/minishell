@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: yeolee2 <yeolee2@student.42.fr>            +#+  +:+       +#+         #
+#    By: yeolee2 <yeolee2@student.42seoul.kr>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/29 22:14:25 by yeolee2           #+#    #+#              #
-#    Updated: 2023/12/04 21:20:31 by yeolee2          ###   ########.fr        #
+#    Updated: 2023/12/06 16:17:18 by yeolee2          ###   ########seoul.kr   #
 #                                                                              #
 # **************************************************************************** #
 
@@ -46,11 +46,11 @@ CC					=	cc
 
 INCLUDES			=	./includes/
 
-CFLAGS				=	-Werror -Wall -Wextra -g
+CFLAGS				=	-Werror -Wall -Wextra -g3
 
-READLINE_FLAGS		= -L/opt/homebrew/opt/readline/lib
+# READLINE_FLAGS		= -L/opt/homebrew/opt/readline/lib
 
-READLINE_INCLUDES 	= -I/opt/homebrew/opt/readline/include
+# READLINE_INCLUDES 	= -I/opt/homebrew/opt/readline/include
 
 Black   			=	\033[0;30m
 
@@ -85,13 +85,15 @@ progress_bar		=	printf "$(LF)$(Cyan)[$(1)/$(2)]$(DEF_COLOR) [$(Yellow)%0.1f%%$(D
 all					: 	$(NAME)
 
 %.o					: 	%.c $(INCLUDES)
-						@$(CC) $(CFLAGS) -I$(INCLUDES) $(READLINE_INCLUDES) -c -o $@ $<
+						@$(CC) $(CFLAGS) -I$(INCLUDES) -c -o $@ $<
+#						@$(CC) $(CFLAGS) -I$(INCLUDES) $(READLINE_INCLUDES) -c -o $@ $< //TODO: Readline includes regarding macbook
 						@$(call progress_bar,$(CURRENT_FILE),$(TOTAL_FILES))
 						@$(eval CURRENT_FILE=$(shell echo $$(($(CURRENT_FILE)+1))))
 						@sleep 0.05
 
 $(NAME)				: 	$(OBJS) $(LIBFT)/$(ARCHIVE)
-						@$(CC) $(CFLAGS) -o $(NAME) $(OBJS) -I$(INCLUDES) -L$(LIBFT) -lft $(READLINE_FLAGS) -lreadline
+#						@$(CC) $(CFLAGS) -o $(NAME) $(OBJS) -I$(INCLUDES) -L$(LIBFT) -lft $(READLINE_FLAGS) -lreadline //TODO: Readline includes regarding macbook
+						@$(CC) $(CFLAGS) -o $(NAME) $(OBJS) -I$(INCLUDES) -L$(LIBFT) -lft  -lreadline
 						@echo "$(GREEN)Mandatory Compilation done"
 						@printf "$(LF)"
 						@printf "\n\033[1;32m✅ Compilation complete. $(NAME) has been created. ✅\033[0m\n\n\e[?25h"
