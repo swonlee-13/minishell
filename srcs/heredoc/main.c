@@ -3,14 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yeolee2 <yeolee2@student.42.fr>            +#+  +:+       +#+        */
+/*   By: yeolee2 <yeolee2@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 14:32:11 by yeolee2           #+#    #+#             */
-/*   Updated: 2023/12/04 23:49:29 by yeolee2          ###   ########.fr       */
+/*   Updated: 2023/12/07 22:29:53 by yeolee2          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	g_exit_code = 0;
 
 int count_commands(t_node *root)
 {
@@ -40,7 +42,7 @@ t_node	*get_command_tree(t_node *root, int idx)
 void    execute_builtin(char **command_vector, char ***env_copy)
 {
 	if (!ft_strcmp(command_vector[0], "cd"))
-		change_directory(command_vector, env_copy);
+		change_directory(command_vector, env_copy); 
 	else if (!ft_strcmp(command_vector[0], "echo"))
 		write_arg_to_stdout(command_vector);
 	else if (!ft_strcmp(command_vector[0], "env"))
@@ -61,17 +63,17 @@ int is_builtin(char *command)
 {
 	if (!ft_strcmp(command, "cd"))
 		return (TRUE);
-	if (!ft_strcmp(command, "echo"))
+	else if (!ft_strcmp(command, "echo"))
 		return (TRUE);
-	if (!ft_strcmp(command, "env"))
+	else if (!ft_strcmp(command, "env"))
 		return (TRUE);
-	if (!ft_strcmp(command, "exit"))
+	else if (!ft_strcmp(command, "exit"))
 		return (TRUE);
-	if (!ft_strcmp(command, "export"))
+	else if (!ft_strcmp(command, "export"))
 		return (TRUE);
-	if (!ft_strcmp(command, "pwd"))
+	else if (!ft_strcmp(command, "pwd"))
 		return (TRUE);
-	if (!ft_strcmp(command, "unset"))
+	else if (!ft_strcmp(command, "unset"))
 		return (TRUE);
 	return (FALSE);
 }
@@ -106,6 +108,8 @@ void	execute_command(int fd[2], int idx, t_node *root, char ***env_copy)
 	char	**command_vector;
 
 	command_vector = vector_conversion(&root, idx);
+	if (is_builtin(command_vector[0]))
+		execute_builtin(command_vector, env_copy);
 	command_vector[0] = get_command_path(&command_vector[0], *env_copy);
 	close(fd[READ]);
 	close(fd[WRITE]);
@@ -115,51 +119,49 @@ void	execute_command(int fd[2], int idx, t_node *root, char ***env_copy)
 	// exit(EXIT_FAILURE);
 }
 
-void	apply_cmd_redirection(t_node *temp, t_file fd)
-{
-	if (temp->type == REDIR_DOUBLE_IN)
-		dup2(temp->fd, STDIN_FILENO);
-	else if (temp->type == REDIR_SINGLE_IN)
-	{
-		fd.in = open(temp->data, O_RDONLY);
-		dup2(fd.in, STDIN_FILENO);
-	}
-	else if (temp->type == REDIR_DOUBLE_OUT)
-	{
-		fd.out = open(temp->data, O_RDWR | O_CREAT | O_APPEND, 0644);
-		dup2(fd.out, STDOUT_FILENO);
-	}
-	else if (temp->type == REDIR_SINGLE_OUT)
-	{
-		fd.out = open(temp->data, O_RDWR | O_CREAT | O_TRUNC, 0644);
-		dup2(fd.out, STDOUT_FILENO);
-	}
-}
+// void	apply_cmd_redirection(t_node *temp, t_file *fd)
+// {
+// 	if (temp->type == REDIR_DOUBLE_IN)
+// 		dup2(temp->fd, STDIN_FILENO);
+// 	else if (temp->type == REDIR_SINGLE_IN)
+// 	{
+// 		fd->in = open(temp->data, O_RDONLY);
+// 		dup2(fd->in, STDIN_FILENO);
+// 	}
+// 	else if (temp->type == REDIR_DOUBLE_OUT)
+// 	{
+// 		fd->out = open(temp->data, O_RDWR | O_CREAT | O_APPEND, 0644);
+// 		dup2(fd->out, STDOUT_FILENO);
+// 	}
+// 	else if (temp->type == REDIR_SINGLE_OUT)
+// 	{
+// 		fd->out = open(temp->data, O_RDWR | O_CREAT | O_TRUNC, 0644);
+// 		dup2(fd->out, STDOUT_FILENO);
+// 	}
+// }
 
-t_file	setup_cmd_redirection(int idx, t_node *parsed_commands)
-{
-	t_file	fd;
-	t_node	*temp;
+// t_file	setup_cmd_redirection(int idx, t_node *parsed_commands)
+// {
+// 	t_file	fd;
+// 	t_node	*temp;
 	
-	fd.in = STDIN_FILENO;
-	fd.out = STDOUT_FILENO;
-	temp = find_redirection_root(parsed_commands, idx);
-	while (temp)
-	{
-		apply_cmd_redirection(temp, fd);
-		temp = temp->left;
-	}
-	return (fd);
-}
+// 	fd.in = STDIN_FILENO;
+// 	fd.out = STDOUT_FILENO;
+// 	temp = find_redirection_root(parsed_commands, idx);
+// 	while (temp)
+// 	{
+// 		apply_cmd_redirection(temp, &fd);
+// 		temp = temp->left;
+// 	}
+// 	return (fd);
+// }
 
-void	setup_child_redirection(int fd[2], int idx, t_node *parsed_commands)
+void	setup_child_redirection(int fd[2], int idx, t_node *parsed_commands, t_file redir)
 {
-	t_file	redir;
-
-	redir = setup_cmd_redirection(idx, parsed_commands);
 	if (idx > 0 && redir.in == STDIN_FILENO)
 	{
-		dup2(fd[READ], STDIN_FILENO);
+		dup2(redir.temp, STDIN_FILENO);
+		close(redir.temp);
 		close(fd[READ]);
 	}
 	if (idx < count_commands(parsed_commands) - 1 && redir.out == STDOUT_FILENO)
@@ -169,15 +171,19 @@ void	setup_child_redirection(int fd[2], int idx, t_node *parsed_commands)
 	}
 }
 
-void	setup_parent_redirection(int fd[2])
+void	setup_parent_redirection(int fd[2], t_file redir)
 {
 	//FIXME: Parent redirection needs to be revised
-	dup2(fd[READ], STDIN_FILENO);
+	if (redir.in != STDIN_FILENO)
+		close(redir.in);
+	redir.temp = dup(fd[READ]);
+	if (redir.out != STDOUT_FILENO)
+		close(redir.out);
 	close(fd[READ]);
 	close(fd[WRITE]);
 }
 
-void    execute_pipeline(int idx, t_node *parsed_commands, char ***env_copy)
+pid_t	execute_pipeline(int idx, t_node *parsed_commands, t_file redir, char ***env_copy)
 {
 	pid_t	pid;
 	int		fd[2];
@@ -186,22 +192,21 @@ void    execute_pipeline(int idx, t_node *parsed_commands, char ***env_copy)
 	pid = fork();
 	if (pid < 0)
 	{
+		//TODO: Fork error
         printf("%s\n", strerror(errno));
-		return ;
+		// return ;
 	}
 	// Child process
 	if (pid == 0)
 	{
 		// Setup command-specific redirections
-		setup_child_redirection(fd, idx, parsed_commands);
+		setup_child_redirection(fd, idx, parsed_commands, redir);
 		execute_command(fd, idx, parsed_commands, env_copy);
-		exit(0);
+		exit(EXIT_FAILURE);
 	}
 	else
-		setup_parent_redirection(fd);
-	while (waitpid(0, NULL, 0) >= 0)
-		;
-	//TODO: waitpid with an exit code
+		setup_parent_redirection(fd, redir);
+	return (pid);
 }
 
 void    execute_commands(t_node *parsed_commands, char ***env_copy)
@@ -209,18 +214,24 @@ void    execute_commands(t_node *parsed_commands, char ***env_copy)
 	int			idx;
 	const int   cnt = count_commands(parsed_commands);
 	char		**command_vector;
+	pid_t		last_pid;
+	t_file		redir;
 
 	idx = 0;
 	while (idx < cnt)
 	{
+		setup_cmd_redirection(parsed_commands, idx, &redir);
 		command_vector = vector_conversion(&parsed_commands, idx);
 		if (cnt == 1 && is_builtin(command_vector[0]))
 			execute_builtin(command_vector, env_copy);
 		else
-			execute_pipeline(idx, parsed_commands, env_copy);
+			last_pid = execute_pipeline(idx, parsed_commands, redir, env_copy);
 		ft_free(command_vector);
 		idx++;
 	}
+	// set_exit_status(last_pid);
+	while (waitpid(0, NULL, 0) >= 0)
+		;
 }
 
 int main(int argc, char *argv[], char **env)
@@ -231,7 +242,10 @@ int main(int argc, char *argv[], char **env)
 
 	(void)argc;
 	(void)argv;
+	//TODO: May not be necessary to initialize g_exit_code.
+	g_exit_code = 0;
 	env_copy = copy_env_list(env);
+	//TODO: Save copy of argv[0] in SHELL path
 	while (TRUE)
 	{
 		// init_sig()
@@ -243,6 +257,7 @@ int main(int argc, char *argv[], char **env)
 		//     break ;
 		// }
 		parsed_commands = parser(command_line, env_copy);
+		open_files(parsed_commands, env_copy);
 		//TODO: setup_heredoc();
 		execute_commands(parsed_commands, &env_copy);
 		free_tree(parsed_commands);
