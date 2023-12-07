@@ -85,6 +85,8 @@ void	file_descriptor_check(t_node *root, int cmd_idx t_file *file)
 	ptr = ptr->left;
 	while (ptr)
 	{
+		if (ptr->fd == -1) //TODO: error handling needed.
+			return (error);
 		if (ptr->type == REDIR_DOUBLE_IN || ptr->type == REDIR_SINGLE_IN)
 		{
 			if (ptr->fd != STDIN_FILENO)
