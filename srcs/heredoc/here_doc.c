@@ -1,5 +1,4 @@
 #include "minishell.h"
-#include "parse.h"
 
 char	*create_here_doc_file(t_node *node)
 {
@@ -77,7 +76,7 @@ void	open_files(t_node *root, char **env_copy)
 	open_files(root->right, env_copy);
 }
 
-void	file_descriptor_check(t_node *root, int cmd_idx t_file *file)
+void	setup_cmd_redirection(t_node *root, int cmd_idx, t_file *file)
 {
 	t_node	*ptr;
 
