@@ -31,7 +31,7 @@ void	write_here_doc(t_node *node, char **env_copy)
 		buffer = get_next_line(STDIN_FILENO);
 		if (*buffer == 0 || ft_strcmp(buffer, end) == 0)
 			break;
-		buffer = here_doc_formatting(buffer, env_copy)
+		buffer = here_doc_formatting(buffer, env_copy);
 		ft_putstr_fd(buffer, node->fd);
 		free(buffer);
 	}
@@ -77,7 +77,7 @@ void	open_files(t_node *root, char **env_copy)
 	open_files(root->right, env_copy);
 }
 
-void	file_descriptor_check(t_node *root, int cmd_idx t_file *file)
+void	file_descriptor_check(t_node *root, int cmd_idx, t_file *file)
 {
 	t_node	*ptr;
 
