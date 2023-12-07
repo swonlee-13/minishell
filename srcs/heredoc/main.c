@@ -6,7 +6,7 @@
 /*   By: yeolee2 <yeolee2@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 14:32:11 by yeolee2           #+#    #+#             */
-/*   Updated: 2023/12/06 22:52:01 by yeolee2          ###   ########seoul.kr  */
+/*   Updated: 2023/12/07 22:29:53 by yeolee2          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,42 +119,42 @@ void	execute_command(int fd[2], int idx, t_node *root, char ***env_copy)
 	// exit(EXIT_FAILURE);
 }
 
-void	apply_cmd_redirection(t_node *temp, t_file *fd)
-{
-	if (temp->type == REDIR_DOUBLE_IN)
-		dup2(temp->fd, STDIN_FILENO);
-	else if (temp->type == REDIR_SINGLE_IN)
-	{
-		fd->in = open(temp->data, O_RDONLY);
-		dup2(fd->in, STDIN_FILENO);
-	}
-	else if (temp->type == REDIR_DOUBLE_OUT)
-	{
-		fd->out = open(temp->data, O_RDWR | O_CREAT | O_APPEND, 0644);
-		dup2(fd->out, STDOUT_FILENO);
-	}
-	else if (temp->type == REDIR_SINGLE_OUT)
-	{
-		fd->out = open(temp->data, O_RDWR | O_CREAT | O_TRUNC, 0644);
-		dup2(fd->out, STDOUT_FILENO);
-	}
-}
+// void	apply_cmd_redirection(t_node *temp, t_file *fd)
+// {
+// 	if (temp->type == REDIR_DOUBLE_IN)
+// 		dup2(temp->fd, STDIN_FILENO);
+// 	else if (temp->type == REDIR_SINGLE_IN)
+// 	{
+// 		fd->in = open(temp->data, O_RDONLY);
+// 		dup2(fd->in, STDIN_FILENO);
+// 	}
+// 	else if (temp->type == REDIR_DOUBLE_OUT)
+// 	{
+// 		fd->out = open(temp->data, O_RDWR | O_CREAT | O_APPEND, 0644);
+// 		dup2(fd->out, STDOUT_FILENO);
+// 	}
+// 	else if (temp->type == REDIR_SINGLE_OUT)
+// 	{
+// 		fd->out = open(temp->data, O_RDWR | O_CREAT | O_TRUNC, 0644);
+// 		dup2(fd->out, STDOUT_FILENO);
+// 	}
+// }
 
-t_file	setup_cmd_redirection(int idx, t_node *parsed_commands)
-{
-	t_file	fd;
-	t_node	*temp;
+// t_file	setup_cmd_redirection(int idx, t_node *parsed_commands)
+// {
+// 	t_file	fd;
+// 	t_node	*temp;
 	
-	fd.in = STDIN_FILENO;
-	fd.out = STDOUT_FILENO;
-	temp = find_redirection_root(parsed_commands, idx);
-	while (temp)
-	{
-		apply_cmd_redirection(temp, &fd);
-		temp = temp->left;
-	}
-	return (fd);
-}
+// 	fd.in = STDIN_FILENO;
+// 	fd.out = STDOUT_FILENO;
+// 	temp = find_redirection_root(parsed_commands, idx);
+// 	while (temp)
+// 	{
+// 		apply_cmd_redirection(temp, &fd);
+// 		temp = temp->left;
+// 	}
+// 	return (fd);
+// }
 
 void	setup_child_redirection(int fd[2], int idx, t_node *parsed_commands, t_file redir)
 {
@@ -192,8 +192,9 @@ pid_t	execute_pipeline(int idx, t_node *parsed_commands, t_file redir, char ***e
 	pid = fork();
 	if (pid < 0)
 	{
+		//TODO: Fork error
         printf("%s\n", strerror(errno));
-		return ;
+		// return ;
 	}
 	// Child process
 	if (pid == 0)
@@ -213,25 +214,22 @@ void    execute_commands(t_node *parsed_commands, char ***env_copy)
 	int			idx;
 	const int   cnt = count_commands(parsed_commands);
 	char		**command_vector;
-	pid_t		res;
+	pid_t		last_pid;
 	t_file		redir;
 
 	idx = 0;
 	while (idx < cnt)
 	{
-		redir = setup_cmd_redirection(idx, parsed_commands);
+		setup_cmd_redirection(parsed_commands, idx, &redir);
 		command_vector = vector_conversion(&parsed_commands, idx);
 		if (cnt == 1 && is_builtin(command_vector[0]))
-		{
-			setup_cmd_redirection(0, parsed_commands);
 			execute_builtin(command_vector, env_copy);
-		}
 		else
-			res = execute_pipeline(idx, parsed_commands, redir, env_copy);
+			last_pid = execute_pipeline(idx, parsed_commands, redir, env_copy);
 		ft_free(command_vector);
 		idx++;
 	}
-	set_exit_status(res);
+	// set_exit_status(last_pid);
 	while (waitpid(0, NULL, 0) >= 0)
 		;
 }
@@ -259,6 +257,7 @@ int main(int argc, char *argv[], char **env)
 		//     break ;
 		// }
 		parsed_commands = parser(command_line, env_copy);
+		open_files(parsed_commands, env_copy);
 		//TODO: setup_heredoc();
 		execute_commands(parsed_commands, &env_copy);
 		free_tree(parsed_commands);
