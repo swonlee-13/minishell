@@ -15,7 +15,7 @@ char	*create_here_doc_file(t_node *node)
 		number++;
 		file_name = ft_strjoin("/tmp/my_here_doc", ft_itoa(number));
 	}
-	node->fd = open(filename, O_WRONLY | O_CREAT | O_EXCL | O_TRUNK);
+	node->fd = open(file_name, O_WRONLY | O_CREAT | O_EXCL | O_TRUNC);
 	return (file_name);
 }
 
@@ -39,18 +39,18 @@ void	write_here_doc(t_node *node, char **env_copy)
 	free(end);
 }
 
-int	activate_here_doc(t_node *node, char **env_copy);
+int	activate_here_doc(t_node *node, char **env_copy)
 {
 	char	*file_name;
 	int		fd;
 
-	file_name = create_here_doc_file(root);
+	file_name = create_here_doc_file(node);
 	if (node->fd == -1)
 	{
 		perror(errno); //TODO: 에러 관련 처리 합시다
 		return(errno); //TODO: 에러 관련 처리 합시다
 	}
-	write_here_doc(node);
+	write_here_doc(node, env_copy);
 	close(node->fd);
 	node->fd = open(file_name, O_RDONLY);
 	if (node->fd == -1)
@@ -68,20 +68,20 @@ void	open_files(t_node *root, char **env_copy)
 	if (root->type == REDIR_DOUBLE_IN)
 		activate_here_doc(root, env_copy);
 	else if (root->type == REDIR_SINGLE_IN)
-		node->fd = open(root->data, O_RDONLY);
+		root->fd = open(root->data, O_RDONLY);
 	else if (root->type == REDIR_SINGLE_OUT)
-		node->fd = open(root->data, O_RDWR | O_CREAT | O_TRUNC, 0644);
+		root->fd = open(root->data, O_RDWR | O_CREAT | O_TRUNC, 0644);
 	else if (root->type == REDIR_DOUBLE_OUT)
-		node->fd = open(toor->data, O_RDWR | O_CREAT | O_APPEND, 0644);
-	open_files(root->left);
-	open_files(root->right);
+		root->fd = open(root->data, O_RDWR | O_CREAT | O_APPEND, 0644);
+	open_files(root->left, env_copy);
+	open_files(root->right, env_copy);
 }
 
 void	file_descriptor_check(t_node *root, int cmd_idx t_file *file)
 {
 	t_node	*ptr;
 
-	ptr = find_redirection_root(toor, cmd_idx);
+	ptr = find_redirection_root(root, cmd_idx);
 	ptr = ptr->left;
 	while (ptr)
 	{
