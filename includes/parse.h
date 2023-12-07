@@ -116,4 +116,6 @@ void	print_queue(t_queue *q);
 //utils
 t_node	*find_redirection_root(t_node *root, int cmd_idx);
 
+//here_doc.c
+
 #endif
