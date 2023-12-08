@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   here_doc.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seongwol <seongwol@student.42seoul.>       +#+  +:+       +#+        */
+/*   By: yeolee2 <yeolee2@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 16:30:57 by seongwol          #+#    #+#             */
-/*   Updated: 2023/12/08 16:43:09 by seongwol         ###   ########.fr       */
+/*   Updated: 2023/12/08 20:58:37 by yeolee2          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,8 @@ int	activate_here_doc(t_node *node, char **env_copy)
 
 void	open_files(t_node *root, char **env_copy)
 {
+	if (root == NULL)
+		return ;
 	if (root->type == REDIR_DOUBLE_IN)
 		activate_here_doc(root, env_copy);
 	else if (root->type == REDIR_SINGLE_IN)
@@ -82,8 +84,6 @@ void	open_files(t_node *root, char **env_copy)
 		root->fd = open(root->data, O_RDWR | O_CREAT | O_TRUNC, 0644);
 	else if (root->type == REDIR_DOUBLE_OUT)
 		root->fd = open(root->data, O_RDWR | O_CREAT | O_APPEND, 0644);
-	else
-		return ;
 	open_files(root->left, env_copy);
 	open_files(root->right, env_copy);
 }
@@ -92,6 +92,8 @@ void	setup_cmd_redirection(t_node *root, int cmd_idx, t_file *file)
 {
 	t_node	*ptr;
 
+	file->in = STDIN_FILENO;
+	file->out = STDOUT_FILENO;
 	ptr = find_redirection_root(root, cmd_idx);
 	ptr = ptr->left;
 	while (ptr)
@@ -100,13 +102,13 @@ void	setup_cmd_redirection(t_node *root, int cmd_idx, t_file *file)
 //			return (error);
 		if (ptr->type == REDIR_DOUBLE_IN || ptr->type == REDIR_SINGLE_IN)
 		{
-			if (ptr->fd != STDIN_FILENO)
+			if (file->in != STDIN_FILENO)
 				close(file->in);
 			file->in = ptr->fd;
 		}
 		else if (ptr->type == REDIR_SINGLE_OUT || ptr->type == REDIR_DOUBLE_OUT)
 		{
-			if (ptr->fd != STDOUT_FILENO)
+			if (file->out != STDOUT_FILENO)
 				close(file->out);
 			file->out = ptr->fd;
 		}

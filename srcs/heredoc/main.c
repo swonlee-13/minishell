@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yeolee2 <yeolee2@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: yeolee2 <yeolee2@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 14:32:11 by yeolee2           #+#    #+#             */
-/*   Updated: 2023/12/08 16:28:52 by seongwol         ###   ########.fr       */
+/*   Updated: 2023/12/08 21:13:44 by yeolee2          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,28 +163,28 @@ void	setup_child_redirection(int fd[2], int idx, t_node *parsed_commands, t_file
 	{
 		dup2(redir.temp, STDIN_FILENO);
 		close(redir.temp);
-		close(fd[READ]);
 	}
 	if (idx < count_commands(parsed_commands) - 1 && redir.out == STDOUT_FILENO)
-	{
 		dup2(fd[WRITE], STDOUT_FILENO);
-		close(fd[WRITE]);
-	}
+	if (redir.in != STDIN_FILENO)
+		dup2(redir.in, STDIN_FILENO);
+	if (redir.out != STDOUT_FILENO)
+		dup2(redir.out, STDOUT_FILENO);
 }
 
-void	setup_parent_redirection(int fd[2], t_file redir)
+void	setup_parent_redirection(int fd[2], t_file *redir)
 {
 	//FIXME: Parent redirection needs to be revised
-	if (redir.in != STDIN_FILENO)
-		close(redir.in);
-	redir.temp = dup(fd[READ]);
-	if (redir.out != STDOUT_FILENO)
-		close(redir.out);
+	if (redir->in != STDIN_FILENO)
+		close(redir->in);
+	redir->temp = dup(fd[READ]);
+	if (redir->out != STDOUT_FILENO)
+		close(redir->out);
 	close(fd[READ]);
 	close(fd[WRITE]);
 }
 
-pid_t	execute_pipeline(int idx, t_node *parsed_commands, t_file redir, char ***env_copy)
+pid_t	execute_pipeline(int idx, t_node *parsed_commands, t_file *redir, char ***env_copy)
 {
 	pid_t	pid;
 	int		fd[2];
@@ -201,13 +201,18 @@ pid_t	execute_pipeline(int idx, t_node *parsed_commands, t_file redir, char ***e
 	if (pid == 0)
 	{
 		// Setup command-specific redirections
-		setup_child_redirection(fd, idx, parsed_commands, redir);
+		setup_child_redirection(fd, idx, parsed_commands, *redir);
 		execute_command(fd, idx, parsed_commands, env_copy);
 		exit(EXIT_FAILURE);
 	}
 	else
 		setup_parent_redirection(fd, redir);
 	return (pid);
+}
+
+void	setup_exit_status(pid_t pid)
+{
+	(void)pid;
 }
 
 void    execute_commands(t_node *parsed_commands, char ***env_copy)
@@ -226,11 +231,11 @@ void    execute_commands(t_node *parsed_commands, char ***env_copy)
 		if (cnt == 1 && is_builtin(command_vector[0]))
 			execute_builtin(command_vector, env_copy);
 		else
-			last_pid = execute_pipeline(idx, parsed_commands, redir, env_copy);
+			last_pid = execute_pipeline(idx, parsed_commands, &redir, env_copy);
 		ft_free(command_vector);
 		idx++;
 	}
-	// set_exit_status(last_pid);
+	setup_exit_status(last_pid);
 	while (waitpid(0, NULL, 0) >= 0)
 		;
 }
