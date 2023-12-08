@@ -6,7 +6,7 @@
 /*   By: yeolee2 <yeolee2@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 19:22:32 by yeolee2           #+#    #+#             */
-/*   Updated: 2023/12/01 19:22:34 by yeolee2          ###   ########.fr       */
+/*   Updated: 2023/12/08 19:46:46 by yeolee2          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ static int	count_argument(t_node *ptr)
 	}
 	return (i - 1);
 }
+
 char	**vector_conversion(t_node **root, int cmd_num)
 {
 	char	**ret;
@@ -32,7 +33,7 @@ char	**vector_conversion(t_node **root, int cmd_num)
 	int		num;
 
 	ptr = *root;
-	i = 1;
+	i = 0;
 	while (i < cmd_num)
 	{
 		ptr = ptr->right;
