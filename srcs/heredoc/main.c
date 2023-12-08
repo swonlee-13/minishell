@@ -6,11 +6,12 @@
 /*   By: yeolee2 <yeolee2@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 14:32:11 by yeolee2           #+#    #+#             */
-/*   Updated: 2023/12/07 22:29:53 by yeolee2          ###   ########seoul.kr  */
+/*   Updated: 2023/12/08 16:28:52 by seongwol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include "parse.h"
 
 int	g_exit_code = 0;
 

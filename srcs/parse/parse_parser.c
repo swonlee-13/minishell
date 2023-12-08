@@ -6,7 +6,7 @@
 /*   By: yeolee2 <yeolee2@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 19:22:00 by yeolee2           #+#    #+#             */
-/*   Updated: 2023/12/01 22:50:43 by yeolee2          ###   ########.fr       */
+/*   Updated: 2023/12/08 17:11:22 by seongwol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,25 +156,25 @@ void	print_redirection(t_node **tree, int cmd_num)
 	}
 	printf("\n");
 }
-
-int main(int ac, char **av, char **env)
-{
-	(void)ac;
-	t_node	*tree;
-	char	**cmd_vector;
-
-	char *cmd = readline("minishell$> ");
-	tree = parser(cmd, env);
-	printf("타입 넘버는 헤더파일 보고 알아서 이해하쇼\n\n");
-	for(int i = 1; i <= ft_atoi(av[1]); i++){
-		cmd_vector = vector_conversion(&tree, i);
-		print_redirection(&tree, i);
-		for (int j = 0; cmd_vector[j]; j++)
-			printf("%s\n", cmd_vector[j]);
-		printf("---------------------------------------------\n");
-		ft_free(cmd_vector);
-	}
-	free_tree(tree);
-	free(cmd);
-}
-
+//
+//int main(int ac, char **av, char **env)
+//{
+//	(void)ac;
+//	t_node	*tree;
+//	char	**cmd_vector;
+//
+//	char *cmd = readline("minishell$> ");
+//	tree = parser(cmd, env);
+//	printf("타입 넘버는 헤더파일 보고 알아서 이해하쇼\n\n");
+//	for(int i = 1; i <= ft_atoi(av[1]); i++){
+//		cmd_vector = vector_conversion(&tree, i);
+//		print_redirection(&tree, i);
+//		for (int j = 0; cmd_vector[j]; j++)
+//			printf("%s\n", cmd_vector[j]);
+//		printf("---------------------------------------------\n");
+//		ft_free(cmd_vector);
+//	}
+//	free_tree(tree);
+//	free(cmd);
+//}
+//

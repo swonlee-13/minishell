@@ -6,7 +6,7 @@
 #    By: yeolee2 <yeolee2@student.42seoul.kr>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/29 22:14:25 by yeolee2           #+#    #+#              #
-#    Updated: 2023/12/07 22:33:06 by yeolee2          ###   ########seoul.kr   #
+#    Updated: 2023/12/08 16:56:10 by seongwol         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,6 +28,7 @@ SRCS				=	srcs/data_structure/queue.c \
 						srcs/heredoc/main.c \
 						srcs/heredoc/here_doc_formatting.c \
 						srcs/heredoc/here_doc.c \
+						srcs/heredoc/split_here_doc.c \
 						srcs/builtins/exit.c \
 						srcs/builtins/unset.c \
 						srcs/builtins/env.c \

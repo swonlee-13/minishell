@@ -6,7 +6,7 @@
 /*   By: seongwol <seongwol@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 20:40:34 by seongwol          #+#    #+#             */
-/*   Updated: 2023/08/04 14:50:11 by seongwol         ###   ########.fr       */
+/*   Updated: 2023/12/08 16:56:58 by seongwol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include <stdio.h>
+# include <fcntl.h>
+# define BUFFER_SIZE 42
 
 typedef long long	t_l;
 typedef char		t_c;
@@ -73,4 +75,5 @@ t_l	ft_atol(const char *str);
 t_v	ft_error(char *str);
 t_i	ft_strslen(char **strs);
 t_v	ft_free(char **strs);
+t_c	*get_next_line(int fd);
 #endif

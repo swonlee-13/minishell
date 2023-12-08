@@ -5,6 +5,7 @@
 # include <stdio.h>
 # include "../srcs/libft/libft.h"
 # include <readline/readline.h>
+# include "minishell.h"
 # define TRUE 1
 # define FALSE 0
 # define SYNTAX_ERROR 258           //이거 숫자 나중에 회의해서 바꿔야함;
@@ -93,6 +94,7 @@ void	token_setter(char *cmd, char *token_string);
 void	node_data_formatting(t_queue *q, char **env_copy);
 char	*merge_splitted_cmd(char **strs);
 char	*env_var_replace(char *str, char **env);
+char	*here_doc_formatting(char *str, char **env_copy);
 
 //split_dollar.c
 char	**shell_split_dollar(char *str);
@@ -117,5 +119,6 @@ void	print_queue(t_queue *q);
 t_node	*find_redirection_root(t_node *root, int cmd_idx);
 
 //here_doc.c
-
+void	open_files(t_node *root, char **env_copy);
+void	setup_cmd_redirection(t_node *root, int cmd_idx, t_file *file);
 #endif

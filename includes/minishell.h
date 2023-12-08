@@ -6,7 +6,7 @@
 /*   By: yeolee2 <yeolee2@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 03:09:36 by yeolee2           #+#    #+#             */
-/*   Updated: 2023/12/04 21:19:54 by yeolee2          ###   ########.fr       */
+/*   Updated: 2023/12/08 16:29:41 by seongwol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@
 # include <fcntl.h>
 # include <readline/readline.h>
 # include "../srcs/libft/libft.h"
-# include "parse.h"
 # define READ       0
 # define WRITE      1
 # define TRUE       1
@@ -34,12 +33,12 @@ typedef struct s_file
 {
     int in;
     int out;
+	int	temp;
 }       t_file;
 
 /* UTILS */
 char	**copy_env_list(char **env);
 char	*find_env_data(char **env, char *str);
-t_node  *find_redirection_root(t_node *root, int cmd_idx);
 void    init_sig();
 
 /* CD.C */

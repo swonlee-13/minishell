@@ -1,13 +1,24 @@
-#include "minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   here_doc.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: seongwol <seongwol@student.42seoul.>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/12/08 16:30:57 by seongwol          #+#    #+#             */
+/*   Updated: 2023/12/08 16:43:09 by seongwol         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
+#include "minishell.h"
+#include "parse.h"
 char	*create_here_doc_file(t_node *node)
 {
 	char		*file_name;
-	int			ret;
 	static int	number;
 
 	number++;
-	file_name = ft_strjoin("/tmp/minishell/my_here_doc", ft_itoa(number));
+	file_name = ft_strjoin("/tmp/my_here_doc", ft_itoa(number));
 	while (access(file_name, F_OK) != SUCCESS)
 	{
 		free(file_name);
@@ -41,22 +52,21 @@ void	write_here_doc(t_node *node, char **env_copy)
 int	activate_here_doc(t_node *node, char **env_copy)
 {
 	char	*file_name;
-	int		fd;
 
 	file_name = create_here_doc_file(node);
-	if (node->fd == -1)
-	{
-		perror(errno); //TODO: 에러 관련 처리 합시다
-		return(errno); //TODO: 에러 관련 처리 합시다
-	}
+//	if (node->fd == -1)
+//	{
+//		perror(errno); //TODO: 에러 관련 처리 합시다
+//		return(errno); //TODO: 에러 관련 처리 합시다
+//	}
 	write_here_doc(node, env_copy);
 	close(node->fd);
 	node->fd = open(file_name, O_RDONLY);
-	if (node->fd == -1)
-	{
-		perror(errno); //TODO: 에러 관련 처리 합시다
-		return(errno); //TODO: 에러 관련 처리 합시다
-	}
+//	if (node->fd == -1)
+//	{
+//		perror(errno); //TODO: 에러 관련 처리 합시다
+//		return(errno); //TODO: 에러 관련 처리 합시다
+//	}
 	unlink(file_name);
 	free(file_name);
 	return (SUCCESS);
@@ -72,6 +82,8 @@ void	open_files(t_node *root, char **env_copy)
 		root->fd = open(root->data, O_RDWR | O_CREAT | O_TRUNC, 0644);
 	else if (root->type == REDIR_DOUBLE_OUT)
 		root->fd = open(root->data, O_RDWR | O_CREAT | O_APPEND, 0644);
+	else
+		return ;
 	open_files(root->left, env_copy);
 	open_files(root->right, env_copy);
 }
@@ -84,8 +96,8 @@ void	setup_cmd_redirection(t_node *root, int cmd_idx, t_file *file)
 	ptr = ptr->left;
 	while (ptr)
 	{
-		if (ptr->fd == -1) //TODO: error handling needed.
-			return (error);
+//		if (ptr->fd == -1) //TODO: error handling needed.
+//			return (error);
 		if (ptr->type == REDIR_DOUBLE_IN || ptr->type == REDIR_SINGLE_IN)
 		{
 			if (ptr->fd != STDIN_FILENO)
