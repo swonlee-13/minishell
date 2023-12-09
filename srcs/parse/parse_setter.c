@@ -37,7 +37,7 @@ int	file_name_setter_sub(char *token_string, int i)
 	}
 	while (token_string[i] == ' ')
 		i++;
-	while (token_string[i] != ' ' && token_string[i] != '\0')
+	while (token_string[i] != ' ' && token_string[i] != 'P' && token_string[i] != '\0')
 	{
 		if (token_string[i] == 'A')
 			file_name_setter_value_set(token_string, i, c, count);

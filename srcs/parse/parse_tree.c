@@ -36,6 +36,26 @@ void	sub_tree_insert(t_node **root, int cmd_idx)
 	tree_insert(root, node);
 }
 
+void	tree_insert_redir(t_node **root, t_node *tmp, int cmd_idx)
+{
+	t_node	*ptr;
+	t_node	*node;
+	int		i;
+
+	ptr = *root;
+	i = -1;
+	while (++i < cmd_idx)
+		i++;
+	ptr = ptr->left->left;
+	while (ptr->left)
+	{
+		node = node_init_with_vars(REDIRECTION_ROOT, cmd_idx);
+		ptr->right = node;
+		ptr = ptr->right;
+	}
+	ptr->left = tmp;
+}
+
 t_node	*switch_to_tree(t_queue *q)
 {
 	t_node	*root;
@@ -53,9 +73,11 @@ t_node	*switch_to_tree(t_queue *q)
 			sub_tree_insert(&root, tmp->pipe_index + 1);
 			free(tmp->data);
 			free(tmp);
-			tmp = dequeue(q);
 		}
-		tree_insert(&root, tmp);
+		else if ((int)tmp->type > 0 && (int)tmp->type < 5)
+			tree_insert_redir(&root, tmp, tmp->pipe_index + 1);
+		else
+			tree_insert(&root, tmp);
 		tmp = dequeue(q);
 	}
 	return (root);
