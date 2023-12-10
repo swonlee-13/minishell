@@ -6,12 +6,13 @@
 /*   By: yeolee2 <yeolee2@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 16:30:57 by seongwol          #+#    #+#             */
-/*   Updated: 2023/12/08 20:58:37 by yeolee2          ###   ########.fr       */
+/*   Updated: 2023/12/10 01:06:31 by yeolee2          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "parse.h"
+
 char	*create_here_doc_file(t_node *node)
 {
 	char		*file_name;
@@ -19,13 +20,13 @@ char	*create_here_doc_file(t_node *node)
 
 	number++;
 	file_name = ft_strjoin("/tmp/my_here_doc", ft_itoa(number));
-	while (access(file_name, F_OK) != SUCCESS)
+	while (access(file_name, F_OK) == SUCCESS)
 	{
 		free(file_name);
 		number++;
 		file_name = ft_strjoin("/tmp/my_here_doc", ft_itoa(number));
 	}
-	node->fd = open(file_name, O_WRONLY | O_CREAT | O_EXCL | O_TRUNC);
+	node->fd = open(file_name, O_RDWR | O_CREAT | O_EXCL | O_TRUNC, 0644);
 	return (file_name);
 }
 
