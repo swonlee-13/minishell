@@ -6,7 +6,7 @@
 /*   By: yeolee2 <yeolee2@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 03:09:36 by yeolee2           #+#    #+#             */
-/*   Updated: 2023/12/08 16:29:41 by seongwol         ###   ########.fr       */
+/*   Updated: 2023/12/10 00:37:14 by yeolee2          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include <errno.h>
 # include <signal.h>
 # include <fcntl.h>
+# include <termios.h>
 # include <readline/readline.h>
 # include "../srcs/libft/libft.h"
 # define READ       0
@@ -67,4 +68,8 @@ void    print_working_directory(void);
 int     check_bash_var_name_convention(char *name);
 void	remove_env_data(char ***env, char *name);
 
+/* SIGNAL */
+void    child_sigint_handler(int signum);
+void    parent_sigint_handler(int signum);
+void    sig_pa(int signo);
 #endif

@@ -6,7 +6,7 @@
 /*   By: yeolee2 <yeolee2@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 14:32:11 by yeolee2           #+#    #+#             */
-/*   Updated: 2023/12/08 21:13:44 by yeolee2          ###   ########.fr       */
+/*   Updated: 2023/12/10 00:56:12 by yeolee2          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,43 +120,6 @@ void	execute_command(int fd[2], int idx, t_node *root, char ***env_copy)
 	// exit(EXIT_FAILURE);
 }
 
-// void	apply_cmd_redirection(t_node *temp, t_file *fd)
-// {
-// 	if (temp->type == REDIR_DOUBLE_IN)
-// 		dup2(temp->fd, STDIN_FILENO);
-// 	else if (temp->type == REDIR_SINGLE_IN)
-// 	{
-// 		fd->in = open(temp->data, O_RDONLY);
-// 		dup2(fd->in, STDIN_FILENO);
-// 	}
-// 	else if (temp->type == REDIR_DOUBLE_OUT)
-// 	{
-// 		fd->out = open(temp->data, O_RDWR | O_CREAT | O_APPEND, 0644);
-// 		dup2(fd->out, STDOUT_FILENO);
-// 	}
-// 	else if (temp->type == REDIR_SINGLE_OUT)
-// 	{
-// 		fd->out = open(temp->data, O_RDWR | O_CREAT | O_TRUNC, 0644);
-// 		dup2(fd->out, STDOUT_FILENO);
-// 	}
-// }
-
-// t_file	setup_cmd_redirection(int idx, t_node *parsed_commands)
-// {
-// 	t_file	fd;
-// 	t_node	*temp;
-	
-// 	fd.in = STDIN_FILENO;
-// 	fd.out = STDOUT_FILENO;
-// 	temp = find_redirection_root(parsed_commands, idx);
-// 	while (temp)
-// 	{
-// 		apply_cmd_redirection(temp, &fd);
-// 		temp = temp->left;
-// 	}
-// 	return (fd);
-// }
-
 void	setup_child_redirection(int fd[2], int idx, t_node *parsed_commands, t_file redir)
 {
 	if (idx > 0 && redir.in == STDIN_FILENO)
@@ -193,6 +156,7 @@ pid_t	execute_pipeline(int idx, t_node *parsed_commands, t_file *redir, char ***
 	pid = fork();
 	if (pid < 0)
 	{
+		
 		//TODO: Fork error
         printf("%s\n", strerror(errno));
 		// return ;
@@ -200,19 +164,32 @@ pid_t	execute_pipeline(int idx, t_node *parsed_commands, t_file *redir, char ***
 	// Child process
 	if (pid == 0)
 	{
+		signal(SIGINT, SIG_DFL);
+		// signal(SIGINT, SIG_DFL);
+		
 		// Setup command-specific redirections
 		setup_child_redirection(fd, idx, parsed_commands, *redir);
 		execute_command(fd, idx, parsed_commands, env_copy);
 		exit(EXIT_FAILURE);
 	}
-	else
+	else{
+		signal(SIGINT, sig_pa);     	
+		signal(SIGTERM, sig_pa);     	
+		// signal(SIGINFO, sig_pa);
 		setup_parent_redirection(fd, redir);
+	}
 	return (pid);
 }
 
 void	setup_exit_status(pid_t pid)
 {
-	(void)pid;
+	int	status;
+
+	waitpid(pid, &status, 0);
+	if (WIFSIGNALED(status))
+		g_exit_code = 128 + WTERMSIG(status);
+	else
+		g_exit_code = WEXITSTATUS(status);
 }
 
 void    execute_commands(t_node *parsed_commands, char ***env_copy)
@@ -242,9 +219,14 @@ void    execute_commands(t_node *parsed_commands, char ***env_copy)
 
 int main(int argc, char *argv[], char **env)
 {
-	char    *command_line;
-	char    **env_copy;
-	t_node  *parsed_commands;
+	char			*command_line;
+	char			**env_copy;
+	t_node			*parsed_commands;
+	struct termios	term;
+	
+	tcgetattr(STDIN_FILENO, &term);
+	term.c_lflag &= ~ECHOCTL;
+	tcsetattr(STDIN_FILENO, 0, &term);
 
 	(void)argc;
 	(void)argv;
@@ -254,14 +236,10 @@ int main(int argc, char *argv[], char **env)
 	//TODO: Save copy of argv[0] in SHELL path
 	while (TRUE)
 	{
-		// init_sig()
 		init_sig();
 		command_line = readline("minishell> ");
-		// if (/* !ft_strcmp(command_line, SIGNAL)*/ || !ft_strcmp(command_line, "exit"))
-		// {
-		//     //TODO: Signal handling
-		//     break ;
-		// }
+		if (!command_line)
+			break ;
 		parsed_commands = parser(command_line, env_copy);
 		open_files(parsed_commands, env_copy);
 		//TODO: setup_heredoc();
@@ -269,4 +247,8 @@ int main(int argc, char *argv[], char **env)
 		free_tree(parsed_commands);
 		free(command_line);
 	}
+	printf("\x1b[1A\033[11Cexit\n");
+	term.c_lflag |= ECHOCTL;
+	tcsetattr(STDIN_FILENO, 0, &term);
+	return (SUCCESS);
 }
