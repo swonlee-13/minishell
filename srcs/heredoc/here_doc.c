@@ -6,7 +6,7 @@
 /*   By: yeolee2 <yeolee2@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 16:30:57 by seongwol          #+#    #+#             */
-/*   Updated: 2023/12/10 01:06:31 by yeolee2          ###   ########.fr       */
+/*   Updated: 2023/12/11 17:46:48 by yeolee2          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,22 +32,21 @@ char	*create_here_doc_file(t_node *node)
 
 void	write_here_doc(t_node *node, char **env_copy)
 {
-	char	*end;
 	char	*buffer;
 
-	end = ft_strjoin(node->data, "\n");
 	while (1)
 	{
-		write(1, "heredoc> ", 9);
-		buffer = get_next_line(STDIN_FILENO);
-		if (*buffer == 0 || ft_strcmp(buffer, end) == 0)
+		// write(1, "heredoc> ", 9);
+		buffer = readline("> ");
+		if (buffer == 0 || ft_strcmp(buffer, node->data) == 0)
 			break;
 		buffer = here_doc_formatting(buffer, env_copy);
 		ft_putstr_fd(buffer, node->fd);
+		ft_putstr_fd("\n", node->fd);
 		free(buffer);
 	}
 	free(buffer);
-	free(end);
+	// free(end);
 }
 
 int	activate_here_doc(t_node *node, char **env_copy)
