@@ -12,6 +12,8 @@
 
 #include "parse.h"
 
+extern int	g_exit_code;
+
 char	*env_var_replace_sub(char *str, char **env)
 {
 	int		i;
@@ -37,11 +39,12 @@ char	*env_var_replace(char *str, char **env)
 {
 	char	*tmp;
 
-//	if (ft_strcmp(str, "$?") == 0)
-//	{
-//		free(str);
-//		str = 시그널 exit code 관련 int return value;
-//	}
+	if (ft_strcmp(str, "$?") == 0)
+	{
+		free(str);
+		str = ft_itoa(g_exit_code);
+		return (str);
+	}
 	if (str[0] != '$' || ft_strcmp(str, "$") == 0)
 		return (str);
 	else
