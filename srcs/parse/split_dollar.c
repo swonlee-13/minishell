@@ -24,6 +24,8 @@ static int	split_indexing(char *str, int i)
 	}
 	else
 	{
+		if (str[i]  == '\0')
+			return (i);
 		while (str[i] != '$' && str[i] != '\0')
 			i++;
 	}
@@ -37,6 +39,8 @@ static int	line_count(char *str)
 
 	count = 0;
 	i = 0;
+	if (str[0] == '\0')
+		return (1);
 	while (str[i])
 	{
 		i = split_indexing(str, i);
@@ -67,20 +71,3 @@ char	**shell_split_dollar(char *str)
 	res[word] = NULL;
 	return (res);
 }
-//void	leaks()
-//{
-//	system("leaks a.out");
-//}
-//
-//
-//int main()
-//{
-//	char	**res;
-//	char	*str = "$?123$abc";
-//
-//	res = shell_split_dollar(str);
-//	for (int i = 0; res[i] != NULL; i++)
-//		printf("%s\n", res[i]);
-//	ft_free(res);
-//	atexit(leaks);
-//}

@@ -12,23 +12,25 @@
 
 #include "libft.h"
 
-// static int	count_len(char **strs)
-// {
-// 	int	i;
+ static int	count_len(char **strs)
+ {
+ 	int	i;
 
-// 	i = 0;
-// 	if(strs)
-// 		while (strs[i] != NULL)
-// 			i++;
-// 	return (i);
-// }
+ 	i = 0;
+ 	if(strs)
+ 		while (strs[i] != NULL)
+ 			i++;
+ 	return (i);
+ }
 
 void	ft_free(char **strs)
 {
+	int	len;
 	int	i;
 
 	i = 0;
-	while (strs[i])
+	len = count_len(strs);
+	while (i < len)
 	{
 		free(strs[i]);
 		i++;
