@@ -6,12 +6,11 @@
 /*   By: yeolee2 <yeolee2@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 16:30:57 by seongwol          #+#    #+#             */
-/*   Updated: 2023/12/11 17:46:48 by yeolee2          ###   ########.fr       */
+/*   Updated: 2023/12/11 22:45:15 by yeolee2          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include "parse.h"
 
 char	*create_here_doc_file(t_node *node)
 {

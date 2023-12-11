@@ -6,11 +6,11 @@
 /*   By: yeolee2 <yeolee2@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 19:22:52 by yeolee2           #+#    #+#             */
-/*   Updated: 2023/12/01 19:22:55 by yeolee2          ###   ########.fr       */
+/*   Updated: 2023/12/11 22:52:12 by yeolee2          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/parse.h"
+#include "minishell.h"
 
 char	**copy_env_list(char **env)
 {

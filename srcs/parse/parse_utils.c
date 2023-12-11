@@ -6,11 +6,11 @@
 /*   By: yeolee2 <yeolee2@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 19:22:25 by yeolee2           #+#    #+#             */
-/*   Updated: 2023/12/01 19:22:28 by yeolee2          ###   ########.fr       */
+/*   Updated: 2023/12/11 22:41:05 by yeolee2          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/parse.h"
+#include "parse.h"
 
 int	ft_is_pipe(char c)
 {

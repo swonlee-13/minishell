@@ -6,11 +6,11 @@
 /*   By: yeolee2 <yeolee2@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 19:20:39 by yeolee2           #+#    #+#             */
-/*   Updated: 2023/12/01 19:29:47 by yeolee2          ###   ########.fr       */
+/*   Updated: 2023/12/11 22:42:22 by yeolee2          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/parse.h"
+#include "parse.h"
 
 void	queue_init(t_queue *q)
 {

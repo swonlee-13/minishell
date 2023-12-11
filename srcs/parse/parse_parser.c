@@ -6,11 +6,11 @@
 /*   By: yeolee2 <yeolee2@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 19:22:00 by yeolee2           #+#    #+#             */
-/*   Updated: 2023/12/08 17:11:22 by seongwol         ###   ########.fr       */
+/*   Updated: 2023/12/11 22:49:30 by yeolee2          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/parse.h"
+#include "parse.h"
 
 t_type	node_type_setter(char *token_string, int i)
 {
