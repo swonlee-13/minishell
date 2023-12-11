@@ -6,7 +6,7 @@
 /*   By: yeolee2 <yeolee2@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 03:09:36 by yeolee2           #+#    #+#             */
-/*   Updated: 2023/12/10 00:37:14 by yeolee2          ###   ########.fr       */
+/*   Updated: 2023/12/11 22:01:03 by yeolee2          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ typedef struct s_file
 /* UTILS */
 char	**copy_env_list(char **env);
 char	*find_env_data(char **env, char *str);
-void    init_sig();
+void    init_signal();
 
 /* CD.C */
 char    *get_env(char **env, char *str);
@@ -69,7 +69,10 @@ int     check_bash_var_name_convention(char *name);
 void	remove_env_data(char ***env, char *name);
 
 /* SIGNAL */
-void    child_sigint_handler(int signum);
-void    parent_sigint_handler(int signum);
-void    sig_pa(int signo);
+void    prompt_sigint_handler(int signum);
+void    parent_signal_handler(int signum);
+void    init_signal();
+void	reset_termios(void);
+void	set_termios(void);
+
 #endif

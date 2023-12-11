@@ -6,7 +6,7 @@
 /*   By: yeolee2 <yeolee2@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 14:32:11 by yeolee2           #+#    #+#             */
-/*   Updated: 2023/12/10 00:56:12 by yeolee2          ###   ########.fr       */
+/*   Updated: 2023/12/11 22:18:49 by yeolee2          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,7 +156,6 @@ pid_t	execute_pipeline(int idx, t_node *parsed_commands, t_file *redir, char ***
 	pid = fork();
 	if (pid < 0)
 	{
-		
 		//TODO: Fork error
         printf("%s\n", strerror(errno));
 		// return ;
@@ -164,20 +163,15 @@ pid_t	execute_pipeline(int idx, t_node *parsed_commands, t_file *redir, char ***
 	// Child process
 	if (pid == 0)
 	{
-		signal(SIGINT, SIG_DFL);
-		// signal(SIGINT, SIG_DFL);
-		
+		signal(SIGQUIT, SIG_DFL);
+		reset_termios();
 		// Setup command-specific redirections
 		setup_child_redirection(fd, idx, parsed_commands, *redir);
 		execute_command(fd, idx, parsed_commands, env_copy);
 		exit(EXIT_FAILURE);
 	}
-	else{
-		signal(SIGINT, sig_pa);     	
-		signal(SIGTERM, sig_pa);     	
-		// signal(SIGINFO, sig_pa);
+	else
 		setup_parent_redirection(fd, redir);
-	}
 	return (pid);
 }
 
@@ -186,10 +180,15 @@ void	setup_exit_status(pid_t pid)
 	int	status;
 
 	waitpid(pid, &status, 0);
-	if (WIFSIGNALED(status))
-		g_exit_code = 128 + WTERMSIG(status);
-	else
-		g_exit_code = WEXITSTATUS(status);
+	// write(2, "hihi\n", 5);
+	if (status == SIGINT)
+		ft_putstr_fd("\n", STDERR_FILENO);
+	else if (status == SIGQUIT)
+		ft_putstr_fd("Quit: 3\n", STDERR_FILENO);
+	// if (WIFSIGNALED(status))
+	// 	g_exit_code = 128 + WTERMSIG(status);
+	// else
+	// 	g_exit_code = WEXITSTATUS(status);
 }
 
 void    execute_commands(t_node *parsed_commands, char ***env_copy)
@@ -205,6 +204,8 @@ void    execute_commands(t_node *parsed_commands, char ***env_copy)
 	{
 		setup_cmd_redirection(parsed_commands, idx, &redir);
 		command_vector = vector_conversion(&parsed_commands, idx);
+		if (!command_vector[0])
+			return ;
 		if (cnt == 1 && is_builtin(command_vector[0]))
 			execute_builtin(command_vector, env_copy);
 		else
@@ -217,16 +218,30 @@ void    execute_commands(t_node *parsed_commands, char ***env_copy)
 		;
 }
 
-int main(int argc, char *argv[], char **env)
+void	reset_termios(void)
 {
-	char			*command_line;
-	char			**env_copy;
-	t_node			*parsed_commands;
+	struct termios	term;
+
+	tcgetattr(STDIN_FILENO, &term);
+	term.c_lflag |= ECHOCTL;
+	tcsetattr(STDIN_FILENO, 0, &term);
+}
+
+void	set_termios(void)
+{
 	struct termios	term;
 	
 	tcgetattr(STDIN_FILENO, &term);
 	term.c_lflag &= ~ECHOCTL;
 	tcsetattr(STDIN_FILENO, 0, &term);
+}
+
+int main(int argc, char *argv[], char **env)
+{
+	char			*command_line;
+	char			**env_copy;
+	t_node			*parsed_commands;
+	
 
 	(void)argc;
 	(void)argv;
@@ -236,19 +251,24 @@ int main(int argc, char *argv[], char **env)
 	//TODO: Save copy of argv[0] in SHELL path
 	while (TRUE)
 	{
-		init_sig();
+		set_termios();
+		init_signal();
 		command_line = readline("minishell> ");
+
+		// Handle SIGTERM
 		if (!command_line)
 			break ;
+
 		parsed_commands = parser(command_line, env_copy);
-		open_files(parsed_commands, env_copy);
 		//TODO: setup_heredoc();
+		open_files(parsed_commands, env_copy);
 		execute_commands(parsed_commands, &env_copy);
 		free_tree(parsed_commands);
 		free(command_line);
 	}
+
 	printf("\x1b[1A\033[11Cexit\n");
-	term.c_lflag |= ECHOCTL;
-	tcsetattr(STDIN_FILENO, 0, &term);
+	reset_termios();
+
 	return (SUCCESS);
 }
