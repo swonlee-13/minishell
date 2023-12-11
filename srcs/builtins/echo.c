@@ -6,11 +6,11 @@
 /*   By: yeolee2 <yeolee2@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 19:52:51 by yeolee2           #+#    #+#             */
-/*   Updated: 2023/11/27 17:42:08 by yeolee2          ###   ########.fr       */
+/*   Updated: 2023/12/11 23:02:01 by yeolee2          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "minishell.h"
 
 int check_the_rest_of_arg(char *arg)
 {
@@ -48,6 +48,11 @@ void    write_arg_to_stdout(char **vector)
     int idx;
 
     idx = 1;
+    if (vector[1] == NULL)
+    {
+        printf("\n");
+        return ;
+    }
     while (is_n_option(vector[idx]) == TRUE)
         idx++;
     while (vector[idx])

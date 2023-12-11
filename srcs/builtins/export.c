@@ -6,11 +6,11 @@
 /*   By: yeolee2 <yeolee2@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 20:03:24 by yeolee2           #+#    #+#             */
-/*   Updated: 2023/12/08 21:14:30 by yeolee2          ###   ########.fr       */
+/*   Updated: 2023/12/12 02:24:08 by yeolee2          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "minishell.h"
 
 // void	build_env(char ***env);
 // char** build_vector(const char* arg);
@@ -34,11 +34,66 @@ void	add_env_data(char ***env, char *path)
 	*env = res;
 }
 
+char	**sort_export_attribute(char **env)
+{
+	int		i;
+	int		j;
+	char	*tmp;
+	char	**res;
+
+	res = copy_env_list(env);
+	i = 0;
+	while (res[i + 1])
+	{
+		j = 0;
+		while (res[j])
+		{
+			if (ft_strcmp(res[i], res[j]) < 0)
+			{
+				tmp = res[i];
+				res[i] = res[j];
+				res[j] = tmp;
+			}
+			j++;
+		}
+		i++;
+	}
+	return (res);
+}
+
+void	print_export_attribute(char **env)
+{
+	int		i;
+	int		j;
+	char	**res;
+
+	res = sort_export_attribute(env);
+	i = -1;
+	while (res[++i])
+	{
+		printf("declare -x ");
+		j = -1;
+		while (res[i][++j] != '=')
+			printf("%c", res[i][j]);
+		printf("=");
+		printf("\"");
+		while (res[i][++j])
+			printf("%c", res[i][j]);
+		printf("\"\n");
+	}
+	ft_free(res);
+}
+
 void    set_export_attribute(char ***env, char *path)
 {
 	int     idx;
 	int		len;
 
+	if (path == NULL)
+	{
+		print_export_attribute(*env);
+		return ;
+	}
 	len = 0;
 	while (path[len] && path[len] != '=')
 		len++;
@@ -56,6 +111,7 @@ void    set_export_attribute(char ***env, char *path)
 	if (!(*env)[idx])
 		add_env_data(env, path);
 }
+
 
 // #include <string.h>
 

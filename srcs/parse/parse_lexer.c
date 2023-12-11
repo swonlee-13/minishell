@@ -6,11 +6,11 @@
 /*   By: yeolee2 <yeolee2@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 19:21:52 by yeolee2           #+#    #+#             */
-/*   Updated: 2023/12/01 19:21:57 by yeolee2          ###   ########.fr       */
+/*   Updated: 2023/12/11 22:49:19 by yeolee2          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/parse.h"
+#include "parse.h"
 
 int	redir_lexer_count(char *token_string, int i, char c)
 {

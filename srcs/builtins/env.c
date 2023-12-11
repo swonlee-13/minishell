@@ -6,11 +6,11 @@
 /*   By: yeolee2 <yeolee2@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 04:05:23 by yeolee2           #+#    #+#             */
-/*   Updated: 2023/11/27 11:41:03 by yeolee2          ###   ########.fr       */
+/*   Updated: 2023/12/11 22:41:43 by yeolee2          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "minishell.h"
 
 void    print_env_list(char **env)
 {

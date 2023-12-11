@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include "parse.h"
 
 char	*create_here_doc_file(t_node *node)
 {

@@ -6,11 +6,11 @@
 /*   By: yeolee2 <yeolee2@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 19:22:45 by yeolee2           #+#    #+#             */
-/*   Updated: 2023/12/01 19:22:48 by yeolee2          ###   ########.fr       */
+/*   Updated: 2023/12/11 22:50:36 by yeolee2          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/parse.h"
+#include "parse.h"
 
 static int	split_indexing(char *str, int i)
 {

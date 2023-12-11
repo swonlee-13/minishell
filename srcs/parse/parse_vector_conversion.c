@@ -6,11 +6,11 @@
 /*   By: yeolee2 <yeolee2@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 19:22:32 by yeolee2           #+#    #+#             */
-/*   Updated: 2023/12/08 19:46:46 by yeolee2          ###   ########.fr       */
+/*   Updated: 2023/12/11 22:50:10 by yeolee2          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/parse.h"
+#include "parse.h"
 
 static int	count_argument(t_node *ptr)
 {

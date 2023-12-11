@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seongwol <seongwol@student.42seoul.>       +#+  +:+       +#+        */
+/*   By: yeolee2 <yeolee2@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 20:40:34 by seongwol          #+#    #+#             */
-/*   Updated: 2023/12/08 16:56:58 by seongwol         ###   ########.fr       */
+/*   Updated: 2023/12/11 23:28:14 by yeolee2          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ t_v	ft_putnbr_fd(int n, int fd);
 //added
 t_i	ft_issign(char c);
 t_i	ft_isspace(char c);
-t_l	ft_atol(const char *str);
+t_l	ft_strtol(const char *str);
 t_v	ft_error(char *str);
 t_i	ft_strslen(char **strs);
 t_v	ft_free(char **strs);

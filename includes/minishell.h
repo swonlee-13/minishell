@@ -6,7 +6,7 @@
 /*   By: yeolee2 <yeolee2@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 03:09:36 by yeolee2           #+#    #+#             */
-/*   Updated: 2023/12/11 22:01:03 by yeolee2          ###   ########.fr       */
+/*   Updated: 2023/12/12 02:31:37 by yeolee2          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,10 @@
 # include <fcntl.h>
 # include <termios.h>
 # include <readline/readline.h>
+# include <readline/history.h>
+# include "parse.h"
 # include "../srcs/libft/libft.h"
+
 # define READ       0
 # define WRITE      1
 # define TRUE       1
@@ -40,7 +43,7 @@ typedef struct s_file
 /* UTILS */
 char	**copy_env_list(char **env);
 char	*find_env_data(char **env, char *str);
-void    init_signal();
+int     count_commands(t_node *root);
 
 /* CD.C */
 char    *get_env(char **env, char *str);
@@ -68,11 +71,23 @@ void    print_working_directory(void);
 int     check_bash_var_name_convention(char *name);
 void	remove_env_data(char ***env, char *name);
 
+/* EXIT */
+void    terminate_program(char **vector);
+
 /* SIGNAL */
 void    prompt_sigint_handler(int signum);
 void    parent_signal_handler(int signum);
 void    init_signal();
 void	reset_termios(void);
 void	set_termios(void);
+
+/* HERE DOCUMENT UTILITIES */
+void	open_files(t_node *root, char **env_copy);
+void	setup_cmd_redirection(t_node *root, int cmd_idx, t_file *file);
+
+/* BUILTIN_UTILITIES */
+void    execute_builtin(char **command_vector, char ***env_copy);
+int     is_builtin(char *command);
+void    print_error_message(char **vector, char *error);
 
 #endif

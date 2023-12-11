@@ -6,11 +6,21 @@
 /*   By: yeolee2 <yeolee2@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 19:22:18 by yeolee2           #+#    #+#             */
-/*   Updated: 2023/12/01 19:22:22 by yeolee2          ###   ########.fr       */
+/*   Updated: 2023/12/11 22:39:07 by yeolee2          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/parse.h"
+#include "parse.h"
+
+t_node	*get_command_tree(t_node *root, int idx)
+{
+	t_node	*ptr;
+
+	ptr = root;
+	while (idx--)
+		ptr = ptr->right;
+	return (ptr);
+}
 
 t_node	*node_init_with_vars(t_type type, int cmd_idx)
 {

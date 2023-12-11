@@ -6,11 +6,11 @@
 /*   By: yeolee2 <yeolee2@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 19:20:52 by yeolee2           #+#    #+#             */
-/*   Updated: 2023/12/01 19:20:56 by yeolee2          ###   ########.fr       */
+/*   Updated: 2023/12/11 22:42:27 by yeolee2          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/parse.h"
+#include "parse.h"
 
 void	tree_action(t_node **ptr, t_node *target)
 {

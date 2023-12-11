@@ -6,11 +6,11 @@
 /*   By: yeolee2 <yeolee2@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 01:05:18 by yeolee2           #+#    #+#             */
-/*   Updated: 2023/12/09 17:31:17 by yeolee2          ###   ########.fr       */
+/*   Updated: 2023/12/11 22:41:15 by yeolee2          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "minishell.h"
 
 // void    set_export_attribute(char ***env, char *path);
 
