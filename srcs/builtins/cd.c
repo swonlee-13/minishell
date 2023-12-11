@@ -6,7 +6,7 @@
 /*   By: yeolee2 <yeolee2@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 01:05:18 by yeolee2           #+#    #+#             */
-/*   Updated: 2023/11/28 14:39:50 by yeolee2          ###   ########.fr       */
+/*   Updated: 2023/12/09 17:31:17 by yeolee2          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ char	*set_env_name_and_value(char *name, char *path)
 
 	if (path)
 	{
+		// path = ft_strjoin(name, path);
 		temp = ft_strjoin(name, path);
 		free(path);
 		return (temp);
@@ -55,9 +56,11 @@ void    renew_env_data(char ***env, char *curr_dir, char *prev_dir)
 	{
 		prev_dir = set_env_name_and_value("OLDPWD=", prev_dir);
 		set_export_attribute(env, prev_dir);
+		free(prev_dir);
 	}
 	curr_dir = set_env_name_and_value("PWD=", curr_dir);
 	set_export_attribute(env, curr_dir);
+	free(curr_dir);
 }
 
 void	exec_chdir(char **targ_dir, char **prev_dir, char **curr_dir, char *path)
@@ -68,7 +71,7 @@ void	exec_chdir(char **targ_dir, char **prev_dir, char **curr_dir, char *path)
 		getcwd(*curr_dir, PATH_MAX);
 	}
 	else
-		printf("minishell: cd: %s: No such file or directory\n", path);
+		printf("minishell: cd: %s: %s\n", path, strerror(errno));
 }
 
 void    change_directory(char **vector, char ***env)
@@ -78,14 +81,19 @@ void    change_directory(char **vector, char ***env)
 	char    *curr_dir;
 
 	targ_dir = vector[1];
-	prev_dir = get_env(*env, "OLDPWD");
+	prev_dir = ft_strdup(get_env(*env, "OLDPWD"));
+	printf("get_env(*env, \"OLDPWD\"): %s\n", get_env(*env, "OLDPWD"));
 	curr_dir = malloc(sizeof(char) * PATH_MAX);
 	getcwd(curr_dir, PATH_MAX);
 	if (!vector[1])
 	{
 		targ_dir = get_env(*env, "HOME");
 		if (!targ_dir)
+		{
+			//TODO: Is this an error?
 			printf("minishell: cd: HOME not set");
+			return ;
+		}
 	}
 	//TODO: cd ~
 	else if (!ft_strcmp(vector[1], "~"))
@@ -93,7 +101,10 @@ void    change_directory(char **vector, char ***env)
 	else if (!ft_strcmp(vector[1], "-"))
 	{
 		if (!prev_dir)
+		{
 			printf("minishell: cd: OLDPWD not set\n");
+			return ;
+		}
 		else
 		{
 			printf("%s\n", prev_dir);
