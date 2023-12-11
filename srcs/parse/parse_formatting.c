@@ -67,7 +67,7 @@ char	*r_n_r_double_quote(char *str, char **env)
 		res = ft_strdup(str);
 	free(str);
 	tmp = shell_split_dollar(res);
-	while (tmp[i] != NULL)
+	while (tmp && tmp[i] != NULL)
 	{
 		tmp[i] = env_var_replace(tmp[i], env);
 		i++;
@@ -113,6 +113,8 @@ char	*merge_splitted_cmd(char **strs)
 
 	i = 0;
 	temp = NULL;
+	if (strs == NULL)
+		return (NULL);
 	while (strs[i] != NULL)
 	{
 		res = NULL;

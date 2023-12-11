@@ -56,20 +56,20 @@ int	redir_lexer(char *token_string)
 
 int	quote_lexer_find_end(char *token_string, int i, char c)
 {
-	int	count;
-
-
-	count = 0;
+//	int	count;
+//
+//
+//	count = 0;
 	i++;
 	while (token_string[i] != '\0' && token_string[i] != c)
 	{
 		i++;
-		count++;
+//		count++;
 	}
 	if (token_string[i] != c)
 		return (SYNTAX_ERROR);
-	else if (count == 0)
-		return (SYNTAX_ERROR);
+//	else if (count == 0)
+//		return (SYNTAX_ERROR);
 	else
 		return (i + 1);
 }
