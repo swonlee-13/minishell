@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   here_doc.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yeolee2 <yeolee2@student.42.fr>            +#+  +:+       +#+        */
+/*   By: seongwol <seongwol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 16:30:57 by seongwol          #+#    #+#             */
-/*   Updated: 2023/12/11 22:45:15 by yeolee2          ###   ########.fr       */
+/*   Updated: 2023/12/12 02:30:44 by seongwol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,32 @@ int	activate_here_doc(t_node *node, char **env_copy)
 	return (SUCCESS);
 }
 
+int	is_last_outfile(t_node *node)
+{
+	while(node)
+	{
+		if (node->right)
+		{
+			if (node->right->left->type == REDIR_SINGLE_OUT)
+				return (FALSE);
+			else if (node->right->left->type == REDIR_DOUBLE_OUT)
+				return (FALSE);
+		}
+		node = node->right;
+	}
+	return (TRUE);
+}
+
+void	unlink_outfiles(t_node *ptr, int cmd_idx)
+{
+	while (ptr)
+	{
+		if (!is_last_outfile(ptr))
+			unlink(ptr->left->data);
+		ptr = ptr->right;
+	}
+}
+
 void	open_files(t_node *root, char **env_copy)
 {
 	if (root == NULL)
@@ -94,23 +120,23 @@ void	setup_cmd_redirection(t_node *root, int cmd_idx, t_file *file)
 	file->in = STDIN_FILENO;
 	file->out = STDOUT_FILENO;
 	ptr = find_redirection_root(root, cmd_idx);
-	ptr = ptr->left;
+	unlink_unused_outfiles(ptr, cmd_idx);
 	while (ptr)
 	{
-//		if (ptr->fd == -1) //TODO: error handling needed.
-//			return (error);
-		if (ptr->type == REDIR_DOUBLE_IN || ptr->type == REDIR_SINGLE_IN)
+		if (ptr->left->type == REDIR_DOUBLE_IN \
+		|| ptr->left->type == REDIR_SINGLE_IN)
 		{
 			if (file->in != STDIN_FILENO)
 				close(file->in);
-			file->in = ptr->fd;
+			file->in = ptr->left->fd;
 		}
-		else if (ptr->type == REDIR_SINGLE_OUT || ptr->type == REDIR_DOUBLE_OUT)
+		else if (ptr->left->type == REDIR_SINGLE_OUT \
+		|| ptr->left->type == REDIR_DOUBLE_OUT)
 		{
 			if (file->out != STDOUT_FILENO)
 				close(file->out);
-			file->out = ptr->fd;
+			file->out = ptr->left->fd;
 		}
-		ptr = ptr->left;
+		ptr = ptr->right;
 	}
 }

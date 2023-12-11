@@ -12,6 +12,8 @@
 
 #include "parse.h"
 
+extern int	g_exit_code;
+
 char	*env_var_replace_sub(char *str, char **env)
 {
 	int		i;
@@ -37,11 +39,12 @@ char	*env_var_replace(char *str, char **env)
 {
 	char	*tmp;
 
-//	if (ft_strcmp(str, "$?") == 0)
-//	{
-//		free(str);
-//		str = 시그널 exit code 관련 int return value;
-//	}
+	if (ft_strcmp(str, "$?") == 0)
+	{
+		free(str);
+		str = ft_itoa(g_exit_code);
+		return (str);
+	}
 	if (str[0] != '$' || ft_strcmp(str, "$") == 0)
 		return (str);
 	else
@@ -67,7 +70,7 @@ char	*r_n_r_double_quote(char *str, char **env)
 		res = ft_strdup(str);
 	free(str);
 	tmp = shell_split_dollar(res);
-	while (tmp[i] != NULL)
+	while (tmp && tmp[i] != NULL)
 	{
 		tmp[i] = env_var_replace(tmp[i], env);
 		i++;
@@ -113,6 +116,8 @@ char	*merge_splitted_cmd(char **strs)
 
 	i = 0;
 	temp = NULL;
+	if (strs == NULL)
+		return (NULL);
 	while (strs[i] != NULL)
 	{
 		res = NULL;

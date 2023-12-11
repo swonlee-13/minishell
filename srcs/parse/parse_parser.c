@@ -90,32 +90,15 @@ char	*make_token_string(char *cmd)
 {
 	char	*token_string;
 
-	token_string = tokenizer(cmd);					//이 결과물을 printf 를 이용해서 cmd 와 비교해보면 1차 tokenizing 결과를 알 수 있음.
-	if (token_lexer(cmd, token_string) == SYNTAX_ERROR)	//이 코드를 타면 redirection, quote 닫힘여부file path 없음, pipe 연속으로 들어오는 에러처리.
+	token_string = tokenizer(cmd);
+	if (token_lexer(cmd, token_string) == SYNTAX_ERROR)
 	{
 		write(1, "syntax error\n", 13);
 		free(token_string);
 		return (NULL);
 	}
-	token_setter(cmd, token_string);			// 해당 코드를 지나면 token의 성격에 따라서 세분화 된 token_string을 얻을 수 있음.
+	token_setter(cmd, token_string);
 	return (token_string);
-}
-
-void    print_queue(t_queue *q);
-void    print_queue_type(t_queue *q)
-{
-	t_node *node;
-
-	node = q->front;
-	printf("\n---------------------------\n");
-	while (node)
-	{
-		printf("[%d]", node->pipe_index);
-		printf(" -> ");
-		node = node->right;
-	}
-	printf("NULL");
-	printf("\n");
 }
 
 t_node *parser(char *cmd, char **env_copy)
@@ -141,40 +124,3 @@ t_node *parser(char *cmd, char **env_copy)
 	free(q);
 	return (root);
 }
-
-t_node	*find_redirection_root(t_node *root, int cmd_num);
-void	print_redirection(t_node **tree, int cmd_num)
-{
-	t_node	*ptr;
-
-	ptr = find_redirection_root(*tree, cmd_num);
-	ptr = ptr->left;
-	while (ptr)
-	{
-		printf("type = %d, name = %s\n", (int)ptr->type, ptr->data);
-		ptr = ptr->left;
-	}
-	printf("\n");
-}
-//
-//int main(int ac, char **av, char **env)
-//{
-//	(void)ac;
-//	t_node	*tree;
-//	char	**cmd_vector;
-//
-//	char *cmd = readline("minishell$> ");
-//	tree = parser(cmd, env);
-//	printf("타입 넘버는 헤더파일 보고 알아서 이해하쇼\n\n");
-//	for(int i = 1; i <= ft_atoi(av[1]); i++){
-//		cmd_vector = vector_conversion(&tree, i);
-//		print_redirection(&tree, i);
-//		for (int j = 0; cmd_vector[j]; j++)
-//			printf("%s\n", cmd_vector[j]);
-//		printf("---------------------------------------------\n");
-//		ft_free(cmd_vector);
-//	}
-//	free_tree(tree);
-//	free(cmd);
-//}
-//
