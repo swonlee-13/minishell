@@ -6,78 +6,13 @@
 /*   By: yeolee2 <yeolee2@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 14:32:11 by yeolee2           #+#    #+#             */
-/*   Updated: 2023/12/11 22:18:49 by yeolee2          ###   ########.fr       */
+/*   Updated: 2023/12/12 02:30:10 by yeolee2          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include "parse.h"
 
 int	g_exit_code = 0;
-
-int count_commands(t_node *root)
-{
-	t_node  *ptr;
-	int     cnt;
-
-	ptr = root;
-	cnt	= 0;
-	while (ptr)
-	{
-		ptr = ptr->right;
-		cnt++;
-	}
-	return (cnt);
-}
-
-t_node	*get_command_tree(t_node *root, int idx)
-{
-	t_node	*ptr;
-
-	ptr = root;
-	while (idx--)
-		ptr = ptr->right;
-	return (ptr);
-}
-
-void    execute_builtin(char **command_vector, char ***env_copy)
-{
-	if (!ft_strcmp(command_vector[0], "cd"))
-		change_directory(command_vector, env_copy); 
-	else if (!ft_strcmp(command_vector[0], "echo"))
-		write_arg_to_stdout(command_vector);
-	else if (!ft_strcmp(command_vector[0], "env"))
-		print_env_list(*env_copy);
-	else if (!ft_strcmp(command_vector[0], "exit"))
-	{
-		//TODO: 
-	}
-	else if (!ft_strcmp(command_vector[0], "export"))
-		set_export_attribute(env_copy, command_vector[1]);
-	else if (!ft_strcmp(command_vector[0], "pwd"))
-		print_working_directory();
-	else if (!ft_strcmp(command_vector[0], "unset"))
-		remove_env_data(env_copy, command_vector[1]);
-}
-
-int is_builtin(char *command)
-{
-	if (!ft_strcmp(command, "cd"))
-		return (TRUE);
-	else if (!ft_strcmp(command, "echo"))
-		return (TRUE);
-	else if (!ft_strcmp(command, "env"))
-		return (TRUE);
-	else if (!ft_strcmp(command, "exit"))
-		return (TRUE);
-	else if (!ft_strcmp(command, "export"))
-		return (TRUE);
-	else if (!ft_strcmp(command, "pwd"))
-		return (TRUE);
-	else if (!ft_strcmp(command, "unset"))
-		return (TRUE);
-	return (FALSE);
-}
 
 char	*get_command_path(char **command, char **env_copy)
 {
@@ -180,7 +115,6 @@ void	setup_exit_status(pid_t pid)
 	int	status;
 
 	waitpid(pid, &status, 0);
-	// write(2, "hihi\n", 5);
 	if (status == SIGINT)
 		ft_putstr_fd("\n", STDERR_FILENO);
 	else if (status == SIGQUIT)
@@ -242,10 +176,9 @@ int main(int argc, char *argv[], char **env)
 	char			**env_copy;
 	t_node			*parsed_commands;
 	
-
 	(void)argc;
 	(void)argv;
-	//TODO: May not be necessary to initialize g_exit_code.
+	//TODO: May not be necessary to initialize g_exit_code
 	g_exit_code = 0;
 	env_copy = copy_env_list(env);
 	//TODO: Save copy of argv[0] in SHELL path
@@ -254,11 +187,10 @@ int main(int argc, char *argv[], char **env)
 		set_termios();
 		init_signal();
 		command_line = readline("minishell> ");
-
 		// Handle SIGTERM
 		if (!command_line)
 			break ;
-
+		add_history(command_line);
 		parsed_commands = parser(command_line, env_copy);
 		//TODO: setup_heredoc();
 		open_files(parsed_commands, env_copy);
@@ -266,9 +198,7 @@ int main(int argc, char *argv[], char **env)
 		free_tree(parsed_commands);
 		free(command_line);
 	}
-
 	printf("\x1b[1A\033[11Cexit\n");
 	reset_termios();
-
 	return (SUCCESS);
 }

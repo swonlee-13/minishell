@@ -5,7 +5,6 @@
 # include <stdio.h>
 # include "../srcs/libft/libft.h"
 # include <readline/readline.h>
-# include "minishell.h"
 # define TRUE 1
 # define FALSE 0
 # define SYNTAX_ERROR 258           //이거 숫자 나중에 회의해서 바꿔야함;
@@ -101,6 +100,7 @@ char	**shell_split_dollar(char *str);
 
 //parse_tree.c
 t_node	*switch_to_tree(t_queue *q);
+t_node	*get_command_tree(t_node *root, int idx);
 
 //split_quote.c
 char	**shell_split_quote(char *str);
@@ -118,7 +118,4 @@ void	print_queue(t_queue *q);
 //utils
 t_node	*find_redirection_root(t_node *root, int cmd_idx);
 
-//here_doc.c
-void	open_files(t_node *root, char **env_copy);
-void	setup_cmd_redirection(t_node *root, int cmd_idx, t_file *file);
 #endif

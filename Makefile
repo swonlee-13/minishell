@@ -6,36 +6,39 @@
 #    By: yeolee2 <yeolee2@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/29 22:14:25 by yeolee2           #+#    #+#              #
-#    Updated: 2023/12/09 18:03:24 by yeolee2          ###   ########.fr        #
+#    Updated: 2023/12/12 00:43:14 by yeolee2          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-SRCS				=	srcs/data_structure/queue.c \
-						srcs/data_structure/tree.c \
-						srcs/parse/parse_parser.c \
-						srcs/parse/split_dollar.c \
-						srcs/parse/parse_lexer.c \
-						srcs/parse/parse_utils.c \
-						srcs/parse/split_quote.c \
-						srcs/parse/parse_tokenize.c \
-						srcs/parse/parse_vector_conversion.c \
-						srcs/parse/parse_tree.c \
-						srcs/parse/parse_formatting.c \
-						srcs/parse/parse_setter.c \
-						srcs/utils/copy_env_list.c \
-						srcs/utils/tree_find_redirection.c \
-						srcs/utils/signal.c \
-						srcs/heredoc/main.c \
-						srcs/heredoc/here_doc_formatting.c \
-						srcs/heredoc/here_doc.c \
-						srcs/heredoc/split_here_doc.c \
-						srcs/builtins/exit.c \
-						srcs/builtins/unset.c \
-						srcs/builtins/env.c \
-						srcs/builtins/pwd.c \
-						srcs/builtins/export.c \
-						srcs/builtins/cd.c \
+SRCS				=	srcs/builtins/cd.c \
 						srcs/builtins/echo.c \
+						srcs/builtins/env.c \
+						srcs/builtins/exit.c \
+						srcs/builtins/export.c \
+						srcs/builtins/pwd.c \
+						srcs/builtins/unset.c \
+						srcs/data_structure/tree.c \
+						srcs/data_structure/queue.c \
+						srcs/heredoc/here_doc.c \
+						srcs/heredoc/here_doc_formatting.c \
+						srcs/heredoc/main.c \
+						srcs/parse/parse_formatting.c \
+						srcs/parse/parse_lexer.c \
+						srcs/parse/parse_parser.c \
+						srcs/parse/parse_setter.c \
+						srcs/parse/parse_tokenize.c \
+						srcs/parse/parse_tree.c \
+						srcs/parse/parse_utils.c \
+						srcs/parse/parse_vector_conversion.c \
+						srcs/parse/split_dollar.c \
+						srcs/parse/split_here_doc.c \
+						srcs/parse/split_quote.c \
+						srcs/utils/builtin_utils.c \
+						srcs/utils/error_utils.c \
+						srcs/utils/copy_env_list.c \
+						srcs/utils/count_commands.c \
+						srcs/utils/signal.c \
+						srcs/utils/find_redirection_root.c \
 
 OBJS				=	${SRCS:.c=.o}
 
