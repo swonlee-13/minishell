@@ -20,6 +20,8 @@ char	*here_doc_formatting(char *str, char **env_copy)
 
 	i = 0;
 	ret = NULL;
+	if (str == NULL)
+		return (NULL);
 	tmp = shell_split_here_doc(str);
 	while (tmp[i])
 	{
