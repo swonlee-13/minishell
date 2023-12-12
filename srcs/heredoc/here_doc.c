@@ -71,32 +71,6 @@ int	activate_here_doc(t_node *node, char **env_copy)
 	return (SUCCESS);
 }
 
-int	is_last_outfile(t_node *node)
-{
-	while(node)
-	{
-		if (node->right)
-		{
-			if (node->right->left->type == REDIR_SINGLE_OUT)
-				return (FALSE);
-			else if (node->right->left->type == REDIR_DOUBLE_OUT)
-				return (FALSE);
-		}
-		node = node->right;
-	}
-	return (TRUE);
-}
-
-void	unlink_outfiles(t_node *ptr, int cmd_idx)
-{
-	while (ptr)
-	{
-		if (!is_last_outfile(ptr))
-			unlink(ptr->left->data);
-		ptr = ptr->right;
-	}
-}
-
 void	open_files(t_node *root, char **env_copy)
 {
 	if (root == NULL)
@@ -120,7 +94,7 @@ void	setup_cmd_redirection(t_node *root, int cmd_idx, t_file *file)
 	file->in = STDIN_FILENO;
 	file->out = STDOUT_FILENO;
 	ptr = find_redirection_root(root, cmd_idx);
-	unlink_unused_outfiles(ptr, cmd_idx);
+	ptr = ptr->right;
 	while (ptr)
 	{
 		if (ptr->left->type == REDIR_DOUBLE_IN \
