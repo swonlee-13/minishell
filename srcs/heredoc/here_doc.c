@@ -16,16 +16,21 @@ char	*create_here_doc_file(t_node *node)
 {
 	char		*file_name;
 	static int	number;
+	char		*numstr;
 
 	number++;
-	file_name = ft_strjoin("/tmp/my_here_doc", ft_itoa(number));
+	numstr = ft_itoa(number);
+	file_name = ft_strjoin("/tmp/my_here_doc", numstr);
 	while (access(file_name, F_OK) == SUCCESS)
 	{
 		free(file_name);
+		free(numstr);
 		number++;
-		file_name = ft_strjoin("/tmp/my_here_doc", ft_itoa(number));
+		numstr = ft_itoa(number);
+		file_name = ft_strjoin("/tmp/my_here_doc", numstr);
 	}
 	node->fd = open(file_name, O_RDWR | O_CREAT | O_EXCL | O_TRUNC, 0644);
+	free(numstr);
 	return (file_name);
 }
 
