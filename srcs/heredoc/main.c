@@ -202,10 +202,13 @@ int main(int argc, char *argv[], char **env)
 			break ;
 		add_history(command_line);
 		parsed_commands = parser(command_line, env_copy);
-		g_exit_code = 0;
-		open_files(parsed_commands, env_copy);
-		if (g_exit_code != 1)
-			execute_commands(parsed_commands, &env_copy);
+		if (g_exit_code != 258)
+		{
+			g_exit_code = 0;
+			open_files(parsed_commands, env_copy);
+			if (g_exit_code != 1)
+				execute_commands(parsed_commands, &env_copy);
+		}
 		free_tree(parsed_commands);
 		free(command_line);
 	}
