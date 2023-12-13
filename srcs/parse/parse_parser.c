@@ -12,6 +12,8 @@
 
 #include "parse.h"
 
+extern int g_exit_code;
+
 t_type	node_type_setter(char *token_string, int i)
 {
 	while (token_string[i] == 'D' || token_string[i] == '$' \
@@ -95,6 +97,7 @@ char	*make_token_string(char *cmd)
 	{
 		write(1, "syntax error\n", 13);
 		free(token_string);
+		g_exit_code = 258;
 		return (NULL);
 	}
 	token_setter(cmd, token_string);
