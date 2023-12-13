@@ -121,9 +121,11 @@ t_node *parser(char *cmd, char **env_copy)
 	if (q->front == NULL)
 	{
 		free(q);
+		g_exit_code = 1;
 		return (NULL);
 	}
 	root = switch_to_tree(q);
 	free(q);
+	g_exit_code = 0;
 	return (root);
 }
