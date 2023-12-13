@@ -6,7 +6,7 @@
 /*   By: yeolee2 <yeolee2@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 14:32:11 by yeolee2           #+#    #+#             */
-/*   Updated: 2023/12/13 15:21:19 by yeolee2          ###   ########.fr       */
+/*   Updated: 2023/12/13 20:11:51 by yeolee2          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,11 @@ char	*get_command_path(char **command, char **env_copy)
 	char	*temp;
 	char	**path;
 
+	if (command[0][0] == '/' || (command[0][0] == '.' && command[0][1] == '/'))
+	{
+		if (!access(*command, X_OK))
+			return (*command);
+	}
 	path = ft_split(get_env(env_copy, "PATH"), ':');
 	temp = ft_strjoin("/", *command);
 	free(*command);
@@ -50,9 +55,6 @@ void	execute_command(int fd[2], int idx, t_node *root, char ***env_copy)
 	close(fd[READ]);
 	close(fd[WRITE]);
 	execve(command_vector[0], command_vector, *env_copy);
-	//TODO: Error handling in case of execve failure
-	//TODO: Return value needs to be discussed
-	// exit(EXIT_FAILURE);
 }
 
 void	setup_child_redirection(int fd[2], int idx, t_node *parsed_commands, t_file redir)
@@ -72,7 +74,6 @@ void	setup_child_redirection(int fd[2], int idx, t_node *parsed_commands, t_file
 
 void	setup_parent_redirection(int fd[2], t_file *redir)
 {
-	//FIXME: Parent redirection needs to be revised
 	if (redir->in != STDIN_FILENO)
 		close(redir->in);
 	redir->temp = dup(fd[READ]);
@@ -87,27 +88,26 @@ pid_t	execute_pipeline(int idx, t_node *parsed_commands, t_file *redir, char ***
 	pid_t	pid;
 	int		fd[2];
 
+	signal(SIGINT, SIG_IGN);
 	pipe(fd);
 	pid = fork();
 	if (pid < 0)
-	{
-		//TODO: Fork error
         printf("%s\n", strerror(errno));
-		// return ;
-	}
-	// Child process
 	if (pid == 0)
 	{
-		// signal(SIGINT, SIG_DFL);
-		signal(SIGQUIT, SIG_DFL);
 		reset_termios();
-		// Setup command-specific redirections
+		signal(SIGINT, SIG_DFL);
+		signal(SIGQUIT, SIG_DFL);
 		setup_child_redirection(fd, idx, parsed_commands, *redir);
 		execute_command(fd, idx, parsed_commands, env_copy);
 		exit(EXIT_FAILURE);
 	}
 	else
+	{
+		if (idx > 0)
+			close(redir->temp);
 		setup_parent_redirection(fd, redir);
+	}
 	return (pid);
 }
 
@@ -120,10 +120,10 @@ void	setup_exit_status(pid_t pid)
 		ft_putstr_fd("\n", STDERR_FILENO);
 	else if (status == SIGQUIT)
 		ft_putstr_fd("Quit: 3\n", STDERR_FILENO);
-	if (WIFSIGNALED(status))
-		g_exit_code = 128 + WTERMSIG(status);
-	else
+	if (WIFEXITED(status))
 		g_exit_code = WEXITSTATUS(status);
+	else if (WIFSIGNALED(status))
+		g_exit_code = 128 + WTERMSIG(status);
 }
 
 void    execute_commands(t_node *parsed_commands, char ***env_copy)
@@ -149,8 +149,15 @@ void    execute_commands(t_node *parsed_commands, char ***env_copy)
 		idx++;
 	}
 	setup_exit_status(last_pid);
-	while (waitpid(0, NULL, 0) >= 0)
-		;
+	int	status;
+	while (waitpid(0, &status, 0) >= 0)
+	{
+		if (WIFSIGNALED(status))
+			if (WTERMSIG(status) == SIGINT)
+				ft_putstr_fd("\n", STDERR_FILENO);
+		while (waitpid(0, NULL, 0) >= 0)
+			;
+	}
 }
 
 void	reset_termios(void)
@@ -176,26 +183,23 @@ int main(int argc, char *argv[], char **env)
 	char			*command_line;
 	char			**env_copy;
 	t_node			*parsed_commands;
-	
 	(void)argc;
 	(void)argv;
-	//TODO: May not be necessary to initialize g_exit_code
 	g_exit_code = 0;
 	env_copy = copy_env_list(env);
-	//TODO: Save copy of argv[0] in SHELL path
 	while (TRUE)
 	{
 		set_termios();
 		init_signal();
 		command_line = readline("minishell> ");
-		// Handle SIGTERM
 		if (!command_line)
 			break ;
 		add_history(command_line);
 		parsed_commands = parser(command_line, env_copy);
-		//TODO: setup_heredoc();
+		g_exit_code = 0;
 		open_files(parsed_commands, env_copy);
-		execute_commands(parsed_commands, &env_copy);
+		if (g_exit_code != 1)
+			execute_commands(parsed_commands, &env_copy);
 		free_tree(parsed_commands);
 		free(command_line);
 	}

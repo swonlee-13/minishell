@@ -3,14 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   here_doc.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seongwol <seongwol@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yeolee2 <yeolee2@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 16:30:57 by seongwol          #+#    #+#             */
-/*   Updated: 2023/12/12 20:15:32 by seongwol         ###   ########.fr       */
+/*   Updated: 2023/12/13 19:24:34 by yeolee2          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+extern int	g_exit_code;
 
 void	create_here_doc_file(t_node *node)
 {
@@ -56,13 +58,22 @@ void	write_here_doc(t_node *node, char **env_copy)
 
 int	activate_here_doc(t_node *node, char **env_copy)
 {
+	int	fd;
+	
+	fd = dup(STDIN_FILENO);
+	signal(SIGINT, heredoc_sigint_handler);
 	create_here_doc_file(node);
 	write_here_doc(node, env_copy);
+	dup2(fd, STDIN_FILENO);
+	close(fd);
+	signal(SIGINT, prompt_sigint_handler);
 	return (SUCCESS);
 }
 
 void	open_files(t_node *root, char **env_copy)
 {
+	if (g_exit_code == 1)
+		return ;
 	if (root == NULL)
 		return ;
 	if (root->type == REDIR_DOUBLE_IN)
@@ -83,6 +94,7 @@ void	setup_cmd_redirection(t_node *root, int cmd_idx, t_file *file)
 
 	file->in = STDIN_FILENO;
 	file->out = STDOUT_FILENO;
+	// file->temp = -2;
 	ptr = find_redirection_root(root, cmd_idx);
 	ptr = ptr->right;
 	while (ptr)

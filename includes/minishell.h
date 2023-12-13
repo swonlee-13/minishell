@@ -6,7 +6,7 @@
 /*   By: yeolee2 <yeolee2@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 03:09:36 by yeolee2           #+#    #+#             */
-/*   Updated: 2023/12/12 02:31:37 by yeolee2          ###   ########.fr       */
+/*   Updated: 2023/12/13 17:44:10 by yeolee2          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,8 @@ void    terminate_program(char **vector);
 /* SIGNAL */
 void    prompt_sigint_handler(int signum);
 void    parent_signal_handler(int signum);
+void    heredoc_sigint_handler(int signum);
+void    child_sigint_handler(void);
 void    init_signal();
 void	reset_termios(void);
 void	set_termios(void);
