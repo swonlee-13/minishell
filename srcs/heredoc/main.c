@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seongwol <seongwol@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yeolee2 <yeolee2@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 14:32:11 by yeolee2           #+#    #+#             */
-/*   Updated: 2023/12/12 20:20:46 by seongwol         ###   ########.fr       */
+/*   Updated: 2023/12/13 15:14:15 by yeolee2          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,7 @@ pid_t	execute_pipeline(int idx, t_node *parsed_commands, t_file *redir, char ***
 	// Child process
 	if (pid == 0)
 	{
+		// signal(SIGINT, SIG_DFL);
 		signal(SIGQUIT, SIG_DFL);
 		reset_termios();
 		// Setup command-specific redirections
@@ -119,10 +120,9 @@ void	setup_exit_status(pid_t pid)
 		ft_putstr_fd("\n", STDERR_FILENO);
 	else if (status == SIGQUIT)
 		ft_putstr_fd("Quit: 3\n", STDERR_FILENO);
-	// if (WIFSIGNALED(status))
-	// 	g_exit_code = 128 + WTERMSIG(status);
-	// else
-	// 	g_exit_code = WEXITSTATUS(status);
+	if (WIFSIGNALED(status))
+		g_exit_code = 128 + WTERMSIG(status);
+	else
 }
 
 void    execute_commands(t_node *parsed_commands, char ***env_copy)
@@ -148,6 +148,8 @@ void    execute_commands(t_node *parsed_commands, char ***env_copy)
 		idx++;
 	}
 	setup_exit_status(last_pid);
+	while (waitpid(0, NULL, 0) >= 0)
+		;
 }
 
 void	reset_termios(void)
@@ -196,8 +198,6 @@ int main(int argc, char *argv[], char **env)
 		free_tree(parsed_commands);
 		free(command_line);
 	}
-	while (waitpid(0, NULL, 0) >= 0)
-			;
 	printf("\x1b[1A\033[11Cexit\n");
 	reset_termios();
 	return (SUCCESS);
