@@ -6,7 +6,7 @@
 /*   By: yeolee2 <yeolee2@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 14:32:11 by yeolee2           #+#    #+#             */
-/*   Updated: 2023/12/14 00:55:19 by yeolee2          ###   ########.fr       */
+/*   Updated: 2023/12/14 01:16:33 by yeolee2          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void	execute_command(int fd[2], int idx, t_node *root, char ***env_copy)
 	if (is_builtin(command_vector[0]))
 	{
 		execute_builtin(command_vector, env_copy);
-		return ;
+		exit(g_exit_code);
 	}
 	command_vector[0] = get_command_path(&command_vector[0], *env_copy);
 	close(fd[READ]);
