@@ -6,13 +6,12 @@
 /*   By: yeolee2 <yeolee2@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 01:05:18 by yeolee2           #+#    #+#             */
-/*   Updated: 2023/12/14 00:32:17 by yeolee2          ###   ########.fr       */
+/*   Updated: 2023/12/14 00:53:17 by yeolee2          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// void    set_export_attribute(char ***env, char *path);
 extern int	g_exit_code;
 
 char    *get_env(char **env, char *str)
@@ -43,7 +42,6 @@ char	*set_env_name_and_value(char *name, char *path)
 
 	if (path)
 	{
-		// path = ft_strjoin(name, path);
 		temp = ft_strjoin(name, path);
 		free(path);
 		return (temp);
@@ -64,17 +62,19 @@ void    renew_env_data(char ***env, char *curr_dir, char *prev_dir)
 	free(curr_dir);
 }
 
-void	exec_chdir(char **targ_dir, char **prev_dir, char **curr_dir, char *path)
+int	exec_chdir(char **targ_dir, char **prev_dir, char **curr_dir, char *path)
 {
 	if (chdir(*targ_dir) == SUCCESS)
 	{
 		*prev_dir = ft_strdup(*curr_dir);
 		getcwd(*curr_dir, PATH_MAX);
+		g_exit_code = 0;
+		return (SUCCESS);
 	}
 	else
 	{
-		g_exit_code = 1;
 		printf("minishell: cd: %s: %s\n", path, strerror(errno));
+		g_exit_code = 1;
 	}
 }
 
@@ -93,20 +93,18 @@ void    change_directory(char **vector, char ***env)
 		targ_dir = get_env(*env, "HOME");
 		if (!targ_dir)
 		{
-			//TODO: Is this an error?
 			printf("minishell: cd: HOME not set");
+			free(curr_dir);
 			g_exit_code = 1;
 			return ;
 		}
 	}
-	//TODO: cd ~
-	else if (!ft_strcmp(vector[1], "~"))
-		targ_dir = get_env(*env, "HOME");
 	else if (!ft_strcmp(vector[1], "-"))
 	{
 		if (!prev_dir)
 		{
 			printf("minishell: cd: OLDPWD not set\n");
+			free(curr_dir);
 			g_exit_code = 1;
 			return ;
 		}
@@ -116,82 +114,8 @@ void    change_directory(char **vector, char ***env)
 			targ_dir = prev_dir;
 		}
 	}
-	exec_chdir(&targ_dir, &prev_dir, &curr_dir, vector[1]);
-	renew_env_data(env, curr_dir, prev_dir);
+	if (exec_chdir(&targ_dir, &prev_dir, &curr_dir, vector[1]) == SUCCESS)
+		renew_env_data(env, curr_dir, prev_dir);
+	else
+		free(curr_dir);
 }
-
-// #include <string.h>
-
-// char** build_vector(const char* arg)
-// {
-// 	char** vector = malloc(3 * sizeof(char *));
-// 	vector[0] = strdup("cd");
-// 	vector[1] = strdup(arg);
-// 	vector[2] = NULL;
-// 	return vector;
-// }
-
-// void	build_env(char ***env)
-// {
-// 	(*env)[0] = strdup("PATH=/usr/bin");
-// 	(*env)[1] = strdup("HOME=/Users/iyeonjae");
-// 	(*env)[2] = NULL;
-// 	return ;
-// }
-
-// void free_vector(char** vector) {
-// 	free(vector[0]);
-// 	free(vector[1]);
-// 	free(vector);
-// }
-
-// int main(void)
-// {
-// 	char    *dir;
-// 	char    **env;
-// 	char    **vector;
-
-// 	env = malloc(3 * sizeof(char *));
-// 	build_env(&env);
-// 	printf("-----------------------------------------\n");
-// 	printf("cd /Users/iyeonjae/Desktop/minishell/srcs\n");
-// 	vector = build_vector("/Users/iyeonjae/Desktop/minishell/srcs");
-// 	change_directory(vector, &env);
-// 	free_vector(vector);
-// 	// printf("dir: %s\n", getcwd(dir, PATH_MAX));
-// 	for (int i = 0; env[i]; i++)
-// 		printf("%s\n", env[i]);
-// 	printf("-----------------------------------------\n");
-// 	printf("cd\n");
-// 	vector = build_vector("whatever");
-// 	vector[1] = NULL;
-// 	change_directory(vector, &env);
-// 	free_vector(vector);
-// 	// printf("dir: %s\n", getcwd(dir, PATH_MAX));
-// 	for (int i = 0; env[i]; i++)
-// 		printf("%s\n", env[i]);
-// 	printf("-----------------------------------------\n");
-// 	printf("cd Desktop\n");
-// 	vector = build_vector("Desktop");
-// 	change_directory(vector, &env);
-// 	free_vector(vector);
-// 	for (int i = 0; env[i]; i++)
-// 		printf("%s\n", env[i]);
-// 	// printf("dir: %s\n", getcwd(dir, PATH_MAX));
-// 	printf("-----------------------------------------\n");
-// 	printf("cd -\n");
-// 	vector = build_vector("-");
-// 	change_directory(vector, &env);
-// 	free_vector(vector);
-// 	// printf("dir: %s\n", getcwd(dir, PATH_MAX));
-// 	for (int i = 0; env[i]; i++)
-// 		printf("%s\n", env[i]);
-// 	printf("-----------------------------------------\n");
-// 	printf("cd /\n");
-// 	vector = build_vector("/");
-// 	change_directory(vector, &env);
-// 	free_vector(vector);
-// 	// printf("dir: %s\n", getcwd(dir, PATH_MAX));
-// 	for (int i = 0; env[i]; i++)
-// 		printf("%s\n", env[i]);
-// }
