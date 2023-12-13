@@ -6,13 +6,14 @@
 /*   By: yeolee2 <yeolee2@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 01:05:18 by yeolee2           #+#    #+#             */
-/*   Updated: 2023/12/11 22:41:15 by yeolee2          ###   ########.fr       */
+/*   Updated: 2023/12/14 00:32:17 by yeolee2          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 // void    set_export_attribute(char ***env, char *path);
+extern int	g_exit_code;
 
 char    *get_env(char **env, char *str)
 {
@@ -71,7 +72,10 @@ void	exec_chdir(char **targ_dir, char **prev_dir, char **curr_dir, char *path)
 		getcwd(*curr_dir, PATH_MAX);
 	}
 	else
+	{
+		g_exit_code = 1;
 		printf("minishell: cd: %s: %s\n", path, strerror(errno));
+	}
 }
 
 void    change_directory(char **vector, char ***env)
@@ -82,7 +86,6 @@ void    change_directory(char **vector, char ***env)
 
 	targ_dir = vector[1];
 	prev_dir = get_env(*env, "OLDPWD");
-	//printf("get_env(*env, \"OLDPWD\"): %s\n", get_env(*env, "OLDPWD"));
 	curr_dir = malloc(sizeof(char) * PATH_MAX);
 	getcwd(curr_dir, PATH_MAX);
 	if (!vector[1])
@@ -92,6 +95,7 @@ void    change_directory(char **vector, char ***env)
 		{
 			//TODO: Is this an error?
 			printf("minishell: cd: HOME not set");
+			g_exit_code = 1;
 			return ;
 		}
 	}
@@ -103,6 +107,7 @@ void    change_directory(char **vector, char ***env)
 		if (!prev_dir)
 		{
 			printf("minishell: cd: OLDPWD not set\n");
+			g_exit_code = 1;
 			return ;
 		}
 		else
