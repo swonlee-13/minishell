@@ -52,7 +52,6 @@ void    renew_env_data(char ***env, char *curr_dir, char *prev_dir)
 	if (prev_dir)
 	{
 		prev_dir = set_env_name_and_value("OLDPWD=", prev_dir);
-	printf("%p\n", prev_dir);
 		set_export_attribute(env, prev_dir);
 		free(prev_dir);
 	}
@@ -84,7 +83,6 @@ void    change_directory(char **vector, char ***env)
 
 	targ_dir = vector[1];
 	prev_dir = get_env(*env, "OLDPWD");
-//	curr_dir = malloc(sizeof(char) * PATH_MAX);
 	curr_dir = getcwd(NULL, PATH_MAX);
 	if (!vector[1] || !ft_strcmp(vector[1], "~"))
 	{

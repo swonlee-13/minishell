@@ -49,7 +49,7 @@ int     count_commands(t_node *root);
 char    *get_env(char **env, char *str);
 char	*set_env_name_and_value(char *name, char *path);
 void    renew_env_data(char ***env, char *curr_dir, char *prev_dir);
-void	exec_chdir(char **targ_dir, char **prev_dir, char **curr_dir, char *path);
+int	exec_chdir(char **targ_dir, char **prev_dir, char **curr_dir, char *path);
 void    change_directory(char **vector, char ***env);
 
 /* ECHO.C */
