@@ -6,7 +6,7 @@
 /*   By: yeolee2 <yeolee2@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 14:32:11 by yeolee2           #+#    #+#             */
-/*   Updated: 2023/12/13 15:14:15 by yeolee2          ###   ########.fr       */
+/*   Updated: 2023/12/13 15:21:19 by yeolee2          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,6 +123,7 @@ void	setup_exit_status(pid_t pid)
 	if (WIFSIGNALED(status))
 		g_exit_code = 128 + WTERMSIG(status);
 	else
+		g_exit_code = WEXITSTATUS(status);
 }
 
 void    execute_commands(t_node *parsed_commands, char ***env_copy)
