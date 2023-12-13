@@ -75,6 +75,7 @@ int	exec_chdir(char **targ_dir, char **prev_dir, char **curr_dir, char *path)
 	{
 		printf("minishell: cd: %s: %s\n", path, strerror(errno));
 		g_exit_code = 1;
+		return (g_exit_code);
 	}
 }
 

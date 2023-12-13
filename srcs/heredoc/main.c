@@ -145,7 +145,10 @@ void    execute_commands(t_node *parsed_commands, char ***env_copy)
 		if (!command_vector[0])
 			return ;
 		if (cnt == 1 && is_builtin(command_vector[0]))
+		{
 			execute_builtin(command_vector, env_copy);
+			return ;
+		}
 		else
 			last_pid = execute_pipeline(idx, parsed_commands, &redir, env_copy);
 		ft_free(command_vector);
