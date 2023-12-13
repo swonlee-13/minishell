@@ -6,27 +6,35 @@
 /*   By: seongwol <seongwol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 16:30:57 by seongwol          #+#    #+#             */
-/*   Updated: 2023/12/12 02:30:44 by seongwol         ###   ########.fr       */
+/*   Updated: 2023/12/12 20:15:32 by seongwol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*create_here_doc_file(t_node *node)
+void	create_here_doc_file(t_node *node)
 {
 	char		*file_name;
 	static int	number;
+	char		*numstr;
 
 	number++;
-	file_name = ft_strjoin("/tmp/my_here_doc", ft_itoa(number));
+	numstr = ft_itoa(number);
+	file_name = ft_strjoin("/tmp/my_here_doc", numstr);
 	while (access(file_name, F_OK) == SUCCESS)
 	{
 		free(file_name);
+		free(numstr);
 		number++;
-		file_name = ft_strjoin("/tmp/my_here_doc", ft_itoa(number));
+		numstr = ft_itoa(number);
+		file_name = ft_strjoin("/tmp/my_here_doc", numstr);
 	}
 	node->fd = open(file_name, O_RDWR | O_CREAT | O_EXCL | O_TRUNC, 0644);
-	return (file_name);
+	free(numstr);
+	close(node->fd);
+	node->fd = open(file_name, O_RDONLY);
+	unlink(file_name);
+	free(file_name);
 }
 
 void	write_here_doc(t_node *node, char **env_copy)
@@ -35,7 +43,6 @@ void	write_here_doc(t_node *node, char **env_copy)
 
 	while (1)
 	{
-		// write(1, "heredoc> ", 9);
 		buffer = readline("> ");
 		if (buffer == 0 || ft_strcmp(buffer, node->data) == 0)
 			break;
@@ -45,29 +52,12 @@ void	write_here_doc(t_node *node, char **env_copy)
 		free(buffer);
 	}
 	free(buffer);
-	// free(end);
 }
 
 int	activate_here_doc(t_node *node, char **env_copy)
 {
-	char	*file_name;
-
-	file_name = create_here_doc_file(node);
-//	if (node->fd == -1)
-//	{
-//		perror(errno); //TODO: 에러 관련 처리 합시다
-//		return(errno); //TODO: 에러 관련 처리 합시다
-//	}
+	create_here_doc_file(node);
 	write_here_doc(node, env_copy);
-	close(node->fd);
-	node->fd = open(file_name, O_RDONLY);
-//	if (node->fd == -1)
-//	{
-//		perror(errno); //TODO: 에러 관련 처리 합시다
-//		return(errno); //TODO: 에러 관련 처리 합시다
-//	}
-	unlink(file_name);
-	free(file_name);
 	return (SUCCESS);
 }
 

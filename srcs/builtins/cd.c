@@ -81,8 +81,8 @@ void    change_directory(char **vector, char ***env)
 	char    *curr_dir;
 
 	targ_dir = vector[1];
-	prev_dir = ft_strdup(get_env(*env, "OLDPWD"));
-	printf("get_env(*env, \"OLDPWD\"): %s\n", get_env(*env, "OLDPWD"));
+	prev_dir = get_env(*env, "OLDPWD");
+	//printf("get_env(*env, \"OLDPWD\"): %s\n", get_env(*env, "OLDPWD"));
 	curr_dir = malloc(sizeof(char) * PATH_MAX);
 	getcwd(curr_dir, PATH_MAX);
 	if (!vector[1])

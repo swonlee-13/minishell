@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yeolee2 <yeolee2@student.42.fr>            +#+  +:+       +#+        */
+/*   By: seongwol <seongwol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 14:32:11 by yeolee2           #+#    #+#             */
-/*   Updated: 2023/12/12 02:30:10 by yeolee2          ###   ########.fr       */
+/*   Updated: 2023/12/12 20:20:46 by seongwol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,8 +148,6 @@ void    execute_commands(t_node *parsed_commands, char ***env_copy)
 		idx++;
 	}
 	setup_exit_status(last_pid);
-	while (waitpid(0, NULL, 0) >= 0)
-		;
 }
 
 void	reset_termios(void)
@@ -198,6 +196,8 @@ int main(int argc, char *argv[], char **env)
 		free_tree(parsed_commands);
 		free(command_line);
 	}
+	while (waitpid(0, NULL, 0) >= 0)
+			;
 	printf("\x1b[1A\033[11Cexit\n");
 	reset_termios();
 	return (SUCCESS);
