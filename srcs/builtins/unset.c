@@ -6,15 +6,13 @@
 /*   By: yeolee2 <yeolee2@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 10:10:28 by yeolee2           #+#    #+#             */
-/*   Updated: 2023/12/13 23:49:28 by yeolee2          ###   ########.fr       */
+/*   Updated: 2023/12/14 00:47:08 by yeolee2          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-// #include <string.h>
 
-// char    *get_env(char **env, char *str);
-// void	build_env(char ***env);
+extern int	g_exit_code;
 
 int	check_bash_var_name_convention(char *name)
 {
@@ -42,7 +40,8 @@ void	remove_env_data(char ***env, char *name)
 		return ;
 	if (check_bash_var_name_convention(name) == FAILURE)
 	{
-		printf("minishell: unset: %s: not a valid identifier", name);
+		printf("minishell: unset: %s: not a valid identifier\n", name);
+		g_exit_code = 1;
 		return ;
 	}
 	res = malloc(sizeof(char *) * (ft_strslen(*env) - 1));

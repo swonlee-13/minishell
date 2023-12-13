@@ -6,11 +6,13 @@
 /*   By: yeolee2 <yeolee2@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 19:52:51 by yeolee2           #+#    #+#             */
-/*   Updated: 2023/12/11 23:02:01 by yeolee2          ###   ########.fr       */
+/*   Updated: 2023/12/14 01:11:43 by yeolee2          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+extern int  g_exit_code;
 
 int check_the_rest_of_arg(char *arg)
 {
@@ -51,6 +53,7 @@ void    write_arg_to_stdout(char **vector)
     if (vector[1] == NULL)
     {
         printf("\n");
+        g_exit_code = 0;
         return ;
     }
     while (is_n_option(vector[idx]) == TRUE)
@@ -64,6 +67,7 @@ void    write_arg_to_stdout(char **vector)
     }
     if (is_n_option(vector[1]) == FALSE)
         printf("\n");
+    g_exit_code = 0;
 }
 
 // #include <string.h>
