@@ -6,7 +6,7 @@
 /*   By: yeolee2 <yeolee2@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 14:32:11 by yeolee2           #+#    #+#             */
-/*   Updated: 2023/12/14 01:16:33 by yeolee2          ###   ########.fr       */
+/*   Updated: 2023/12/14 01:50:43 by yeolee2          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,8 @@ int	g_exit_code = 0;
 char	*get_command_path(char **command, char **env_copy)
 {
 	int		idx;
-	char	*temp;
+	char	*temp1;
+	char	*temp2;
 	char	**path;
 
 	if (command[0][0] == '/' || (command[0][0] == '.' && command[0][1] == '/'))
@@ -26,22 +27,22 @@ char	*get_command_path(char **command, char **env_copy)
 			return (*command);
 	}
 	path = ft_split(get_env(env_copy, "PATH"), ':');
-	temp = ft_strjoin("/", *command);
-	free(*command);
+	temp1 = ft_strjoin("/", *command);
 	idx = -1;
 	while (path[++idx])
 	{
-		*command = ft_strjoin(path[idx], temp);
-		if (!access(*command, X_OK))
+		temp2 = ft_strjoin(path[idx], temp1);
+		if (!access(temp2, X_OK))
 		{
-			free(temp);
+			free(temp1);
 			ft_free(path);
-			return (*command);
+			return (temp2);
 		}
 		else
-			free(*command);
+			free(temp2);
 	}
-	return (NULL);
+	free(temp1);
+	return (*command);
 }
 
 void	execute_command(int fd[2], int idx, t_node *root, char ***env_copy)
@@ -58,6 +59,7 @@ void	execute_command(int fd[2], int idx, t_node *root, char ***env_copy)
 	close(fd[READ]);
 	close(fd[WRITE]);
 	execve(command_vector[0], command_vector, *env_copy);
+	printf("minisehll: %s: command not found\n", command_vector[0]);
 }
 
 void	setup_child_redirection(int fd[2], int idx, t_node *parsed_commands, t_file redir)
