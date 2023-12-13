@@ -6,16 +6,13 @@
 /*   By: yeolee2 <yeolee2@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 20:03:24 by yeolee2           #+#    #+#             */
-/*   Updated: 2023/12/12 02:24:08 by yeolee2          ###   ########.fr       */
+/*   Updated: 2023/12/14 01:06:11 by yeolee2          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// void	build_env(char ***env);
-// char** build_vector(const char* arg);
-
-//TODO: export a="                       "
+extern int g_exit_code;
 
 void	add_env_data(char ***env, char *path)
 {
@@ -24,7 +21,6 @@ void	add_env_data(char ***env, char *path)
 
 	len = ft_strslen(*env) + 1;
 	res = malloc(sizeof(char *) * (len + 1));
-	//TODO: Return an error code
 	if (!res)
 		return ;
 	ft_memcpy(res, *env, sizeof(char *) * ft_strslen(*env));
@@ -92,6 +88,7 @@ void    set_export_attribute(char ***env, char *path)
 	if (path == NULL)
 	{
 		print_export_attribute(*env);
+		g_exit_code = 0;
 		return ;
 	}
 	len = 0;
@@ -110,6 +107,7 @@ void    set_export_attribute(char ***env, char *path)
 	}
 	if (!(*env)[idx])
 		add_env_data(env, path);
+	g_exit_code = 0;
 }
 
 
