@@ -6,7 +6,7 @@
 /*   By: yeolee2 <yeolee2@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 10:10:28 by yeolee2           #+#    #+#             */
-/*   Updated: 2023/12/14 00:47:08 by yeolee2          ###   ########.fr       */
+/*   Updated: 2023/12/14 02:27:12 by yeolee2          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,14 +52,11 @@ void	remove_env_data(char ***env, char *name)
 	while ((*env)[++i])
 	{
 		if (!ft_strncmp(name, (*env)[i], ft_strlen(name)) && (*env)[i][ft_strlen(name)] == '=')
-		{
-			free((*env)[i]);
 			continue ;
-		}
 		res[j++] = ft_strdup((*env)[i]);
-		free((*env)[i]);
 	}
 	res[j] = NULL;
+	ft_free(*env);
 	*env = res;
 }
 

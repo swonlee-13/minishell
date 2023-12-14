@@ -6,7 +6,7 @@
 /*   By: yeolee2 <yeolee2@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 14:32:11 by yeolee2           #+#    #+#             */
-/*   Updated: 2023/12/14 01:50:43 by yeolee2          ###   ########.fr       */
+/*   Updated: 2023/12/14 02:20:31 by yeolee2          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ void	execute_command(int fd[2], int idx, t_node *root, char ***env_copy)
 	close(fd[READ]);
 	close(fd[WRITE]);
 	execve(command_vector[0], command_vector, *env_copy);
+	g_exit_code = 127;
 	printf("minisehll: %s: command not found\n", command_vector[0]);
 }
 
@@ -97,7 +98,7 @@ pid_t	execute_pipeline(int idx, t_node *parsed_commands, t_file *redir, char ***
 	pipe(fd);
 	pid = fork();
 	if (pid < 0)
-        printf("%s\n", strerror(errno));
+		printf("%s\n", strerror(errno));
 	if (pid == 0)
 	{
 		reset_termios();
@@ -105,7 +106,7 @@ pid_t	execute_pipeline(int idx, t_node *parsed_commands, t_file *redir, char ***
 		signal(SIGQUIT, SIG_DFL);
 		setup_child_redirection(fd, idx, parsed_commands, *redir);
 		execute_command(fd, idx, parsed_commands, env_copy);
-		exit(EXIT_FAILURE);
+		exit(g_exit_code);
 	}
 	else
 	{
@@ -149,6 +150,7 @@ void    execute_commands(t_node *parsed_commands, char ***env_copy)
 		if (cnt == 1 && is_builtin(command_vector[0]))
 		{
 			execute_builtin(command_vector, env_copy);
+			ft_free(command_vector);
 			return ;
 		}
 		else
