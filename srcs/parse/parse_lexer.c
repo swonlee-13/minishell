@@ -6,7 +6,7 @@
 /*   By: yeolee2 <yeolee2@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 19:21:52 by yeolee2           #+#    #+#             */
-/*   Updated: 2023/12/11 22:49:19 by yeolee2          ###   ########.fr       */
+/*   Updated: 2023/12/14 02:02:52 by yeolee2          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,12 +39,12 @@ int	redir_lexer(char *token_string)
 			i = redir_lexer_count(token_string, i, token_string[i]);
 			if (i == SYNTAX_ERROR)
 			{
-				write(1, "red ", 4);
+				write(2, "minishell: redirection ", 23);
 				return (SYNTAX_ERROR);
 			}
 			if (token_string[i] == 'I' || token_string[i] == 'O')
 			{
-				write(1, "red ", 4);
+				write(2, "minishell: redirection ", 23);
 				return (SYNTAX_ERROR);
 			}
 		}
@@ -79,7 +79,7 @@ int	quote_lexer(char *token_string)
 			i = quote_lexer_find_end(token_string, i, token_string[i]);
 			if (i == SYNTAX_ERROR)
 			{
-				write(1, "quote ", 6);
+				write(2, "minishell: quote ", 17);
 				return (SYNTAX_ERROR);
 			}
 		}
@@ -113,7 +113,7 @@ int	file_lexer(char *token_string)
 			i = file_lexer_argument_check(token_string, i, token_string[i]);
 			if (i == SYNTAX_ERROR)
 			{
-				write(1, "file ", 5);
+				write(2, "minishell: file ", 16);
 				return (SYNTAX_ERROR);
 			}
 		}
@@ -143,7 +143,7 @@ int	pipe_lexer(char *token_string)
 	{
 		if (token_string[0] == 'P')
 		{
-			write(1, "pipe ", 5);
+			write(2, "minishell: pipe ", 16);
 			return (SYNTAX_ERROR);
 		}
 		if (token_string[i] == 'P')
@@ -151,7 +151,7 @@ int	pipe_lexer(char *token_string)
 			i = pipe_lexer_double_check(token_string, i);
 			if (i == SYNTAX_ERROR)
 			{
-				write(1, "pipe ", 5);
+				write(2, "minishell: pipe ", 16);
 				return (SYNTAX_ERROR);
 			}
 		}
@@ -196,7 +196,7 @@ int	dollar_sign_lexer(char *cmd, char *token_string)
 			i = dollar_sign_lexer_double(cmd, i);
 			if (i == SYNTAX_ERROR)
 			{
-				write(1, "dollar sign ", 12);
+				write(2, "minishell: dollar sign ", 23);
 				return (SYNTAX_ERROR);
 			}
 		}
