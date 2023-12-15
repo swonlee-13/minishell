@@ -6,7 +6,7 @@
 /*   By: yeolee2 <yeolee2@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 01:05:18 by yeolee2           #+#    #+#             */
-/*   Updated: 2023/12/14 00:53:17 by yeolee2          ###   ########.fr       */
+/*   Updated: 2023/12/15 03:39:58 by yeolee2          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 extern int	g_exit_code;
 
-char    *get_env(char **env, char *str)
+char    *get_env_data(char **env, char *str)
 {
 	int     idx;
 	char    *res;
@@ -54,11 +54,11 @@ void    renew_env_data(char ***env, char *curr_dir, char *prev_dir)
 	if (prev_dir)
 	{
 		prev_dir = set_env_name_and_value("OLDPWD=", prev_dir);
-		set_export_attribute(env, prev_dir);
+		set_each_attribute(env, prev_dir);
 		free(prev_dir);
 	}
 	curr_dir = set_env_name_and_value("PWD=", curr_dir);
-	set_export_attribute(env, curr_dir);
+	set_each_attribute(env, curr_dir);
 	free(curr_dir);
 }
 
@@ -79,6 +79,14 @@ int	exec_chdir(char **targ_dir, char **prev_dir, char **curr_dir, char *path)
 	}
 }
 
+void	handle_cd_error(char *targ_dir, char *curr_dir)
+{
+	printf("minishell: cd: %s not set\n", targ_dir);
+	free(curr_dir);
+	g_exit_code = 1;
+	return ;
+}
+
 void    change_directory(char **vector, char ***env)
 {
 	char    *targ_dir;
@@ -86,34 +94,21 @@ void    change_directory(char **vector, char ***env)
 	char    *curr_dir;
 
 	targ_dir = vector[1];
-	prev_dir = get_env(*env, "OLDPWD");
+	prev_dir = get_env_data(*env, "OLDPWD");
 	curr_dir = malloc(sizeof(char) * PATH_MAX);
 	getcwd(curr_dir, PATH_MAX);
 	if (!vector[1])
 	{
-		targ_dir = get_env(*env, "HOME");
+		targ_dir = get_env_data(*env, "HOME");
 		if (!targ_dir)
-		{
-			printf("minishell: cd: HOME not set");
-			free(curr_dir);
-			g_exit_code = 1;
-			return ;
-		}
+			return (handle_cd_error("HOME", curr_dir));
 	}
 	else if (!ft_strcmp(vector[1], "-"))
 	{
 		if (!prev_dir)
-		{
-			printf("minishell: cd: OLDPWD not set\n");
-			free(curr_dir);
-			g_exit_code = 1;
-			return ;
-		}
-		else
-		{
-			printf("%s\n", prev_dir);
-			targ_dir = prev_dir;
-		}
+			return (handle_cd_error("OLDPWD", curr_dir));
+		printf("%s\n", prev_dir);
+		targ_dir = prev_dir;
 	}
 	if (exec_chdir(&targ_dir, &prev_dir, &curr_dir, vector[1]) == SUCCESS)
 		renew_env_data(env, curr_dir, prev_dir);

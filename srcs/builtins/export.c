@@ -6,7 +6,7 @@
 /*   By: yeolee2 <yeolee2@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 20:03:24 by yeolee2           #+#    #+#             */
-/*   Updated: 2023/12/14 01:06:11 by yeolee2          ###   ########.fr       */
+/*   Updated: 2023/12/14 23:58:55 by yeolee2          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,17 +80,11 @@ void	print_export_attribute(char **env)
 	ft_free(res);
 }
 
-void    set_export_attribute(char ***env, char *path)
+void	set_each_attribute(char ***env, char *path)
 {
 	int     idx;
 	int		len;
 
-	if (path == NULL)
-	{
-		print_export_attribute(*env);
-		g_exit_code = 0;
-		return ;
-	}
 	len = 0;
 	while (path[len] && path[len] != '=')
 		len++;
@@ -107,6 +101,24 @@ void    set_export_attribute(char ***env, char *path)
 	}
 	if (!(*env)[idx])
 		add_env_data(env, path);
+}
+
+void    set_export_attribute(char ***env, char **vector)
+{
+	int	idx;
+
+	if (vector[1] == NULL)
+	{
+		print_export_attribute(*env);
+		g_exit_code = 0;
+		return ;
+	}
+	idx = 1;
+	while (vector[idx])
+	{
+		set_each_attribute(env, vector[idx]);
+		idx++;
+	}
 	g_exit_code = 0;
 }
 

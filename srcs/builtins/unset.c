@@ -6,7 +6,7 @@
 /*   By: yeolee2 <yeolee2@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 10:10:28 by yeolee2           #+#    #+#             */
-/*   Updated: 2023/12/14 02:27:12 by yeolee2          ###   ########.fr       */
+/*   Updated: 2023/12/15 04:00:06 by yeolee2          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,20 +30,23 @@ int	check_bash_var_name_convention(char *name)
 	return (SUCCESS);
 }
 
+void	handle_unset_error(char *name)
+{
+	printf("minishell: unset: %s: not a valid identifier\n", name);
+	g_exit_code = 1;
+	return ;
+}
+
 void	remove_env_data(char ***env, char *name)
 {
 	char	**res;
 	size_t	i;
 	size_t  j;
 
-	if (!get_env(*env, name))
+	if (!get_env_data(*env, name))
 		return ;
 	if (check_bash_var_name_convention(name) == FAILURE)
-	{
-		printf("minishell: unset: %s: not a valid identifier\n", name);
-		g_exit_code = 1;
-		return ;
-	}
+		return (handle_unset_error(name));
 	res = malloc(sizeof(char *) * (ft_strslen(*env) - 1));
 	if (!res)
 		return ;
@@ -51,7 +54,8 @@ void	remove_env_data(char ***env, char *name)
 	j = 0;
 	while ((*env)[++i])
 	{
-		if (!ft_strncmp(name, (*env)[i], ft_strlen(name)) && (*env)[i][ft_strlen(name)] == '=')
+		if (!ft_strncmp(name, (*env)[i], ft_strlen(name)) \
+			&& (*env)[i][ft_strlen(name)] == '=')
 			continue ;
 		res[j++] = ft_strdup((*env)[i]);
 	}
