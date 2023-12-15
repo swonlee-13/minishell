@@ -6,7 +6,7 @@
 /*   By: yeolee2 <yeolee2@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 14:32:11 by yeolee2           #+#    #+#             */
-/*   Updated: 2023/12/14 01:50:43 by yeolee2          ###   ########.fr       */
+/*   Updated: 2023/12/15 04:15:26 by yeolee2          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,62 +14,61 @@
 
 int	g_exit_code = 0;
 
-char	*get_command_path(char **command, char **env_copy)
+char	*get_command_path(char **cmd, char **env)
 {
 	int		idx;
-	char	*temp1;
-	char	*temp2;
+	char	*tmp1;
+	char	*tmp2;
 	char	**path;
 
-	if (command[0][0] == '/' || (command[0][0] == '.' && command[0][1] == '/'))
-	{
-		if (!access(*command, X_OK))
-			return (*command);
-	}
-	path = ft_split(get_env(env_copy, "PATH"), ':');
-	temp1 = ft_strjoin("/", *command);
+	if (cmd[0][0] == '/' || \
+		(cmd[0][0] == '.' && cmd[0][1] == '/'))
+		if (!access(*cmd, X_OK))
+			return (*cmd);
+	path = ft_split(get_env_data(env, "PATH"), ':');
+	tmp1 = ft_strjoin("/", *cmd);
 	idx = -1;
 	while (path[++idx])
 	{
-		temp2 = ft_strjoin(path[idx], temp1);
-		if (!access(temp2, X_OK))
+		tmp2 = ft_strjoin(path[idx], tmp1);
+		if (!access(tmp2, X_OK))
 		{
-			free(temp1);
+			free(tmp1);
 			ft_free(path);
-			return (temp2);
+			return (tmp2);
 		}
-		else
-			free(temp2);
+		free(tmp2);
 	}
-	free(temp1);
-	return (*command);
+	free(tmp1);
+	return (*cmd);
 }
 
-void	execute_command(int fd[2], int idx, t_node *root, char ***env_copy)
+void	execute_command(int fd[2], int idx, t_node *root, char ***env)
 {
-	char	**command_vector;
+	char	**vector;
 
-	command_vector = vector_conversion(&root, idx);
-	if (is_builtin(command_vector[0]))
+	vector = vector_conversion(&root, idx);
+	if (is_builtin(vector[0]))
 	{
-		execute_builtin(command_vector, env_copy);
+		execute_builtin(vector, env);
 		exit(g_exit_code);
 	}
-	command_vector[0] = get_command_path(&command_vector[0], *env_copy);
+	vector[0] = get_command_path(&vector[0], *env);
 	close(fd[READ]);
 	close(fd[WRITE]);
-	execve(command_vector[0], command_vector, *env_copy);
-	printf("minisehll: %s: command not found\n", command_vector[0]);
+	execve(vector[0], vector, *env);
+	g_exit_code = 127;
+	printf("minisehll: %s: command not found\n", vector[0]);
 }
 
-void	setup_child_redirection(int fd[2], int idx, t_node *parsed_commands, t_file redir)
+void	setup_child_redirection(int fd[2], int idx, t_node *tree, t_file redir)
 {
 	if (idx > 0 && redir.in == STDIN_FILENO)
 	{
 		dup2(redir.temp, STDIN_FILENO);
 		close(redir.temp);
 	}
-	if (idx < count_commands(parsed_commands) - 1 && redir.out == STDOUT_FILENO)
+	if (idx < count_commands(tree) - 1 && redir.out == STDOUT_FILENO)
 		dup2(fd[WRITE], STDOUT_FILENO);
 	if (redir.in != STDIN_FILENO)
 		dup2(redir.in, STDIN_FILENO);
@@ -88,7 +87,7 @@ void	setup_parent_redirection(int fd[2], t_file *redir)
 	close(fd[WRITE]);
 }
 
-pid_t	execute_pipeline(int idx, t_node *parsed_commands, t_file *redir, char ***env_copy)
+pid_t	execute_pipeline(int idx, t_node *tree, t_file *redir, char ***env)
 {
 	pid_t	pid;
 	int		fd[2];
@@ -97,15 +96,15 @@ pid_t	execute_pipeline(int idx, t_node *parsed_commands, t_file *redir, char ***
 	pipe(fd);
 	pid = fork();
 	if (pid < 0)
-        printf("%s\n", strerror(errno));
+		printf("minishell: %s\n", strerror(errno));
 	if (pid == 0)
 	{
 		reset_termios();
 		signal(SIGINT, SIG_DFL);
 		signal(SIGQUIT, SIG_DFL);
-		setup_child_redirection(fd, idx, parsed_commands, *redir);
-		execute_command(fd, idx, parsed_commands, env_copy);
-		exit(EXIT_FAILURE);
+		setup_child_redirection(fd, idx, tree, *redir);
+		execute_command(fd, idx, tree, env);
+		exit(g_exit_code);
 	}
 	else
 	{
@@ -131,29 +130,30 @@ void	setup_exit_status(pid_t pid)
 		g_exit_code = 128 + WTERMSIG(status);
 }
 
-void    execute_commands(t_node *parsed_commands, char ***env_copy)
+void    execute_commands(t_node *tree, char ***env_copy)
 {
 	int			idx;
-	const int   cnt = count_commands(parsed_commands);
-	char		**command_vector;
+	const int   cnt = count_commands(tree);
+	char		**vector;
 	pid_t		last_pid;
 	t_file		redir;
 
 	idx = 0;
 	while (idx < cnt)
 	{
-		setup_cmd_redirection(parsed_commands, idx, &redir);
-		command_vector = vector_conversion(&parsed_commands, idx);
-		if (!command_vector[0])
+		setup_cmd_redirection(tree, idx, &redir);
+		vector = vector_conversion(&tree, idx);
+		if (!vector[0])
 			return ;
-		if (cnt == 1 && is_builtin(command_vector[0]))
+		if (cnt == 1 && is_builtin(vector[0]))
 		{
-			execute_builtin(command_vector, env_copy);
+			execute_builtin(vector, env_copy);
+			ft_free(vector);
 			return ;
 		}
 		else
-			last_pid = execute_pipeline(idx, parsed_commands, &redir, env_copy);
-		ft_free(command_vector);
+			last_pid = execute_pipeline(idx, tree, &redir, env_copy);
+		ft_free(vector);
 		idx++;
 	}
 	setup_exit_status(last_pid);

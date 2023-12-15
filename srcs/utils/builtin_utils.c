@@ -6,7 +6,7 @@
 /*   By: yeolee2 <yeolee2@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/11 22:43:21 by yeolee2           #+#    #+#             */
-/*   Updated: 2023/12/12 00:22:17 by yeolee2          ###   ########.fr       */
+/*   Updated: 2023/12/14 23:45:20 by yeolee2          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void    execute_builtin(char **command_vector, char ***env_copy)
 	else if (!ft_strcmp(command_vector[0], "exit"))
 		terminate_program(command_vector);
 	else if (!ft_strcmp(command_vector[0], "export"))
-		set_export_attribute(env_copy, command_vector[1]);
+		set_export_attribute(env_copy, command_vector);
 	else if (!ft_strcmp(command_vector[0], "pwd"))
 		print_working_directory();
 	else if (!ft_strcmp(command_vector[0], "unset"))

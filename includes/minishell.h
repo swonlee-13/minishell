@@ -6,7 +6,7 @@
 /*   By: yeolee2 <yeolee2@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 03:09:36 by yeolee2           #+#    #+#             */
-/*   Updated: 2023/12/13 17:44:10 by yeolee2          ###   ########.fr       */
+/*   Updated: 2023/12/14 23:51:49 by yeolee2          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,10 +46,10 @@ char	*find_env_data(char **env, char *str);
 int     count_commands(t_node *root);
 
 /* CD.C */
-char    *get_env(char **env, char *str);
+char    *get_env_data(char **env, char *str);
 char	*set_env_name_and_value(char *name, char *path);
 void    renew_env_data(char ***env, char *curr_dir, char *prev_dir);
-int	exec_chdir(char **targ_dir, char **prev_dir, char **curr_dir, char *path);
+int     exec_chdir(char **targ_dir, char **prev_dir, char **curr_dir, char *path);
 void    change_directory(char **vector, char ***env);
 
 /* ECHO.C */
@@ -62,7 +62,8 @@ void    print_env_list(char **env);
 
 /* EXPORT.C */
 void	add_env_data(char ***env, char *path);
-void    set_export_attribute(char ***env, char *path);
+void	set_each_attribute(char ***env, char *path);
+void    set_export_attribute(char ***env, char **vector);
 
 /* PWD.C */
 void    print_working_directory(void);
