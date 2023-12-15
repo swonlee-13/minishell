@@ -22,6 +22,7 @@ SRCS				=	srcs/builtins/cd.c \
 						srcs/heredoc/here_doc.c \
 						srcs/heredoc/here_doc_formatting.c \
 						srcs/heredoc/main.c \
+						srcs/heredoc/limiter_formatting.c \
 						srcs/parse/parse_formatting.c \
 						srcs/parse/parse_lexer.c \
 						srcs/parse/parse_parser.c \

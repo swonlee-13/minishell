@@ -152,7 +152,10 @@ void	node_data_formatting(t_queue *q, char **env_copy)
 	while (node)
 	{
 		tmp = node->data;
-		node->data = string_formatting(tmp, env_copy);
+		if (node->type == REDIR_DOUBLE_IN)
+			node->data = limiter_formatting(tmp);
+		else
+			node->data = string_formatting(tmp, env_copy);
 		node = node->right;
 	}
 }

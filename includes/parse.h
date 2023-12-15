@@ -118,4 +118,6 @@ void	print_queue(t_queue *q);
 //utils
 t_node	*find_redirection_root(t_node *root, int cmd_idx);
 
+//heredoc/limiter_formatting.c
+char    *limiter_formatting(char *data);
 #endif
