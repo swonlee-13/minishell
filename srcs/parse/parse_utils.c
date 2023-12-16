@@ -3,22 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   parse_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yeolee2 <yeolee2@student.42.fr>            +#+  +:+       +#+        */
+/*   By: seongwol <seongwol@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/01 19:22:25 by yeolee2           #+#    #+#             */
-/*   Updated: 2023/12/11 22:41:05 by yeolee2          ###   ########.fr       */
+/*   Created: 2023/12/16 19:14:32 by seongwol          #+#    #+#             */
+/*   Updated: 2023/12/16 19:14:33 by seongwol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parse.h"
-
-int	ft_is_pipe(char c)
-{
-	if (c == '|')
-		return (1);
-	else
-		return (0);
-}
 
 int	ft_is_invalid(char c)
 {

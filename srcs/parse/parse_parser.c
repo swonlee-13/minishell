@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   parse_parser.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yeolee2 <yeolee2@student.42.fr>            +#+  +:+       +#+        */
+/*   By: seongwol <seongwol@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/01 19:22:00 by yeolee2           #+#    #+#             */
-/*   Updated: 2023/12/11 22:49:30 by yeolee2          ###   ########.fr       */
+/*   Created: 2023/12/16 19:02:21 by seongwol          #+#    #+#             */
+/*   Updated: 2023/12/16 19:07:08 by seongwol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parse.h"
 
-extern int g_exit_code;
+extern int	g_exit_code;
 
 t_type	node_type_setter(char *token_string, int i)
 {
@@ -36,7 +36,7 @@ t_type	node_type_setter(char *token_string, int i)
 	else if (token_string[i] == '\0')
 		return (PASS);
 	else
-		write(1,"error type setter\n", 18);
+		write(1, "error type setter\n", 18);
 	return (PASS);
 }
 
@@ -62,8 +62,8 @@ int	command_enqueue_indexing(char *token_string, int i)
 void	command_enqueue(t_queue *q, char *cmd, char *token_string)
 {
 	t_node	*node;
-	int	start;
-	int	i;
+	int		start;
+	int		i;
 
 	i = 0;
 	while (token_string[i] != '\0')
@@ -100,18 +100,19 @@ char	*make_token_string(char *cmd)
 		g_exit_code = 258;
 		return (NULL);
 	}
-	token_setter(cmd, token_string);
+	file_name_setter(token_string);
+	dollar_sign_setter(cmd, token_string);
 	return (token_string);
 }
 
-t_node *parser(char *cmd, char **env_copy)
+t_node	*parser(char *cmd, char **env_copy)
 {
 	char	*token_string;
-	t_queue *q;
+	t_queue	*q;
 	t_node	*root;
 
 	token_string = make_token_string(cmd);
-	if(token_string == NULL)
+	if (token_string == NULL)
 		return (NULL);
 	q = (t_queue *)malloc(sizeof(t_queue));
 	queue_init(q);
