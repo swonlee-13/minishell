@@ -6,13 +6,13 @@
 /*   By: yeolee2 <yeolee2@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/11 22:43:21 by yeolee2           #+#    #+#             */
-/*   Updated: 2023/12/14 23:45:20 by yeolee2          ###   ########.fr       */
+/*   Updated: 2023/12/16 19:34:23 by yeolee2          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void    execute_builtin(char **command_vector, char ***env_copy)
+void	execute_builtin(char **command_vector, char ***env_copy)
 {
 	if (!ft_strcmp(command_vector[0], "cd"))
 		change_directory(command_vector, env_copy); 
@@ -30,7 +30,7 @@ void    execute_builtin(char **command_vector, char ***env_copy)
 		remove_env_data(env_copy, command_vector[1]);
 }
 
-int is_builtin(char *command)
+int	is_builtin(char *command)
 {
 	if (!ft_strcmp(command, "cd"))
 		return (TRUE);

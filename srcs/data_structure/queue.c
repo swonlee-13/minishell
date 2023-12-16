@@ -6,7 +6,7 @@
 /*   By: yeolee2 <yeolee2@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 19:20:39 by yeolee2           #+#    #+#             */
-/*   Updated: 2023/12/11 22:42:22 by yeolee2          ###   ########.fr       */
+/*   Updated: 2023/12/16 19:14:38 by yeolee2          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void	node_enqueue(t_queue *q, t_node *new)
 t_node	*dequeue(t_queue *q)
 {
 	t_node	*ptr;
-	
+
 	if (queue_is_empty(q))
 		return (NULL);
 	ptr = q->front;

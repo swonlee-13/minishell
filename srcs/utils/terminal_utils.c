@@ -1,28 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   error_utils.c                                      :+:      :+:    :+:   */
+/*   terminal_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yeolee2 <yeolee2@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/12 00:15:43 by yeolee2           #+#    #+#             */
-/*   Updated: 2023/12/12 00:37:53 by yeolee2          ###   ########.fr       */
+/*   Created: 2023/12/16 18:30:18 by yeolee2           #+#    #+#             */
+/*   Updated: 2023/12/16 19:38:25 by yeolee2          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include <minishell.h>
 
-void print_error_message(char **vector, char *error)
+void	reset_termios(void)
 {
-	char	*tmp1;
-	char	*tmp2;
-	char    *error_message;
+	struct termios	term;
 
-	tmp1 = ft_strjoin(vector[0], ": ");
-	tmp2 = ft_strjoin("minishell: ", tmp1);
-	error_message = ft_strjoin(tmp2, error);
-	free(tmp1);
-	free(tmp2);
-	ft_putstr_fd(error_message, 2);
-	free(error_message);
+	tcgetattr(STDIN_FILENO, &term);
+	term.c_lflag |= ECHOCTL;
+	tcsetattr(STDIN_FILENO, 0, &term);
+}
+
+void	set_termios(void)
+{
+	struct termios	term;
+
+	tcgetattr(STDIN_FILENO, &term);
+	term.c_lflag &= ~ECHOCTL;
+	tcsetattr(STDIN_FILENO, 0, &term);
 }
