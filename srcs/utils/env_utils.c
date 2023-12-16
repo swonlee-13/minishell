@@ -6,7 +6,7 @@
 /*   By: yeolee2 <yeolee2@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 19:22:52 by yeolee2           #+#    #+#             */
-/*   Updated: 2023/12/16 19:36:55 by yeolee2          ###   ########.fr       */
+/*   Updated: 2023/12/16 22:50:05 by yeolee2          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ char	**copy_env_list(char **env)
 
 	idx = 0;
 	ret = (char **)malloc(sizeof(char *) * (len + 1));
+	if (!ret)
+		return (NULL);
 	while (idx < len)
 	{
 		ret[idx] = ft_strdup(env[idx]);
