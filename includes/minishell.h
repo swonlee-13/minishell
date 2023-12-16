@@ -6,7 +6,7 @@
 /*   By: yeolee2 <yeolee2@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 03:09:36 by yeolee2           #+#    #+#             */
-/*   Updated: 2023/12/16 19:50:27 by seongwol         ###   ########.fr       */
+/*   Updated: 2023/12/16 19:58:30 by yeolee2          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,6 @@ int		is_builtin(char *command);
 
 // Environment Utilities
 char	**copy_env_list(char **env);
-int		count_commands(t_node *root);
 char	*get_env_data(char **env, char *str);
 char	*set_env_name_and_value(char *name, char *path);
 void	add_env_data(char ***env, char *path);
@@ -104,7 +103,12 @@ void	renew_env_data(char ***env, char *curr_dir, char *prev_dir);
 void	reset_termios(void);
 void	set_termios(void);
 
-// Other Utilities
+// Command-line Utilities
+char	*get_command_path(char **cmd, char **env);
+int		count_commands(t_node *root);
 t_node	*find_redirection_root(t_node *root, int cmd_idx);
 
-#endif MINISHELL_H
+// Others
+void	setup_exit_status(pid_t pid);
+
+#endif

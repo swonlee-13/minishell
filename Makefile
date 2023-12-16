@@ -1,4 +1,51 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: yeolee2 <yeolee2@student.42.fr>            +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2023/12/16 19:49:27 by yeolee2           #+#    #+#              #
+#    Updated: 2023/12/16 19:57:45 by yeolee2          ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
 
+SRCS				=	srcs/data_structure/queue.c \
+                        srcs/data_structure/tree.c \
+                        srcs/parse/parse_lexer_utils2.c \
+                        srcs/parse/parse_parser.c \
+                        srcs/parse/parse_formatting_utils.c \
+                        srcs/parse/parse_lexer.c \
+                        srcs/parse/parse_tokenize2.c \
+                        srcs/parse/parse_utils.c \
+                        srcs/parse/parse_lexer_utils.c \
+                        srcs/parse/parse_tokenize.c \
+                        srcs/parse/parse_vector_conversion.c \
+                        srcs/parse/parse_tree.c \
+                        srcs/parse/parse_formatting.c \
+                        srcs/parse/parse_setter.c \
+                        srcs/utils/find_redirection_root.c \
+                        srcs/utils/split_dollar.c \
+                        srcs/utils/split_here_doc.c \
+                        srcs/utils/builtin_utils.c \
+                        srcs/utils/split_quote.c \
+                        srcs/utils/signal.c \
+                        srcs/utils/env_utils.c \
+                        srcs/utils/cmd_utils.c \
+                        srcs/utils/terminal_utils.c \
+                        srcs/heredoc/here_doc.c \
+                        srcs/heredoc/limiter_formatting.c \
+                        srcs/heredoc/here_doc_formatting.c \
+                        srcs/builtins/exit.c \
+                        srcs/builtins/unset.c \
+                        srcs/builtins/env.c \
+                        srcs/builtins/pwd.c \
+                        srcs/builtins/export.c \
+                        srcs/builtins/cd.c \
+                        srcs/builtins/echo.c \
+                        srcs/execute/execute.c \
+                        srcs/execute/redirection.c \
+                        srcs/execute/main.c \
 
 OBJS				=	${SRCS:.c=.o}
 
