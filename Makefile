@@ -6,7 +6,7 @@
 #    By: yeolee2 <yeolee2@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/16 19:49:27 by yeolee2           #+#    #+#              #
-#    Updated: 2023/12/16 19:50:46 by yeolee2          ###   ########.fr        #
+#    Updated: 2023/12/16 19:57:45 by yeolee2          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,7 +31,7 @@ SRCS				=	srcs/data_structure/queue.c \
                         srcs/utils/split_quote.c \
                         srcs/utils/signal.c \
                         srcs/utils/env_utils.c \
-                        srcs/utils/count_commands.c \
+                        srcs/utils/cmd_utils.c \
                         srcs/utils/terminal_utils.c \
                         srcs/heredoc/here_doc.c \
                         srcs/heredoc/limiter_formatting.c \

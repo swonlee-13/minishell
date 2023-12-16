@@ -6,7 +6,7 @@
 /*   By: yeolee2 <yeolee2@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 10:10:20 by yeolee2           #+#    #+#             */
-/*   Updated: 2023/12/16 19:32:44 by yeolee2          ###   ########.fr       */
+/*   Updated: 2023/12/16 19:54:27 by yeolee2          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static int	check_exit_arg(char **vector)
 		{
 			g_exit_code = 255;
 			printf("minishell: exit: %s: numeric argument required\n", arg);
-			print_error_message(vector, "numeric argument required\n");
+			// print_error_message(vector, "numeric argument required\n");
 			exit(g_exit_code);
 		}
 	}
@@ -38,7 +38,7 @@ void	terminate_program(char **vector)
 {
 	if (vector[1] == NULL)
 		exit(EXIT_SUCCESS);
-	if (ft_strslen(vector) == 2)
+	if (ft_strslen(vector) > 1)
 	{
 		g_exit_code = ft_atoi(vector[1]);
 		if (g_exit_code == 0)
