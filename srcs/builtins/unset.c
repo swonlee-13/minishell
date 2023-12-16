@@ -6,7 +6,7 @@
 /*   By: yeolee2 <yeolee2@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 10:10:28 by yeolee2           #+#    #+#             */
-/*   Updated: 2023/12/15 04:00:06 by yeolee2          ###   ########.fr       */
+/*   Updated: 2023/12/15 19:58:10 by yeolee2          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 extern int	g_exit_code;
 
-int	check_bash_var_name_convention(char *name)
+static int	check_bash_var_name_convention(char *name)
 {
 	size_t	idx;
 
@@ -30,7 +30,7 @@ int	check_bash_var_name_convention(char *name)
 	return (SUCCESS);
 }
 
-void	handle_unset_error(char *name)
+static void	handle_unset_error(char *name)
 {
 	printf("minishell: unset: %s: not a valid identifier\n", name);
 	g_exit_code = 1;
@@ -41,7 +41,7 @@ void	remove_env_data(char ***env, char *name)
 {
 	char	**res;
 	size_t	i;
-	size_t  j;
+	size_t	j;
 
 	if (!get_env_data(*env, name))
 		return ;
@@ -63,24 +63,3 @@ void	remove_env_data(char ***env, char *name)
 	ft_free(*env);
 	*env = res;
 }
-
-// int main(void)
-// {
-//     char    **env;
-// 	char** vector = malloc(3 * sizeof(char *));
-	
-// 	vector[0] = strdup("unset");
-// 	vector[1] = strdup("PATH");
-// 	vector[2] = NULL;
-// 	env = malloc(3 * sizeof(char *));
-// 	build_env(&env);
-//     printf("Before remove_env_data:\n");
-// 	for (int i = 0; env[i]; i++)
-// 		printf("%s\n", env[i]);
-// 	if (!ft_strcmp(vector[0], "unset"))
-// 	    remove_env_data(&env, vector[1]);
-//     printf("After remove_env_data:\n");
-// 	for (int i = 0; env[i]; i++)
-// 		printf("%s\n", env[i]);
-//     return 0;
-// }

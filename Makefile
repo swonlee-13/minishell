@@ -1,49 +1,4 @@
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: yeolee2 <yeolee2@student.42.fr>            +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2023/11/29 22:14:25 by yeolee2           #+#    #+#              #
-#    Updated: 2023/12/16 19:28:36 by seongwol         ###   ########.fr        #
-#                                                                              #
-# **************************************************************************** #
 
-SRCS				=	srcs/builtins/cd.c \
-						srcs/builtins/echo.c \
-						srcs/builtins/env.c \
-						srcs/builtins/exit.c \
-						srcs/builtins/export.c \
-						srcs/builtins/pwd.c \
-						srcs/builtins/unset.c \
-						srcs/data_structure/tree.c \
-						srcs/data_structure/queue.c \
-						srcs/heredoc/here_doc.c \
-						srcs/heredoc/here_doc_formatting.c \
-						srcs/heredoc/main.c \
-						srcs/heredoc/limiter_formatting.c \
-						srcs/parse/parse_formatting.c \
-						srcs/parse/parse_formatting_utils.c \
-						srcs/parse/parse_lexer.c \
-						srcs/parse/parse_lexer_utils.c \
-						srcs/parse/parse_lexer_utils2.c \
-						srcs/parse/parse_parser.c \
-						srcs/parse/parse_setter.c \
-						srcs/parse/parse_tokenize.c \
-						srcs/parse/parse_tokenize2.c \
-						srcs/parse/parse_tree.c \
-						srcs/parse/parse_utils.c \
-						srcs/parse/parse_vector_conversion.c \
-						srcs/utils/split_dollar.c \
-						srcs/utils/split_here_doc.c \
-						srcs/utils/split_quote.c \
-						srcs/utils/builtin_utils.c \
-						srcs/utils/error_utils.c \
-						srcs/utils/copy_env_list.c \
-						srcs/utils/count_commands.c \
-						srcs/utils/signal.c \
-						srcs/utils/find_redirection_root.c \
 
 OBJS				=	${SRCS:.c=.o}
 
