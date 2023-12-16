@@ -6,7 +6,7 @@
 #    By: yeolee2 <yeolee2@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/29 22:14:25 by yeolee2           #+#    #+#              #
-#    Updated: 2023/12/12 00:43:14 by yeolee2          ###   ########.fr        #
+#    Updated: 2023/12/16 19:28:36 by seongwol         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,16 +24,20 @@ SRCS				=	srcs/builtins/cd.c \
 						srcs/heredoc/main.c \
 						srcs/heredoc/limiter_formatting.c \
 						srcs/parse/parse_formatting.c \
+						srcs/parse/parse_formatting_utils.c \
 						srcs/parse/parse_lexer.c \
+						srcs/parse/parse_lexer_utils.c \
+						srcs/parse/parse_lexer_utils2.c \
 						srcs/parse/parse_parser.c \
 						srcs/parse/parse_setter.c \
 						srcs/parse/parse_tokenize.c \
+						srcs/parse/parse_tokenize2.c \
 						srcs/parse/parse_tree.c \
 						srcs/parse/parse_utils.c \
 						srcs/parse/parse_vector_conversion.c \
-						srcs/parse/split_dollar.c \
-						srcs/parse/split_here_doc.c \
-						srcs/parse/split_quote.c \
+						srcs/utils/split_dollar.c \
+						srcs/utils/split_here_doc.c \
+						srcs/utils/split_quote.c \
 						srcs/utils/builtin_utils.c \
 						srcs/utils/error_utils.c \
 						srcs/utils/copy_env_list.c \

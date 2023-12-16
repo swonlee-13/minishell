@@ -3,29 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   parse_lexer.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yeolee2 <yeolee2@student.42.fr>            +#+  +:+       +#+        */
+/*   By: seongwol <seongwol@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/01 19:21:52 by yeolee2           #+#    #+#             */
-/*   Updated: 2023/12/14 02:02:52 by yeolee2          ###   ########.fr       */
+/*   Created: 2023/12/16 18:48:56 by seongwol          #+#    #+#             */
+/*   Updated: 2023/12/16 18:52:05 by seongwol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parse.h"
-
-int	redir_lexer_count(char *token_string, int i, char c)
-{
-	int	res;
-
-	res = 0;
-	while (token_string[i] == c)
-	{
-		res++;
-		i++;
-	}
-	if (res > 2)
-		return (SYNTAX_ERROR);
-	return (i);
-}
 
 int	redir_lexer(char *token_string)
 {
@@ -54,19 +39,6 @@ int	redir_lexer(char *token_string)
 	return (TRUE);
 }
 
-int	quote_lexer_find_end(char *token_string, int i, char c)
-{
-	i++;
-	while (token_string[i] != '\0' && token_string[i] != c)
-	{
-		i++;
-	}
-	if (token_string[i] != c)
-		return (SYNTAX_ERROR);
-	else
-		return (i + 1);
-}
-
 int	quote_lexer(char *token_string)
 {
 	int	i;
@@ -89,18 +61,6 @@ int	quote_lexer(char *token_string)
 	return (TRUE);
 }
 
-int	file_lexer_argument_check(char *token_string, int i, char c)
-{
-	while (token_string[i] == c)
-		i++;
-	while (token_string[i] == ' ')
-		i++;
-	if (token_string[i] != 'S' && token_string[i] != 'D' && token_string[i] != 'A')
-		return (SYNTAX_ERROR);
-	else
-		return (i);
-}
-
 int	file_lexer(char *token_string)
 {
 	int	i;
@@ -121,17 +81,6 @@ int	file_lexer(char *token_string)
 			i++;
 	}
 	return (TRUE);
-}
-
-int	pipe_lexer_double_check(char *token_string, int i)
-{
-	i++;
-	while (token_string[i] == ' ')
-		i++;
-	if (token_string[i] == 'P' || token_string[i] == '\0')
-		return (SYNTAX_ERROR);
-	else
-		return (i);
 }
 
 int	pipe_lexer(char *token_string)
@@ -161,52 +110,7 @@ int	pipe_lexer(char *token_string)
 	return (TRUE);
 }
 
-int	dollar_sign_lexer_double(char *cmd, int i)
-{
-	i++;
-	if (cmd[i] == '$')
-		return (SYNTAX_ERROR);
-	if (cmd[i] == ' ' || cmd[i] == '\0')
-		return (i);
-	if ((cmd[i] != '?' && cmd[i] != '"') && (!ft_isalpha(cmd[i]) && cmd[i] != '_'))
-		return (SYNTAX_ERROR);
-	else
-		return (i);
-}
-
-int	dollar_sign_lexer_quote(char *cmd, int i)
-{
-	i++;
-	while (cmd[i] != '\'')
-		i++;
-	return (i + 1);
-}
-
-int	dollar_sign_lexer(char *cmd, char *token_string)
-{
-	int	i;
-
-	i = 0;
-	while (cmd[i])
-	{
-		if (cmd[i] == '\'' && token_string[i] == 'S')
-			i = dollar_sign_lexer_quote(cmd, i);
-		else if (cmd[i] == '$')
-		{
-			i = dollar_sign_lexer_double(cmd, i);
-			if (i == SYNTAX_ERROR)
-			{
-				write(2, "minishell: dollar sign ", 23);
-				return (SYNTAX_ERROR);
-			}
-		}
-		else
-			i++;
-	}
-	return (TRUE);
-}
-
-int token_lexer(char *cmd, char *token_string)
+int	token_lexer(char *cmd, char *token_string)
 {
 	if (redir_lexer(token_string) == SYNTAX_ERROR)
 		return (SYNTAX_ERROR);
