@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-# ifndef MINISHELL_H
+#ifndef MINISHELL_H
 # define MINISHELL_H
 
 // Standard Libraries
@@ -41,11 +41,12 @@
 # define PATH_MAX    1024
 
 // Struct Declarations
-typedef struct	s_file {
-	int in;
-	int out;
-	int temp;
-}		t_file;
+typedef struct s_file
+{
+	int	in;
+	int	out;
+	int	temp;
+}	t_file;
 
 // CD Command
 void	change_directory(char **vector, char ***env);

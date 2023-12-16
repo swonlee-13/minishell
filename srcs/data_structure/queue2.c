@@ -1,27 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   limiter_formatting.c                               :+:      :+:    :+:   */
+/*   queue2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: seongwol <seongwol@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/16 19:56:58 by seongwol          #+#    #+#             */
-/*   Updated: 2023/12/16 19:57:02 by seongwol         ###   ########.fr       */
+/*   Created: 2023/12/16 19:52:53 by seongwol          #+#    #+#             */
+/*   Updated: 2023/12/16 19:53:30 by seongwol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "parse.h"
 
-char	*limiter_formatting(char *data)
+void	empty_queue(t_queue *q)
 {
-	char	*res;
+	while (q->node_count != 0)
+		dequeue(q);
+}
 
-	if (data[0] == '"')
-		res = ft_strtrim(data, "\"");
-	else if (data[0] == '\'')
-		res = ft_strtrim(data, "'");
-	else
-		res = ft_strdup(data);
-	free(data);
-	return (res);
+void	queue_init(t_queue *q)
+{
+	q->front = NULL;
+	q->rear = NULL;
+	q->node_count = 0;
+	q->total_cmd_num = 0;
 }

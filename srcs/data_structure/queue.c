@@ -3,22 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   queue.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yeolee2 <yeolee2@student.42.fr>            +#+  +:+       +#+        */
+/*   By: seongwol <seongwol@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/01 19:20:39 by yeolee2           #+#    #+#             */
-/*   Updated: 2023/12/16 19:14:38 by yeolee2          ###   ########.fr       */
+/*   Created: 2023/12/16 19:52:35 by seongwol          #+#    #+#             */
+/*   Updated: 2023/12/16 19:55:31 by seongwol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parse.h"
-
-void	queue_init(t_queue *q)
-{
-	q->front = NULL;
-	q->rear = NULL;
-	q->node_count = 0;
-	q->total_cmd_num = 0;
-}
 
 int	queue_is_empty(t_queue *q)
 {
@@ -57,29 +49,9 @@ t_node	*dequeue(t_queue *q)
 	return (ptr);
 }
 
-void	print_queue(t_queue *q)
-{
-	t_node *ptr;
-
-	ptr = q->front;
-	while (ptr)
-	{
-		printf("[%s]", ptr->data);
-		printf("->");
-		ptr = ptr->right;
-	}
-	printf("NULL");
-}
-
-void	empty_queue(t_queue *q)
-{
-	while (q->node_count != 0)
-		dequeue(q);
-}
-
 t_node	*node_init(void)
 {
-	t_node *new;
+	t_node	*new;
 
 	new = malloc(sizeof(t_node));
 	new->left = NULL;
