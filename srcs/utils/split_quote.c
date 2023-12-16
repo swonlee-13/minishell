@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   split_here_doc.c                                   :+:      :+:    :+:   */
+/*   split_quote.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yeolee2 <yeolee2@student.42.fr>            +#+  +:+       +#+        */
+/*   By: seongwol <seongwol@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/11 22:37:52 by yeolee2           #+#    #+#             */
-/*   Updated: 2023/12/11 22:37:53 by yeolee2          ###   ########.fr       */
+/*   Created: 2023/12/16 19:14:56 by seongwol          #+#    #+#             */
+/*   Updated: 2023/12/16 19:15:35 by seongwol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,22 +14,26 @@
 
 static int	split_indexing(char *str, int i)
 {
-	if (str[i] == '$' && str[i + 1] == '?')
-		return (i + 1);
-	if (str[i] == '$')
+	char	c;
+
+	if (str[i] == '$' && str[i + 1] == '"')
+		i++;
+	c = str[i];
+	if (str[i] == '"' || str[i] == '\'')
 	{
 		i++;
-		if (str[i] != '_' && !ft_isalpha(str[i]))
-			return (i - 1);
-		while (ft_isalnum(str[i]) || str[i] == '_')
+		while (str[i] != c && str[i] != '\0')
 			i++;
 	}
 	else
 	{
-		while (str[i] != '$' && str[i] != '\0')
+		i++;
+		while (str[i] != '"' && str[i] != '\'' && str[i] != '\0' \
+				&& str[i] != '$')
 			i++;
+		i--;
 	}
-	return (i - 1);
+	return (i);
 }
 
 static int	line_count(char *str)
@@ -43,12 +47,12 @@ static int	line_count(char *str)
 	{
 		i = split_indexing(str, i);
 		count++;
-		i++; 
+		i++;
 	}
 	return (count);
 }
 
-char	**shell_split_here_doc(char *str)
+char	**shell_split_quote(char *str)
 {
 	char		**res;
 	const int	word = line_count(str);

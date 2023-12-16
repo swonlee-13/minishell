@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_tokenize.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yeolee2 <yeolee2@student.42.fr>            +#+  +:+       +#+        */
+/*   By: seongwol <seongwol@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/01 19:22:13 by yeolee2           #+#    #+#             */
-/*   Updated: 2023/12/11 22:49:48 by yeolee2          ###   ########.fr       */
+/*   Created: 2023/12/16 19:13:06 by seongwol          #+#    #+#             */
+/*   Updated: 2023/12/16 19:13:07 by seongwol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,6 @@ int	redirection_tokenizer(char *cmd, int i, char *token_string, char c)
 		i++;
 	}
 	return (i);
-}
-
-int	pipe_tokenizer(int i, char *token_string)
-{
-	token_string[i] = 'P';
-	return (i + 1);
 }
 
 int	space_tokenizer(int i, char *cmd, char *token_string)
@@ -63,9 +57,10 @@ int	quote_tokenizer(char *cmd, int i, char *token_string, char c)
 	return (i);
 }
 
-int normal_tokenizer(char *cmd, int i, char *token_string)
+int	normal_tokenizer(char *cmd, int i, char *token_string)
 {
-	while (cmd[i] != '\0' && cmd[i] != ' ' && !ft_is_redirection(cmd[i]) && cmd[i] != '|')
+	while (cmd[i] != '\0' && cmd[i] != ' ' && \
+			!ft_is_redirection(cmd[i]) && cmd[i] != '|')
 	{
 		if (cmd[i] == '\'' || cmd[i] == '"')
 			i = quote_tokenizer(cmd, i, token_string, cmd[i]);
@@ -97,7 +92,7 @@ char	*tokenizer(char *cmd)
 		else if (cmd[i] != '\0')
 			i = normal_tokenizer(cmd, i, token_string);
 		else if (cmd[i] == '\0')
-			break;
+			break ;
 	}
 	return (token_string);
 }

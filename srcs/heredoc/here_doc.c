@@ -14,7 +14,7 @@
 
 extern int	g_exit_code;
 
-void	create_here_doc_file(t_node *node)
+char	*create_here_doc_file(t_node *node)
 {
 	char		*file_name;
 	static int	number;
@@ -33,10 +33,7 @@ void	create_here_doc_file(t_node *node)
 	}
 	node->fd = open(file_name, O_RDWR | O_CREAT | O_EXCL | O_TRUNC, 0644);
 	free(numstr);
-	close(node->fd);
-	node->fd = open(file_name, O_RDONLY);
-	unlink(file_name);
-	free(file_name);
+	return (file_name);
 }
 
 void	write_here_doc(t_node *node, char **env_copy)
@@ -59,14 +56,19 @@ void	write_here_doc(t_node *node, char **env_copy)
 int	activate_here_doc(t_node *node, char **env_copy)
 {
 	int	fd;
+	char	*file_name;
 	
 	fd = dup(STDIN_FILENO);
 	signal(SIGINT, heredoc_sigint_handler);
-	create_here_doc_file(node);
+	file_name = create_here_doc_file(node);
 	write_here_doc(node, env_copy);
 	dup2(fd, STDIN_FILENO);
 	close(fd);
+	close(node->fd);
+	node->fd = open(file_name, O_RDONLY);
+	unlink(file_name);
 	signal(SIGINT, prompt_sigint_handler);
+	free(file_name);
 	return (SUCCESS);
 }
 
