@@ -6,11 +6,11 @@
 /*   By: yeolee2 <yeolee2@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 03:09:36 by yeolee2           #+#    #+#             */
-/*   Updated: 2023/12/16 19:38:07 by yeolee2          ###   ########.fr       */
+/*   Updated: 2023/12/16 19:50:27 by seongwol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# ifndef MINISHELL_H
+#ifndef MINISHELL_H
 # define MINISHELL_H
 
 // Standard Libraries
@@ -41,11 +41,12 @@
 # define PATH_MAX    1024
 
 // Struct Declarations
-typedef struct	s_file {
-	int in;
-	int out;
-	int temp;
-}		t_file;
+typedef struct s_file
+{
+	int	in;
+	int	out;
+	int	temp;
+}	t_file;
 
 // CD Command
 void	change_directory(char **vector, char ***env);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   here_doc.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yeolee2 <yeolee2@student.42.fr>            +#+  +:+       +#+        */
+/*   By: seongwol <seongwol@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/08 16:30:57 by seongwol          #+#    #+#             */
-/*   Updated: 2023/12/13 19:24:34 by yeolee2          ###   ########.fr       */
+/*   Created: 2023/12/16 19:56:08 by seongwol          #+#    #+#             */
+/*   Updated: 2023/12/16 19:56:53 by seongwol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void	write_here_doc(t_node *node, char **env_copy)
 	{
 		buffer = readline("> ");
 		if (buffer == 0 || ft_strcmp(buffer, node->data) == 0)
-			break;
+			break ;
 		buffer = here_doc_formatting(buffer, env_copy);
 		ft_putstr_fd(buffer, node->fd);
 		ft_putstr_fd("\n", node->fd);
@@ -55,9 +55,9 @@ void	write_here_doc(t_node *node, char **env_copy)
 
 int	activate_here_doc(t_node *node, char **env_copy)
 {
-	int	fd;
+	int		fd;
 	char	*file_name;
-	
+
 	fd = dup(STDIN_FILENO);
 	signal(SIGINT, heredoc_sigint_handler);
 	file_name = create_here_doc_file(node);
@@ -96,7 +96,6 @@ void	setup_cmd_redirection(t_node *root, int cmd_idx, t_file *file)
 
 	file->in = STDIN_FILENO;
 	file->out = STDOUT_FILENO;
-	// file->temp = -2;
 	ptr = find_redirection_root(root, cmd_idx);
 	ptr = ptr->right;
 	while (ptr)

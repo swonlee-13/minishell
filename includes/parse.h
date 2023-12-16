@@ -6,7 +6,7 @@
 /*   By: seongwol <seongwol@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/16 18:33:04 by seongwol          #+#    #+#             */
-/*   Updated: 2023/12/16 19:32:32 by seongwol         ###   ########.fr       */
+/*   Updated: 2023/12/16 19:51:23 by seongwol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ int		quote_tokenizer(char *cmd, int i, char *token_string, char c);
 int		normal_tokenizer(char *cmd, int i, char *token_string);
 char	*tokenizer(char *cmd);
 //parse_tokenizer2.c
-int 	pipe_tokenizer(int i, char *token_string);
+int		pipe_tokenizer(int i, char *token_string);
 
 //lexer.c
 int		redir_lexer_count(char *token_string, int i, char c);
@@ -75,8 +75,8 @@ int		pipe_lexer(char *token_string);
 int		token_lexer(char *cmd, char *token_string);
 
 //lexer_utils2.c
-int dollar_sign_lexer(char *cmd, char *token_string);
-int dollar_sign_lexer_double(char *cmd, int i);
+int		dollar_sign_lexer(char *cmd, char *token_string);
+int		dollar_sign_lexer_double(char *cmd, int i);
 
 //data_structure/queue.c
 void	queue_init(t_queue *q);
@@ -111,8 +111,8 @@ void	token_setter(char *cmd, char *token_string);
 void	node_data_formatting(t_queue *q, char **env_copy);
 char	*here_doc_formatting(char *str, char **env_copy);
 //parse_formatting_utils.c
-char    *env_var_replace(char *str, char **env);
-void    remove_and_replace(char **strs, char **env);
+char	*env_var_replace(char *str, char **env);
+void	remove_and_replace(char **strs, char **env);
 //split_dollar.c
 char	**shell_split_dollar(char *str);
 
