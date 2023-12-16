@@ -6,7 +6,7 @@
 /*   By: yeolee2 <yeolee2@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 19:22:38 by yeolee2           #+#    #+#             */
-/*   Updated: 2023/12/11 22:50:15 by yeolee2          ###   ########.fr       */
+/*   Updated: 2023/12/16 20:02:11 by seongwol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static int	split_indexing(char *str, int i)
 	}
 	else
 	{
-		if (str[i]  == '\0')
+		if (str[i] == '\0')
 			return (i);
 		while (str[i] != '$' && str[i] != '\0')
 			i++;
@@ -45,7 +45,7 @@ static int	line_count(char *str)
 	{
 		i = split_indexing(str, i);
 		count++;
-		i++; 
+		i++;
 	}
 	return (count);
 }

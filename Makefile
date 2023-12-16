@@ -6,11 +6,12 @@
 #    By: yeolee2 <yeolee2@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/16 19:49:27 by yeolee2           #+#    #+#              #
-#    Updated: 2023/12/16 19:57:45 by yeolee2          ###   ########.fr        #
+#    Updated: 2023/12/16 20:01:09 by seongwol         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 SRCS				=	srcs/data_structure/queue.c \
+						srcs/data_structure/queue2.c \
                         srcs/data_structure/tree.c \
                         srcs/parse/parse_lexer_utils2.c \
                         srcs/parse/parse_parser.c \
