@@ -6,7 +6,7 @@
 /*   By: yeolee2 <yeolee2@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/16 18:38:45 by yeolee2           #+#    #+#             */
-/*   Updated: 2023/12/18 22:14:54 by seongwol         ###   ########.fr       */
+/*   Updated: 2023/12/18 23:09:50 by seongwol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,30 +61,44 @@ pid_t	execute_pipeline(int idx, t_node *tree, t_file *redir, char ***env)
 	return (pid);
 }
 
-void	execute_single_command(t_node *tree, t_file *file, char ***env_copy)
+int	single_command_redirection(t_file *file)
 {
-	char	**commands;
-	int		fd[2];
-
 	if (file->in == -1)
 	{
 		if (file->out != STDOUT_FILENO)
 			close(file->out);
 		g_exit_code = 255;
-		return ;
+		return (FALSE);
 	}
-	fd[READ] = dup(STDIN_FILENO);
-	fd[WRITE] = dup(STDOUT_FILENO);
+	if (file->in != STDIN_FILENO)
+	{
+		dup2(file->in, STDIN_FILENO);
+		close(file->in);
+	}
+	if (file->out != STDOUT_FILENO)
+	{
+		dup2(file->out, STDOUT_FILENO);
+		close(file->out);
+	}
+	return (TRUE);
+}
+
+void	execute_single_command(t_node *tree, t_file *file, char ***env_copy)
+{
+	char	**commands;
+	int		my_stdin;
+	int		my_stdout;
+
+	my_stdin = dup(STDIN_FILENO);
+	my_stdout = dup(STDOUT_FILENO);
+	if (single_command_redirection(file) == FALSE)
+		return ;
 	commands = vector_conversion(&tree, 0);
-	dup2(file->in, STDIN_FILENO);
-	dup2(file->out, STDOUT_FILENO);
-	close(file->in);
-	close(file->out);
 	execute_builtin(commands, env_copy);
-	dup2(fd[READ], STDIN_FILENO);
-	dup2(fd[WRITE], STDOUT_FILENO);
-	close(fd[READ]);
-	close(fd[WRITE]);
+	dup2(my_stdin, STDIN_FILENO);
+	dup2(my_stdout, STDOUT_FILENO);
+	close(my_stdin);
+	close(my_stdout);
 	ft_free(commands);
 	return ;
 }
@@ -107,8 +121,7 @@ void	execute_commands(t_node *tree, char ***env_copy)
 			execute_single_command(tree, &redir, env_copy);
 			return ;
 		}
-		else
-			last_pid = execute_pipeline(idx, tree, &redir, env_copy);
+		last_pid = execute_pipeline(idx, tree, &redir, env_copy);
 	}
 	setup_exit_status(last_pid);
 }

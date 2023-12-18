@@ -53,6 +53,7 @@ void	open_files(t_node *root, char **env_copy)
 		root->fd = open(root->data, O_RDONLY);
 		if (root->fd == -1)
 		{
+			g_exit_code = 1;
 			print_no_file_error(root->data);
 			return ;
 		}
