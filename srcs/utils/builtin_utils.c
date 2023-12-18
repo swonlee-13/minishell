@@ -6,7 +6,7 @@
 /*   By: yeolee2 <yeolee2@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/11 22:43:21 by yeolee2           #+#    #+#             */
-/*   Updated: 2023/12/16 22:24:19 by yeolee2          ###   ########.fr       */
+/*   Updated: 2023/12/18 14:39:09 by seongwol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	execute_builtin(char **command_vector, char ***env_copy)
 {
 	if (!ft_strcmp(command_vector[0], "cd"))
-		change_directory(command_vector, env_copy); 
+		change_directory(command_vector, env_copy);
 	else if (!ft_strcmp(command_vector[0], "echo"))
 		write_arg_to_stdout(command_vector);
 	else if (!ft_strcmp(command_vector[0], "env"))
