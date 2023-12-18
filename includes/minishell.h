@@ -6,7 +6,7 @@
 /*   By: yeolee2 <yeolee2@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 03:09:36 by yeolee2           #+#    #+#             */
-/*   Updated: 2023/12/16 19:58:30 by yeolee2          ###   ########.fr       */
+/*   Updated: 2023/12/19 03:57:17 by yeolee2          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ void	set_export_attribute(char ***env, char **vector);
 void	print_working_directory(void);
 
 // Unset Command
+int		check_bash_var_name_convention(char *name);
 void	remove_env_data(char ***env, char *name);
 
 // Exit Command

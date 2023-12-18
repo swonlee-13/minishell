@@ -6,7 +6,7 @@
 /*   By: yeolee2 <yeolee2@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 10:10:28 by yeolee2           #+#    #+#             */
-/*   Updated: 2023/12/15 19:58:10 by yeolee2          ###   ########.fr       */
+/*   Updated: 2023/12/19 05:30:37 by yeolee2          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,11 @@
 
 extern int	g_exit_code;
 
-static int	check_bash_var_name_convention(char *name)
+int	check_bash_var_name_convention(char *name)
 {
 	size_t	idx;
 
-	if (ft_isdigit(name[0]))
+	if (name[0] == '\0' || ft_isdigit(name[0]))
 		return (FAILURE);
 	idx = 0;
 	while (name[idx])
@@ -32,7 +32,7 @@ static int	check_bash_var_name_convention(char *name)
 
 static void	handle_unset_error(char *name)
 {
-	printf("minishell: unset: %s: not a valid identifier\n", name);
+	printf("minishell: unset: `%s': not a valid identifier\n", name);
 	g_exit_code = 1;
 	return ;
 }
