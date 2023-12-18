@@ -6,7 +6,7 @@
 /*   By: yeolee2 <yeolee2@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/16 18:38:45 by yeolee2           #+#    #+#             */
-/*   Updated: 2023/12/18 23:09:50 by seongwol         ###   ########.fr       */
+/*   Updated: 2023/12/19 00:08:50 by seongwol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,13 +63,6 @@ pid_t	execute_pipeline(int idx, t_node *tree, t_file *redir, char ***env)
 
 int	single_command_redirection(t_file *file)
 {
-	if (file->in == -1)
-	{
-		if (file->out != STDOUT_FILENO)
-			close(file->out);
-		g_exit_code = 255;
-		return (FALSE);
-	}
 	if (file->in != STDIN_FILENO)
 	{
 		dup2(file->in, STDIN_FILENO);
@@ -91,8 +84,14 @@ void	execute_single_command(t_node *tree, t_file *file, char ***env_copy)
 
 	my_stdin = dup(STDIN_FILENO);
 	my_stdout = dup(STDOUT_FILENO);
-	if (single_command_redirection(file) == FALSE)
+	if (file->in == -1)
+	{
+		if (file->out != STDOUT_FILENO)
+			close(file->out);
+		g_exit_code = 255;
 		return ;
+	}
+	single_command_redirection(file);
 	commands = vector_conversion(&tree, 0);
 	execute_builtin(commands, env_copy);
 	dup2(my_stdin, STDIN_FILENO);
@@ -116,12 +115,14 @@ void	execute_commands(t_node *tree, char ***env_copy)
 		redir.in = STDIN_FILENO;
 		redir.out = STDOUT_FILENO;
 		setup_cmd_redirection(tree, idx, &redir);
-		if (cnt == 1 && is_builtin(tree->left->right->right->data))
+		if (cnt == 1 && tree->left->right->right && \
+		 is_builtin(tree->left->right->right->data))
 		{
 			execute_single_command(tree, &redir, env_copy);
 			return ;
 		}
-		last_pid = execute_pipeline(idx, tree, &redir, env_copy);
+		else
+			last_pid = execute_pipeline(idx, tree, &redir, env_copy);
 	}
 	setup_exit_status(last_pid);
 }

@@ -6,7 +6,7 @@
 /*   By: yeolee2 <yeolee2@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 14:32:11 by yeolee2           #+#    #+#             */
-/*   Updated: 2023/12/16 22:25:59 by yeolee2          ###   ########.fr       */
+/*   Updated: 2023/12/19 00:07:14 by seongwol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,9 +50,9 @@ void	execute_and_cleanup(t_node **tree, char ***env)
 
 int	main(int argc, char *argv[], char **env)
 {
-	char			**env_copy;
-	char			*cmd_line;
-	t_node			*tree;
+	char	**env_copy;
+	char	*cmd_line;
+	t_node	*tree;
 
 	env_copy = copy_env_list(env);
 	while (argc || argv)
