@@ -33,6 +33,8 @@ static int	is_n_option(char *arg)
 	size_t	idx;
 
 	idx = 0;
+	if (arg == NULL)
+		return (FALSE);
 	while (arg[idx])
 	{
 		if (!ft_strncmp(&arg[idx], "-n", 2))
@@ -61,7 +63,7 @@ void	write_arg_to_stdout(char **vector)
 	while (vector[idx])
 	{
 		printf("%s", vector[idx]);
-		if (vector[idx + 1])
+		if (vector[idx] && vector[idx + 1])
 			printf(" ");
 		idx++;
 	}

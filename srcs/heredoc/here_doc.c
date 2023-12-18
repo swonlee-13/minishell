@@ -6,7 +6,7 @@
 /*   By: seongwol <seongwol@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/16 19:56:08 by seongwol          #+#    #+#             */
-/*   Updated: 2023/12/16 19:56:53 by seongwol         ###   ########.fr       */
+/*   Updated: 2023/12/18 17:28:11 by seongwol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,33 +72,13 @@ int	activate_here_doc(t_node *node, char **env_copy)
 	return (SUCCESS);
 }
 
-void	open_files(t_node *root, char **env_copy)
-{
-	if (g_exit_code == 1)
-		return ;
-	if (root == NULL)
-		return ;
-	if (root->type == REDIR_DOUBLE_IN)
-		activate_here_doc(root, env_copy);
-	else if (root->type == REDIR_SINGLE_IN)
-		root->fd = open(root->data, O_RDONLY);
-	else if (root->type == REDIR_SINGLE_OUT)
-		root->fd = open(root->data, O_RDWR | O_CREAT | O_TRUNC, 0644);
-	else if (root->type == REDIR_DOUBLE_OUT)
-		root->fd = open(root->data, O_RDWR | O_CREAT | O_APPEND, 0644);
-	open_files(root->left, env_copy);
-	open_files(root->right, env_copy);
-}
-
 void	setup_cmd_redirection(t_node *root, int cmd_idx, t_file *file)
 {
 	t_node	*ptr;
 
-	file->in = STDIN_FILENO;
-	file->out = STDOUT_FILENO;
 	ptr = find_redirection_root(root, cmd_idx);
 	ptr = ptr->right;
-	while (ptr)
+	while (ptr && file->in != -1 && file->out != -1)
 	{
 		if (ptr->left->type == REDIR_DOUBLE_IN \
 		|| ptr->left->type == REDIR_SINGLE_IN)

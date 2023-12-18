@@ -6,7 +6,7 @@
 /*   By: yeolee2 <yeolee2@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 01:05:18 by yeolee2           #+#    #+#             */
-/*   Updated: 2023/12/15 19:49:41 by yeolee2          ###   ########.fr       */
+/*   Updated: 2023/12/18 16:47:08 by seongwol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ void	change_directory(char **vector, char ***env)
 	prev_dir = get_env_data(*env, "OLDPWD");
 	curr_dir = malloc(sizeof(char) * PATH_MAX);
 	getcwd(curr_dir, PATH_MAX);
-	if (!vector[1])
+	if (!vector[1] || ft_strcmp(vector[1], "~") == 0)
 	{
 		targ_dir = get_env_data(*env, "HOME");
 		if (!targ_dir)

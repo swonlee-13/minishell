@@ -87,6 +87,7 @@ void	init_signal(void);
 // Here Document Utilities
 void	open_files(t_node *root, char **env_copy);
 void	setup_cmd_redirection(t_node *root, int cmd_idx, t_file *file);
+int		activate_here_doc(t_node *node, char **env_copy);
 
 // Builtin Command Utilities
 void	execute_builtin(char **command_vector, char ***env_copy);
@@ -102,6 +103,7 @@ void	renew_env_data(char ***env, char *curr_dir, char *prev_dir);
 // Terminal Utilities
 void	reset_termios(void);
 void	set_termios(void);
+void	print_no_file_error(char *file);
 
 // Command-line Utilities
 char	*get_command_path(char **cmd, char **env);

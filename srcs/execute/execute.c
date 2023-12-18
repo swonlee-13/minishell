@@ -6,7 +6,7 @@
 /*   By: yeolee2 <yeolee2@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/16 18:38:45 by yeolee2           #+#    #+#             */
-/*   Updated: 2023/12/16 19:15:42 by yeolee2          ###   ########.fr       */
+/*   Updated: 2023/12/18 22:14:54 by seongwol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,8 @@ pid_t	execute_pipeline(int idx, t_node *tree, t_file *redir, char ***env)
 		signal(SIGINT, SIG_DFL);
 		signal(SIGQUIT, SIG_DFL);
 		setup_child_redirection(fd, idx, tree, *redir);
-		execute_command(fd, idx, tree, env);
+		if (redir->in != -1)
+			execute_command(fd, idx, tree, env);
 		exit(g_exit_code);
 	}
 	else
@@ -60,31 +61,54 @@ pid_t	execute_pipeline(int idx, t_node *tree, t_file *redir, char ***env)
 	return (pid);
 }
 
+void	execute_single_command(t_node *tree, t_file *file, char ***env_copy)
+{
+	char	**commands;
+	int		fd[2];
+
+	if (file->in == -1)
+	{
+		if (file->out != STDOUT_FILENO)
+			close(file->out);
+		g_exit_code = 255;
+		return ;
+	}
+	fd[READ] = dup(STDIN_FILENO);
+	fd[WRITE] = dup(STDOUT_FILENO);
+	commands = vector_conversion(&tree, 0);
+	dup2(file->in, STDIN_FILENO);
+	dup2(file->out, STDOUT_FILENO);
+	close(file->in);
+	close(file->out);
+	execute_builtin(commands, env_copy);
+	dup2(fd[READ], STDIN_FILENO);
+	dup2(fd[WRITE], STDOUT_FILENO);
+	close(fd[READ]);
+	close(fd[WRITE]);
+	ft_free(commands);
+	return ;
+}
+
 void	execute_commands(t_node *tree, char ***env_copy)
 {
 	int			idx;
 	const int	cnt = count_commands(tree);
-	char		**vector;
 	pid_t		last_pid;
 	t_file		redir;
 
-	idx = 0;
-	while (idx < cnt)
-	{
+	idx = -1;
+	while (++idx < cnt)
+	{	
+		redir.in = STDIN_FILENO;
+		redir.out = STDOUT_FILENO;
 		setup_cmd_redirection(tree, idx, &redir);
-		vector = vector_conversion(&tree, idx);
-		if (!vector[0])
-			return ;
-		if (cnt == 1 && is_builtin(vector[0]))
+		if (cnt == 1 && is_builtin(tree->left->right->right->data))
 		{
-			execute_builtin(vector, env_copy);
-			ft_free(vector);
+			execute_single_command(tree, &redir, env_copy);
 			return ;
 		}
 		else
 			last_pid = execute_pipeline(idx, tree, &redir, env_copy);
-		ft_free(vector);
-		idx++;
 	}
 	setup_exit_status(last_pid);
 }
