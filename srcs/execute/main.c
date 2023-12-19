@@ -44,7 +44,7 @@ void	execute_and_cleanup(t_node **tree, char ***env)
 		g_exit_code = 0;
 		open_files(*tree, *env);
 		if (g_exit_code != 1)
-			execute_commands(*tree, env);
+		execute_commands(*tree, env);
 	}
 }
 
