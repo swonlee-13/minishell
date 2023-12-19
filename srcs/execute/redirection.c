@@ -42,26 +42,22 @@ void	setup_parent_redirection(int fd[2], t_file *redir)
 
 void	open_files(t_node *root, char **env_copy)
 {
-	if (g_exit_code == 1)
-		return ;
 	if (root == NULL)
 		return ;
 	if (root->type == REDIR_DOUBLE_IN)
 		activate_here_doc(root, env_copy);
 	else if (root->type == REDIR_SINGLE_IN)
-	{
-		root->fd = open(root->data, O_RDONLY);
-		if (root->fd == -1)
-		{
-			g_exit_code = 1;
-			print_no_file_error(root->data);
-			return ;
-		}
-	}
+		root->fd = open(root->data, O_RDONLY, 0644);
 	else if (root->type == REDIR_SINGLE_OUT)
 		root->fd = open(root->data, O_RDWR | O_CREAT | O_TRUNC, 0644);
 	else if (root->type == REDIR_DOUBLE_OUT)
 		root->fd = open(root->data, O_RDWR | O_CREAT | O_APPEND, 0644);
+	if (root->fd == -1)
+	{
+		g_exit_code = 255;
+		print_no_file_error(root->data);
+		return ;
+	}
 	open_files(root->left, env_copy);
 	open_files(root->right, env_copy);
 }

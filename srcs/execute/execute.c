@@ -48,7 +48,7 @@ pid_t	execute_pipeline(int idx, t_node *tree, t_file *redir, char ***env)
 		signal(SIGINT, SIG_DFL);
 		signal(SIGQUIT, SIG_DFL);
 		setup_child_redirection(fd, idx, tree, *redir);
-		if (redir->in != -1)
+		if (redir->in != -1 && redir->out != -1)
 			execute_command(fd, idx, tree, env);
 		exit(g_exit_code);
 	}
@@ -84,9 +84,11 @@ void	execute_single_command(t_node *tree, t_file *file, char ***env_copy)
 
 	my_stdin = dup(STDIN_FILENO);
 	my_stdout = dup(STDOUT_FILENO);
-	if (file->in == -1)
+	if (file->in == -1 || file->out == -1)
 	{
-		if (file->out != STDOUT_FILENO)
+		if (file->out == -1 && file->in != STDIN_FILENO)
+			close(file->in);
+		if (file->in == -1 && file->out != STDOUT_FILENO)
 			close(file->out);
 		g_exit_code = 255;
 		return ;
