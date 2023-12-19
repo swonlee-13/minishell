@@ -6,7 +6,7 @@
 /*   By: yeolee2 <yeolee2@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 20:03:24 by yeolee2           #+#    #+#             */
-/*   Updated: 2023/12/17 05:09:18 by yeolee2          ###   ########.fr       */
+/*   Updated: 2023/12/19 05:31:12 by yeolee2          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,19 @@
 
 extern int	g_exit_code;
 
-static int	check_assignment_operator(char *str)
-{
-	int	idx;
+// static int	check_assignment_operator(char *str)
+// {
+// 	int	idx;
 
-	idx = 0;
-	while (str[idx])
-	{
-		if (str[idx] == '=')
-			return (SUCCESS);
-		idx++;
-	}
-	return (FAILURE);
-}
+// 	idx = 0;
+// 	while (str[idx])
+// 	{
+// 		if (str[idx] == '=')
+// 			return (SUCCESS);
+// 		idx++;
+// 	}
+// 	return (FAILURE);
+// }
 
 static char	**sort_export_attribute(char **env)
 {
@@ -67,7 +67,7 @@ static void	print_export_attribute(char **env)
 	{
 		printf("declare -x ");
 		j = -1;
-		if (check_assignment_operator(res[i]) == FAILURE)
+		if (!ft_strchr(res[i], '='))
 		{
 			while (++j < (int)ft_strlen(res[i]))
 				printf("%c", res[i][j]);
@@ -84,31 +84,41 @@ static void	print_export_attribute(char **env)
 	ft_free(res);
 }
 
+static void	handle_export_error(char *path, char *name)
+{
+	printf("minishell: export: `%s': not a valid identifier\n", path);
+	free(name);
+	g_exit_code = 1;
+	return ;
+}
+
 void	set_each_attribute(char ***env, char *path)
 {
-	int	idx;
-	int	len;
-
-	len = 0;
-	if (check_assignment_operator(path) == SUCCESS)
-		while (path[len] && path[len] != '=')
-			len++;
-	else
-		len = ft_strlen(path);
-	idx = 0;
-	while ((*env)[idx])
+	int		idx;
+	int		len;
+	char	*name;
+	
+	len = ft_strlen(path);
+	if (ft_strchr(path, '='))
+		len = ft_strchr(path, '=') - path;
+	name = ft_substr(path, 0, len);
+	if (check_bash_var_name_convention(name) == FAILURE)
+		return (handle_export_error(path, name));
+	free(name);
+	idx = -1;
+	while ((*env)[++idx])
 	{
-		if (!ft_strncmp((*env)[idx], path, len))
+		if (!ft_strncmp((*env)[idx], path, len + 1))
 		{
 			free((*env)[idx]);
 			(*env)[idx] = ft_strdup(path);
 			break ;
 		}
-		idx++;
 	}
 	if (!(*env)[idx])
 		add_env_data(env, path);
 }
+
 
 void	set_export_attribute(char ***env, char **vector)
 {
@@ -120,11 +130,11 @@ void	set_export_attribute(char ***env, char **vector)
 		g_exit_code = 0;
 		return ;
 	}
+	g_exit_code = 0;
 	idx = 1;
 	while (vector[idx])
 	{
 		set_each_attribute(env, vector[idx]);
 		idx++;
 	}
-	g_exit_code = 0;
 }
