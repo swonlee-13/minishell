@@ -125,6 +125,5 @@ t_node	*parser(char *cmd, char **env_copy)
 	}
 	root = switch_to_tree(q);
 	free(q);
-	g_exit_code = 0;
 	return (root);
 }

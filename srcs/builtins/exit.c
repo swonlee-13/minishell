@@ -6,7 +6,7 @@
 /*   By: yeolee2 <yeolee2@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 10:10:20 by yeolee2           #+#    #+#             */
-/*   Updated: 2023/12/16 21:12:25 by yeolee2          ###   ########.fr       */
+/*   Updated: 2023/12/21 17:41:07 by seongwol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	terminate_program(char **vector)
 {
 	printf("exit\n");
 	if (vector[1] == NULL)
-		exit(EXIT_SUCCESS);
+		exit(g_exit_code);
 	if (check_exit_arg(vector[1]) == SUCCESS)
 	{
 		g_exit_code = ft_atoi(vector[1]);

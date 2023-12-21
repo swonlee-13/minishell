@@ -6,7 +6,7 @@
 /*   By: yeolee2 <yeolee2@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 14:32:11 by yeolee2           #+#    #+#             */
-/*   Updated: 2023/12/19 00:07:14 by seongwol         ###   ########.fr       */
+/*   Updated: 2023/12/21 17:51:40 by seongwol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	execute_and_cleanup(t_node **tree, char ***env)
 {
 	if (g_exit_code != 258)
 	{
-		g_exit_code = 0;
+//		g_exit_code = 0;
 		open_files(*tree, *env);
 		if (g_exit_code != 1)
 			execute_commands(*tree, env);
