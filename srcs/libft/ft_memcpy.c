@@ -32,22 +32,3 @@ void	*ft_memcpy(void *dst, const void *src, size_t n)
 	}
 	return (dst);
 }
-
-/*
-int main()
-{
-	char *strsrc = "babobabo";
-	char strdest[10] = "lol";
-
-	printf("바뀌기 전 dest 주소 : %p\n", strdest);
-	printf("바뀌고 난 dest 주소 : %p\n", ft_memcpy(strdest, strsrc, 5));
-	printf("바뀌고 난 뒤 dest 문자열 : %s\n", strdest);
-
-	char *strsrc1 = "babobabo";
-	char strdest1[10] = "lol";
-
-	printf("바뀌기 전 dest1 주소 : %p\n", strdest1);
-	printf("바뀌고 난 dest1 주소 : %p\n", memcpy(strdest1, strsrc1, 5));
-	printf("바뀌고 난 뒤 dest 문자열 : %s\n", strdest1);
-}
-*/

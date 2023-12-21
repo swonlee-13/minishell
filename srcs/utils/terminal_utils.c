@@ -36,3 +36,22 @@ void	print_no_file_error(char *file)
 	ft_putstr_fd(file, 2);
 	ft_putstr_fd(": file open error\n", 2);
 }
+void	print_error(char *cmd, char *str)
+{
+	ft_putstr_fd("minishell: ", 2);
+	ft_putstr_fd(cmd, 2);
+	ft_putstr_fd(": ", 2);
+	ft_putstr_fd(str, 2);
+	ft_putchar_fd('\n', 2);
+}
+
+void	print_error_complex(char *cmd, char *arg, char *str)
+{
+	ft_putstr_fd("minishell: ", 2);
+	ft_putstr_fd(cmd, 2);
+	ft_putstr_fd(": ", 2);
+	ft_putstr_fd(arg, 2);
+	ft_putstr_fd(": ", 2);
+	ft_putstr_fd(str, 2);
+	ft_putstr_fd("\n", 2);
+}

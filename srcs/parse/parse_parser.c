@@ -93,9 +93,9 @@ char	*make_token_string(char *cmd)
 	token_string = tokenizer(cmd);
 	if (token_lexer(cmd, token_string) == SYNTAX_ERROR)
 	{
-		write(1, "syntax error\n", 13);
+		write(2, "syntax error\n", 13);
 		free(token_string);
-		g_exit_code = 258;
+		g_exit_code = 260;
 		return (NULL);
 	}
 	file_name_setter(token_string);
@@ -124,6 +124,5 @@ t_node	*parser(char *cmd, char **env_copy)
 	}
 	root = switch_to_tree(q);
 	free(q);
-	//g_exit_code = 0;
 	return (root);
 }

@@ -6,7 +6,7 @@
 /*   By: yeolee2 <yeolee2@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 14:32:11 by yeolee2           #+#    #+#             */
-/*   Updated: 2023/12/21 19:52:39 by seongwol         ###   ########.fr       */
+/*   Updated: 2023/12/21 20:04:44 by seongwol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,12 +39,16 @@ void	setup_exit_status(pid_t pid)
 
 void	execute_and_cleanup(t_node **tree, char ***env)
 {
-	if (g_exit_code != 258)
+	if (g_exit_code != 260)
 	{
 		open_files(*tree, *env);
 		if (g_exit_code != 259)
 			execute_commands(*tree, env);
+		else
+			g_exit_code = 1;
 	}
+	else
+		g_exit_code = 258;
 }
 
 int	main(int argc, char *argv[], char **env)

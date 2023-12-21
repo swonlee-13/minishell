@@ -32,7 +32,7 @@ void	execute_command(int fd[2], int idx, t_node *root, char ***env)
 	execve(vector[0], vector, *env);
 	g_exit_code = 127;
 	if (ft_strcmp(vector[0], "") != 0)
-		printf("minisehll: %s: command not found\n", vector[0]);
+		print_error(vector[0], strerror(errno));
 }
 
 pid_t	execute_pipeline(int idx, t_node *tree, t_file *redir, char ***env)
@@ -116,7 +116,7 @@ void	execute_commands(t_node *tree, char ***env_copy)
 
 	idx = -1;
 	while (++idx < cnt)
-	{	
+	{
 		redir.in = STDIN_FILENO;
 		redir.out = STDOUT_FILENO;
 		setup_cmd_redirection(tree, idx, &redir);

@@ -6,7 +6,7 @@
 #    By: yeolee2 <yeolee2@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/16 19:49:27 by yeolee2           #+#    #+#              #
-#    Updated: 2023/12/16 20:01:09 by seongwol         ###   ########.fr        #
+#    Updated: 2023/12/21 19:57:49 by seongwol         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -60,7 +60,7 @@ CC					=	cc
 
 INCLUDES			=	./includes/
 
-CFLAGS				=	-Werror -Wall -Wextra -g3
+CFLAGS				=	-Werror -Wall -Wextra
 
 READLINE_FLAGS		= -L/opt/homebrew/opt/readline/lib
 

@@ -24,7 +24,7 @@ static int	check_exit_arg(char *arg)
 		if (!ft_isdigit(arg[idx]))
 		{
 			g_exit_code = 255;
-			printf("minishell: exit: %s: numeric argument required\n", arg);
+			print_error(arg, "numeric argument required\n");
 			exit(g_exit_code);
 		}
 		idx++;
@@ -43,10 +43,10 @@ void	terminate_program(char **vector)
 		if (ft_strslen(vector) > 2)
 		{
 			g_exit_code = 1;
-			printf("minishell: exit: too many arguments\n");
+			ft_putstr_fd("minishell: exit: too many arguments\n", 2);
 			return ;
 		}
-		else
-			exit(g_exit_code);
 	}
+	else
+		exit(g_exit_code);
 }

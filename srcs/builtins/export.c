@@ -72,7 +72,7 @@ static void	print_export_attribute(char **env)
 
 static void	handle_export_error(char *arg, char *name)
 {
-	printf("minishell: export: `%s': not a valid identifier\n", arg);
+	print_error_complex("export", arg, "not a valid identifier");
 	free(name);
 	g_exit_code = 1;
 	return ;

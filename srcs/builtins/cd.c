@@ -26,15 +26,17 @@ static int	exec_chdir(char **targ_dir, char **prev_dir, \
 	}
 	else
 	{
-		printf("minishell: cd: %s: %s\n", path, strerror(errno));
+		print_error_complex("cd", path, strerror(errno));
 		g_exit_code = 1;
 		return (g_exit_code);
 	}
 }
 
-static void	handle_cd_error(char *targ_dir, char *curr_dir)
+static void	handle_cd_error(char *name, char *curr_dir)
 {
-	printf("minishell: cd: %s not set\n", targ_dir);
+	ft_putstr_fd("cd: ", 2);
+	ft_putstr_fd(name, 2);
+	ft_putstr_fd(" not set\n", 2);
 	free(curr_dir);
 	g_exit_code = 1;
 	return ;

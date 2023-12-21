@@ -22,7 +22,7 @@ static char	*get_env_path(char **cmd, char **env)
 	if (path == NULL)
 	{
 		g_exit_code = 127;
-		printf("minishell: %s: No such file or directory\n", cmd[0]);
+		print_error(cmd[0], "No such file or directory");
 		exit(g_exit_code);
 	}
 	return (path);

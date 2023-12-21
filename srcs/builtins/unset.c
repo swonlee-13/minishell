@@ -32,7 +32,7 @@ int	check_bash_var_name_convention(char *name)
 
 static void	handle_unset_error(char *name)
 {
-	printf("minishell: unset: `%s': not a valid identifier\n", name);
+	print_error_complex("unset", name, "not a valid identifier");
 	g_exit_code = 1;
 	return ;
 }
