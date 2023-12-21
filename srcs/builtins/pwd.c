@@ -19,7 +19,7 @@ void	print_working_directory(void)
 	pwd = getcwd(NULL, 0);
 	if (pwd == NULL)
 	{
-		ft_putstr_fd(strerror(errno), 2);
+		ft_putstr_fd(strerror(errno), STDERR_FILENO);
 		ft_putstr_fd("\n", 2);
 		free(pwd);
 		return ;

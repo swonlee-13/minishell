@@ -34,9 +34,9 @@ static int	exec_chdir(char **targ_dir, char **prev_dir, \
 
 static void	handle_cd_error(char *name, char *curr_dir)
 {
-	ft_putstr_fd("cd: ", 2);
-	ft_putstr_fd(name, 2);
-	ft_putstr_fd(" not set\n", 2);
+	ft_putstr_fd("cd: ", STDERR_FILENO);
+	ft_putstr_fd(name, STDERR_FILENO);
+	ft_putstr_fd(" not set\n", STDERR_FILENO);
 	free(curr_dir);
 	g_exit_code = 1;
 	return ;
