@@ -6,7 +6,7 @@
 /*   By: yeolee2 <yeolee2@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 10:10:28 by yeolee2           #+#    #+#             */
-/*   Updated: 2023/12/19 05:30:37 by yeolee2          ###   ########.fr       */
+/*   Updated: 2023/12/20 19:36:33 by seongwol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void	remove_env_data(char ***env, char *name)
 		return ;
 	if (check_bash_var_name_convention(name) == FAILURE)
 		return (handle_unset_error(name));
-	res = malloc(sizeof(char *) * (ft_strslen(*env) - 1));
+	res = malloc(sizeof(char *) * (ft_strslen(*env)));
 	if (!res)
 		return ;
 	i = -1;

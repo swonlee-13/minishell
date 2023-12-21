@@ -37,6 +37,7 @@ char	*get_env_data(char **env, char *str)
 	char	*res;
 
 	idx = 0;
+
 	while (env[idx])
 	{
 		if (!ft_strncmp(str, env[idx], ft_strlen(str)) \

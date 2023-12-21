@@ -21,7 +21,8 @@ void	print_env_list(char **env)
 	idx = 0;
 	while (env[idx])
 	{
-		printf("%s\n", env[idx]);
+		if (ft_strchr(env[idx], '='))
+			printf("%s\n", env[idx]);
 		idx++;
 	}
 	g_exit_code = 0;

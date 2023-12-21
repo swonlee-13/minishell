@@ -6,7 +6,7 @@
 /*   By: yeolee2 <yeolee2@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/11 22:43:21 by yeolee2           #+#    #+#             */
-/*   Updated: 2023/12/18 14:39:09 by seongwol         ###   ########.fr       */
+/*   Updated: 2023/12/20 17:41:50 by seongwol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ void	execute_builtin(char **command_vector, char ***env_copy)
 
 int	is_builtin(char *command)
 {
+	if (command == NULL)
+		return (FALSE);
 	if (!ft_strcmp(command, "cd"))
 		return (TRUE);
 	else if (!ft_strcmp(command, "echo"))

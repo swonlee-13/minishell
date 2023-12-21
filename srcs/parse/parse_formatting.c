@@ -23,7 +23,8 @@ char	*string_formatting(char *str, char **env_copy)
 	tmp = shell_split_quote(str);
 	remove_and_replace(tmp, env_copy);
 	ret = merge_splitted_cmd(tmp);
-	ft_free(tmp);
+	if (tmp)
+		ft_free(tmp);
 	free(str);
 	return (ret);
 }

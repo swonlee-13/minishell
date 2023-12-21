@@ -96,4 +96,6 @@ void	setup_cmd_redirection(t_node *root, int cmd_idx, t_file *file)
 		}
 		ptr = ptr->right;
 	}
+	if (file->in == -1 || file->out == -1)
+		g_exit_code = 1;
 }

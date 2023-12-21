@@ -21,7 +21,9 @@ void	print_working_directory(void)
 	{
 		printf("%s\n", strerror(errno));
 		free(pwd);
+		return ;
 	}
 	printf("%s\n", pwd);
 	free(pwd);
+	return ;
 }

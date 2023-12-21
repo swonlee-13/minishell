@@ -35,8 +35,6 @@ t_type	node_type_setter(char *token_string, int i)
 		return (REDIR_DOUBLE_IN);
 	else if (token_string[i] == '\0')
 		return (PASS);
-	else
-		write(1, "error type setter\n", 18);
 	return (PASS);
 }
 

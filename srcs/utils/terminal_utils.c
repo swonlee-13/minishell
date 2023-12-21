@@ -34,5 +34,5 @@ void	print_no_file_error(char *file)
 {
 	ft_putstr_fd("minishell: ", 2);
 	ft_putstr_fd(file, 2);
-	ft_putstr_fd(": No such file or directory\n", 2);
+	ft_putstr_fd(": file open error\n", 2);
 }
