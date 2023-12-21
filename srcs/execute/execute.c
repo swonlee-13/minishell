@@ -129,5 +129,6 @@ void	execute_commands(t_node *tree, char ***env_copy)
 		else
 			last_pid = execute_pipeline(idx, tree, &redir, env_copy);
 	}
-	setup_exit_status(last_pid);
+	if (cnt != 0)
+		setup_exit_status(last_pid);
 }

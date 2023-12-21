@@ -42,7 +42,7 @@ void	setup_parent_redirection(int fd[2], t_file *redir)
 
 void	open_files(t_node *root, char **env_copy)
 {
-	if (g_exit_code == 1)
+	if (g_exit_code == 259)
 		return ;
 	if (root == NULL)
 		return ;

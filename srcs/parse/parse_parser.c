@@ -6,7 +6,7 @@
 /*   By: seongwol <seongwol@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/16 19:02:21 by seongwol          #+#    #+#             */
-/*   Updated: 2023/12/16 19:07:08 by seongwol         ###   ########.fr       */
+/*   Updated: 2023/12/21 19:42:37 by seongwol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,10 +120,10 @@ t_node	*parser(char *cmd, char **env_copy)
 	if (q->front == NULL)
 	{
 		free(q);
-		g_exit_code = 1;
 		return (NULL);
 	}
 	root = switch_to_tree(q);
 	free(q);
+	//g_exit_code = 0;
 	return (root);
 }
