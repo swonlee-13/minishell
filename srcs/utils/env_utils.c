@@ -6,7 +6,7 @@
 /*   By: yeolee2 <yeolee2@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 19:22:52 by yeolee2           #+#    #+#             */
-/*   Updated: 2023/12/16 22:50:05 by yeolee2          ###   ########.fr       */
+/*   Updated: 2023/12/22 14:52:04 by yeolee2          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,15 +40,17 @@ char	*get_env_data(char **env, char *str)
 	while (env[idx])
 	{
 		if (!ft_strncmp(str, env[idx], ft_strlen(str)) \
-			&& env[idx][ft_strlen(str)] == '=')
+			&& (env[idx][ft_strlen(str)] == '=' || env[idx][ft_strlen(str)] == '\0'))
 		{
 			res = env[idx];
 			break ;
 		}
 		idx++;
 	}
-	if (!env[idx])
+	if (env[idx] == NULL)
 		return (NULL);
+	if (ft_strchr(env[idx], '=') == NULL)
+		return (res + ft_strlen(str));
 	while (*res != '=')
 		res++;
 	return (res + 1);

@@ -6,7 +6,7 @@
 /*   By: yeolee2 <yeolee2@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 10:10:28 by yeolee2           #+#    #+#             */
-/*   Updated: 2023/12/19 05:30:37 by yeolee2          ###   ########.fr       */
+/*   Updated: 2023/12/22 14:52:26 by yeolee2          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,11 +43,11 @@ void	remove_env_data(char ***env, char *name)
 	size_t	i;
 	size_t	j;
 
-	if (!get_env_data(*env, name))
+	if (get_env_data(*env, name) == NULL)
 		return ;
 	if (check_bash_var_name_convention(name) == FAILURE)
 		return (handle_unset_error(name));
-	res = malloc(sizeof(char *) * (ft_strslen(*env) - 1));
+	res = malloc(sizeof(char *) * ft_strslen(*env));
 	if (!res)
 		return ;
 	i = -1;
@@ -55,7 +55,7 @@ void	remove_env_data(char ***env, char *name)
 	while ((*env)[++i])
 	{
 		if (!ft_strncmp(name, (*env)[i], ft_strlen(name)) \
-			&& (*env)[i][ft_strlen(name)] == '=')
+			&& ((*env)[i][ft_strlen(name)] == '=' || (*env)[i][ft_strlen(name)] == '\0'))
 			continue ;
 		res[j++] = ft_strdup((*env)[i]);
 	}

@@ -6,7 +6,7 @@
 /*   By: yeolee2 <yeolee2@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 20:03:24 by yeolee2           #+#    #+#             */
-/*   Updated: 2023/12/19 05:31:12 by yeolee2          ###   ########.fr       */
+/*   Updated: 2023/12/22 14:56:20 by yeolee2          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,6 @@
 
 extern int	g_exit_code;
 
-// static int	check_assignment_operator(char *str)
-// {
-// 	int	idx;
-
-// 	idx = 0;
-// 	while (str[idx])
-// 	{
-// 		if (str[idx] == '=')
-// 			return (SUCCESS);
-// 		idx++;
-// 	}
-// 	return (FAILURE);
-// }
 
 static char	**sort_export_attribute(char **env)
 {
@@ -97,7 +84,7 @@ void	set_each_attribute(char ***env, char *path)
 	int		idx;
 	int		len;
 	char	*name;
-	
+
 	len = ft_strlen(path);
 	if (ft_strchr(path, '='))
 		len = ft_strchr(path, '=') - path;
@@ -108,7 +95,7 @@ void	set_each_attribute(char ***env, char *path)
 	idx = -1;
 	while ((*env)[++idx])
 	{
-		if (!ft_strncmp((*env)[idx], path, len + 1))
+		if (!ft_strncmp((*env)[idx], path, len))
 		{
 			free((*env)[idx]);
 			(*env)[idx] = ft_strdup(path);
@@ -118,7 +105,6 @@ void	set_each_attribute(char ***env, char *path)
 	if (!(*env)[idx])
 		add_env_data(env, path);
 }
-
 
 void	set_export_attribute(char ***env, char **vector)
 {
