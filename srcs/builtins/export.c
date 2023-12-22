@@ -6,7 +6,7 @@
 /*   By: yeolee2 <yeolee2@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 20:03:24 by yeolee2           #+#    #+#             */
-/*   Updated: 2023/12/22 17:35:53 by yeolee2          ###   ########.fr       */
+/*   Updated: 2023/12/22 18:06:34 by yeolee2          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,18 +117,22 @@ void	set_each_attribute(char ***env, char *path)
 void	set_export_attribute(char ***env, char **vector)
 {
 	int	idx;
+	int	flag;
 
+	flag = 0;
 	if (vector[1] == NULL)
 	{
 		print_export_attribute(*env);
 		g_exit_code = 0;
 		return ;
 	}
-	g_exit_code = 0;
 	idx = 1;
 	while (vector[idx])
 	{
 		set_each_attribute(env, vector[idx]);
+		if (g_exit_code == 1)
+			flag = 1;
 		idx++;
 	}
+	g_exit_code = flag;
 }
