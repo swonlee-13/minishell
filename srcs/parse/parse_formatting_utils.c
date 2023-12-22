@@ -21,10 +21,10 @@ char	*env_var_replace_sub(char *str, char **env)
 	char	*res;
 
 	i = 0;
-	len = ft_strlen(str);
+	len = ft_strlen(str + 1);
 	while (env[i] != NULL)
 	{
-		if (ft_strncmp(str + 1, env[i], len - 2) == 0)
+		if (ft_strncmp(str + 1, env[i], len) == 0)
 			break ;
 		i++;
 	}

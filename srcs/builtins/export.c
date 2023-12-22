@@ -6,14 +6,13 @@
 /*   By: yeolee2 <yeolee2@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 20:03:24 by yeolee2           #+#    #+#             */
-/*   Updated: 2023/12/22 14:56:20 by yeolee2          ###   ########.fr       */
+/*   Updated: 2023/12/22 15:19:34 by yeolee2          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 extern int	g_exit_code;
-
 
 static char	**sort_export_attribute(char **env)
 {
@@ -71,9 +70,9 @@ static void	print_export_attribute(char **env)
 	ft_free(res);
 }
 
-static void	handle_export_error(char *path, char *name)
+static void	handle_export_error(char *arg, char *name)
 {
-	printf("minishell: export: `%s': not a valid identifier\n", path);
+	print_error_complex("export", arg, "not a valid identifier");
 	free(name);
 	g_exit_code = 1;
 	return ;

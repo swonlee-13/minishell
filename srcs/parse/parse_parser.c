@@ -6,7 +6,7 @@
 /*   By: seongwol <seongwol@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/16 19:02:21 by seongwol          #+#    #+#             */
-/*   Updated: 2023/12/16 19:07:08 by seongwol         ###   ########.fr       */
+/*   Updated: 2023/12/21 19:42:37 by seongwol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,6 @@ t_type	node_type_setter(char *token_string, int i)
 		return (REDIR_DOUBLE_IN);
 	else if (token_string[i] == '\0')
 		return (PASS);
-	else
-		write(1, "error type setter\n", 18);
 	return (PASS);
 }
 
@@ -95,9 +93,9 @@ char	*make_token_string(char *cmd)
 	token_string = tokenizer(cmd);
 	if (token_lexer(cmd, token_string) == SYNTAX_ERROR)
 	{
-		write(1, "syntax error\n", 13);
+		write(2, "syntax error\n", 13);
 		free(token_string);
-		g_exit_code = 258;
+		g_exit_code = 260;
 		return (NULL);
 	}
 	file_name_setter(token_string);
@@ -122,11 +120,9 @@ t_node	*parser(char *cmd, char **env_copy)
 	if (q->front == NULL)
 	{
 		free(q);
-		g_exit_code = 1;
 		return (NULL);
 	}
 	root = switch_to_tree(q);
 	free(q);
-	g_exit_code = 0;
 	return (root);
 }

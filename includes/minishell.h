@@ -104,7 +104,8 @@ void	renew_env_data(char ***env, char *curr_dir, char *prev_dir);
 // Terminal Utilities
 void	reset_termios(void);
 void	set_termios(void);
-void	print_no_file_error(char *file);
+void	print_error(char *cmd, char *str);
+void	print_error_complex(char *cmd, char *arg, char *str);
 
 // Command-line Utilities
 char	*get_command_path(char **cmd, char **env);

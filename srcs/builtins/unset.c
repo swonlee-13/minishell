@@ -6,7 +6,7 @@
 /*   By: yeolee2 <yeolee2@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 10:10:28 by yeolee2           #+#    #+#             */
-/*   Updated: 2023/12/22 14:52:26 by yeolee2          ###   ########.fr       */
+/*   Updated: 2023/12/22 15:19:18 by yeolee2          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int	check_bash_var_name_convention(char *name)
 
 static void	handle_unset_error(char *name)
 {
-	printf("minishell: unset: `%s': not a valid identifier\n", name);
+	print_error_complex("unset", name, "not a valid identifier");
 	g_exit_code = 1;
 	return ;
 }

@@ -6,7 +6,7 @@
 /*   By: yeolee2 <yeolee2@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/16 18:38:45 by yeolee2           #+#    #+#             */
-/*   Updated: 2023/12/19 00:08:50 by seongwol         ###   ########.fr       */
+/*   Updated: 2023/12/20 17:49:33 by seongwol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ void	execute_command(int fd[2], int idx, t_node *root, char ***env)
 	char	**vector;
 
 	vector = vector_conversion(&root, idx);
+	if (vector[0] == NULL)
+		exit(g_exit_code);
 	if (is_builtin(vector[0]))
 	{
 		execute_builtin(vector, env);
@@ -29,7 +31,8 @@ void	execute_command(int fd[2], int idx, t_node *root, char ***env)
 	close(fd[WRITE]);
 	execve(vector[0], vector, *env);
 	g_exit_code = 127;
-	printf("minisehll: %s: command not found\n", vector[0]);
+	if (ft_strcmp(vector[0], "") != 0)
+		print_error(vector[0], strerror(errno));
 }
 
 pid_t	execute_pipeline(int idx, t_node *tree, t_file *redir, char ***env)
@@ -113,12 +116,12 @@ void	execute_commands(t_node *tree, char ***env_copy)
 
 	idx = -1;
 	while (++idx < cnt)
-	{	
+	{
 		redir.in = STDIN_FILENO;
 		redir.out = STDOUT_FILENO;
 		setup_cmd_redirection(tree, idx, &redir);
 		if (cnt == 1 && tree->left->right->right && \
-		 is_builtin(tree->left->right->right->data))
+			is_builtin(tree->left->right->right->data))
 		{
 			execute_single_command(tree, &redir, env_copy);
 			return ;
@@ -126,5 +129,6 @@ void	execute_commands(t_node *tree, char ***env_copy)
 		else
 			last_pid = execute_pipeline(idx, tree, &redir, env_copy);
 	}
-	setup_exit_status(last_pid);
+	if (cnt != 0)
+		setup_exit_status(last_pid);
 }

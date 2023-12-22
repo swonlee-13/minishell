@@ -19,7 +19,8 @@ void	print_working_directory(void)
 	pwd = getcwd(NULL, 0);
 	if (pwd == NULL)
 	{
-		printf("%s\n", strerror(errno));
+		ft_putstr_fd(strerror(errno), STDERR_FILENO);
+		ft_putstr_fd("\n", 2);
 		free(pwd);
 		return ;
 	}

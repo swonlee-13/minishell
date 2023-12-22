@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <minishell.h>
+#include "minishell.h"
 
 extern int	g_exit_code;
 
@@ -42,7 +42,7 @@ void	setup_parent_redirection(int fd[2], t_file *redir)
 
 void	open_files(t_node *root, char **env_copy)
 {
-	if (g_exit_code == 1)
+	if (g_exit_code == 259)
 		return ;
 	if (root == NULL)
 		return ;
@@ -56,7 +56,7 @@ void	open_files(t_node *root, char **env_copy)
 		root->fd = open(root->data, O_RDWR | O_CREAT | O_APPEND, 0644);
 	if (root->fd == -1)
 	{
-		print_no_file_error(root->data);
+		print_error(root->data, strerror(errno));
 		return ;
 	}
 	open_files(root->left, env_copy);

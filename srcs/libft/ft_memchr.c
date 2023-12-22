@@ -33,11 +33,3 @@ void	*ft_memchr(const void *s, int c, size_t n)
 	else
 		return ((void *)copy_s);
 }
-/*
-int main()
-{
-   printf("%s\n", (char *)memchr("bonjorlaksnd", 'n', 2)); 
-   printf("%s\n", (char *)ft_memchr("bonjorlaksnd", 'n', 2)); 
-   printf("%s\n", (char *)ft_memchr("42seoul", 'e', 2)); 
-}
-*/
