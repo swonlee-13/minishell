@@ -6,7 +6,7 @@
 /*   By: yeolee2 <yeolee2@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 20:03:24 by yeolee2           #+#    #+#             */
-/*   Updated: 2023/12/19 05:31:12 by yeolee2          ###   ########.fr       */
+/*   Updated: 2023/12/22 17:35:53 by yeolee2          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,39 +70,48 @@ static void	print_export_attribute(char **env)
 	ft_free(res);
 }
 
-static void	handle_export_error(char *arg, char *name)
+static void	handle_export_error(char *path)
 {
-	print_error_complex("export", arg, "not a valid identifier");
-	free(name);
+	char	*tmp;
+	char	*res;
+
+	tmp = ft_strjoin("`", path);
+	res = ft_strjoin(tmp, "'");
+	free(tmp);
+	print_error_complex("export", res, "not a valid identifier");
+	free(res);
 	g_exit_code = 1;
 	return ;
 }
 
-void	set_each_attribute(char ***env, char *arg)
+void	set_each_attribute(char ***env, char *path)
 {
 	int		idx;
 	int		len;
 	char	*name;
 
-	len = ft_strlen(arg);
-	if (ft_strchr(arg, '='))
-		len = ft_strchr(arg, '=') - arg;
-	name = ft_substr(arg, 0, len);
+	len = ft_strlen(path);
+	if (ft_strchr(path, '='))
+		len = ft_strchr(path, '=') - path;
+	name = ft_substr(path, 0, len);
 	if (check_bash_var_name_convention(name) == FAILURE)
-		return (handle_export_error(arg, name));
+	{
+		free(name);
+		return (handle_export_error(path));
+	}
 	free(name);
 	idx = -1;
 	while ((*env)[++idx])
 	{
-		if (!ft_strncmp((*env)[idx], arg, len + 1) && arg[len] == '=')
+		if (!ft_strncmp((*env)[idx], path, len))
 		{
 			free((*env)[idx]);
-			(*env)[idx] = ft_strdup(arg);
+			(*env)[idx] = ft_strdup(path);
 			break ;
 		}
 	}
 	if (!(*env)[idx])
-		add_env_data(env, arg);
+		add_env_data(env, path);
 }
 
 void	set_export_attribute(char ***env, char **vector)
