@@ -6,7 +6,7 @@
 /*   By: seongwol <seongwol@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/16 18:45:04 by seongwol          #+#    #+#             */
-/*   Updated: 2023/12/16 19:21:33 by seongwol         ###   ########.fr       */
+/*   Updated: 2023/12/22 19:54:12 by seongwol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ char	*env_var_replace_sub(char *str, char **env)
 	if (env[i] == NULL)
 		res = ft_strdup("");
 	else
-		res = ft_substr(env[i], len - 1, ft_strlen(env[i]));
+		res = ft_substr(env[i], len, ft_strlen(env[i]));
 	return (res);
 }
 
