@@ -6,7 +6,7 @@
 /*   By: yeolee2 <yeolee2@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 10:10:28 by yeolee2           #+#    #+#             */
-/*   Updated: 2023/12/22 17:35:50 by yeolee2          ###   ########.fr       */
+/*   Updated: 2023/12/22 18:06:00 by yeolee2          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,17 +74,24 @@ void	remove_env_data(char ***env, char *name)
 void	unset_export_attribute(char ***env, char **vector)
 {
 	int		idx;
+	int		flag;
 	char	*name;
 
+	flag = 0;
 	if (vector[1] == NULL)
+	{
+		g_exit_code = 0;
 		return ;
+	}
 	idx = 1;
 	while (vector[idx])
 	{
 		name = ft_substr(vector[idx], 0, ft_strlen(vector[idx]));
 		remove_env_data(env, name);
+		if (g_exit_code == 1)
+			flag = 1;
 		free(name);
 		idx++;
 	}
-	g_exit_code = 0;
+	g_exit_code = flag;
 }
