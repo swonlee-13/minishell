@@ -66,12 +66,15 @@ char	*get_command_path(char **cmd, char **env)
 	path = ft_split(get_env_path(cmd, env), ':');
 	tmp = ft_strjoin("/", *cmd);
 	ret = check_access(path, tmp);
-	if (ret)
+	free(*cmd);
+	if (!ret)
 	{
-		free(*cmd);
-		return (ret);
+		g_exit_code = 127;
+		print_error(cmd[0], "command not found");
+		exit(g_exit_code);
 	}
-	return (*cmd);
+	else
+		return (ret);
 }
 
 int	count_commands(t_node *root)

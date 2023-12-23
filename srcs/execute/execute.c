@@ -6,7 +6,7 @@
 /*   By: yeolee2 <yeolee2@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/16 18:38:45 by yeolee2           #+#    #+#             */
-/*   Updated: 2023/12/20 17:49:33 by seongwol         ###   ########.fr       */
+/*   Updated: 2023/12/23 18:45:51 by seongwol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,7 @@ void	execute_command(int fd[2], int idx, t_node *root, char ***env)
 	vector[0] = get_command_path(&vector[0], *env);
 	close(fd[READ]);
 	close(fd[WRITE]);
-	execve(vector[0], vector, *env);
-	g_exit_code = 127;
-	if (ft_strcmp(vector[0], "") != 0)
-		print_error(vector[0], strerror(errno));
+	g_exit_code = execve(vector[0], vector, *env);
 }
 
 pid_t	execute_pipeline(int idx, t_node *tree, t_file *redir, char ***env)
