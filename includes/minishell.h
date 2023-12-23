@@ -6,7 +6,7 @@
 /*   By: yeolee2 <yeolee2@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 03:09:36 by yeolee2           #+#    #+#             */
-/*   Updated: 2023/12/22 15:57:03 by yeolee2          ###   ########.fr       */
+/*   Updated: 2023/12/23 17:24:24 by yeolee2          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # include <errno.h>
 # include <signal.h>
 # include <fcntl.h>
+# include <limits.h>
 # include <termios.h>
 
 // Readline Libraries
