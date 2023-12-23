@@ -6,7 +6,7 @@
 /*   By: yeolee2 <yeolee2@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/16 18:37:13 by yeolee2           #+#    #+#             */
-/*   Updated: 2023/12/19 00:07:28 by seongwol         ###   ########.fr       */
+/*   Updated: 2023/12/23 20:39:24 by seongwol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,9 +40,9 @@ void	setup_parent_redirection(int fd[2], t_file *redir)
 	close(fd[WRITE]);
 }
 
-void	open_files(t_node *root, char **env_copy)
+void	open_files_sub(t_node *root, char **env_copy, int *err_flag)
 {
-	if (g_exit_code == 259)
+	if (g_exit_code == 259 || *err_flag != 0)
 		return ;
 	if (root == NULL)
 		return ;
@@ -57,8 +57,24 @@ void	open_files(t_node *root, char **env_copy)
 	if (root->fd == -1)
 	{
 		print_error(root->data, strerror(errno));
+		*err_flag = 1;
 		return ;
 	}
-	open_files(root->left, env_copy);
-	open_files(root->right, env_copy);
+	open_files_sub(root->left, env_copy, err_flag);
+	open_files_sub(root->right, env_copy, err_flag);
 }
+
+void	open_files(t_node *root, char **env_copy)
+{
+	t_node 	*ptr;
+	int		err_flag;
+
+	ptr = root;
+	while (ptr)
+	{
+		err_flag = 0;
+		open_files_sub(ptr->left, env_copy, &err_flag);
+		ptr = ptr->right;
+	}
+}
+

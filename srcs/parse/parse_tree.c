@@ -54,11 +54,8 @@ void	tree_insert_redir(t_node **root, t_node *tmp, int cmd_idx)
 
 	ptr = *root;
 	i = 0;
-	while (++i < cmd_idx)
-	{
+	while (++i g< cmd_idx)
 		ptr = ptr->right;
-		i++;
-	}
 	ptr = ptr->left->left;
 	while (ptr->right)
 		ptr = ptr->right;

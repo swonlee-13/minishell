@@ -30,6 +30,8 @@ void	execute_command(int fd[2], int idx, t_node *root, char ***env)
 	close(fd[READ]);
 	close(fd[WRITE]);
 	g_exit_code = execve(vector[0], vector, *env);
+	print_error(vector[0], strerror(errno));
+	exit(g_exit_code);
 }
 
 pid_t	execute_pipeline(int idx, t_node *tree, t_file *redir, char ***env)
