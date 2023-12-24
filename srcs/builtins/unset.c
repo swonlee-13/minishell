@@ -6,7 +6,7 @@
 /*   By: yeolee2 <yeolee2@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 10:10:28 by yeolee2           #+#    #+#             */
-/*   Updated: 2023/12/22 18:06:00 by yeolee2          ###   ########.fr       */
+/*   Updated: 2023/12/24 15:30:12 by yeolee2          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ static void	handle_unset_error(char *name)
 
 void	remove_env_data(char ***env, char *name)
 {
+	int		len;
 	char	**res;
 	size_t	i;
 	size_t	j;
@@ -54,6 +55,7 @@ void	remove_env_data(char ***env, char *name)
 		return (handle_unset_error(name));
 	if (get_env_data(*env, name) == NULL)
 		return ;
+	len = ft_strlen(name);
 	res = malloc(sizeof(char *) * ft_strslen(*env));
 	if (!res)
 		return ;
@@ -61,8 +63,8 @@ void	remove_env_data(char ***env, char *name)
 	j = 0;
 	while ((*env)[++i])
 	{
-		if (!ft_strncmp(name, (*env)[i], ft_strlen(name)) \
-			&& ((*env)[i][ft_strlen(name)] == '=' || (*env)[i][ft_strlen(name)] == '\0'))
+		if (!ft_strncmp(name, (*env)[i], len) \
+			&& ((*env)[i][len] == '=' || (*env)[i][len] == '\0'))
 			continue ;
 		res[j++] = ft_strdup((*env)[i]);
 	}

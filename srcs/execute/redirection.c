@@ -6,7 +6,7 @@
 /*   By: yeolee2 <yeolee2@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/16 18:37:13 by yeolee2           #+#    #+#             */
-/*   Updated: 2023/12/23 20:39:24 by seongwol         ###   ########.fr       */
+/*   Updated: 2023/12/24 15:38:38 by yeolee2          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,8 +66,8 @@ void	open_files_sub(t_node *root, char **env_copy, int *err_flag)
 
 void	open_files(t_node *root, char **env_copy)
 {
-	t_node 	*ptr;
 	int		err_flag;
+	t_node	*ptr;
 
 	ptr = root;
 	while (ptr)
@@ -77,4 +77,3 @@ void	open_files(t_node *root, char **env_copy)
 		ptr = ptr->right;
 	}
 }
-

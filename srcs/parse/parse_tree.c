@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_tree.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seongwol <seongwol@student.42seoul.>       +#+  +:+       +#+        */
+/*   By: yeolee2 <yeolee2@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/16 19:16:14 by seongwol          #+#    #+#             */
-/*   Updated: 2023/12/16 19:16:14 by seongwol         ###   ########.fr       */
+/*   Updated: 2023/12/24 15:25:11 by yeolee2          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ void	tree_insert_redir(t_node **root, t_node *tmp, int cmd_idx)
 
 	ptr = *root;
 	i = 0;
-	while (++i g< cmd_idx)
+	while (++i < cmd_idx)
 		ptr = ptr->right;
 	ptr = ptr->left->left;
 	while (ptr->right)

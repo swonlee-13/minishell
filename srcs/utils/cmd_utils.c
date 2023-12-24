@@ -6,7 +6,7 @@
 /*   By: yeolee2 <yeolee2@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/11 22:36:55 by yeolee2           #+#    #+#             */
-/*   Updated: 2023/12/20 17:46:08 by seongwol         ###   ########.fr       */
+/*   Updated: 2023/12/24 15:38:04 by yeolee2          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,4 +90,14 @@ int	count_commands(t_node *root)
 		cnt++;
 	}
 	return (cnt);
+}
+
+int	extract_name_from_path(char *path)
+{
+	int	len;
+
+	len = ft_strlen(path);
+	if (ft_strchr(path, '='))
+		len = ft_strchr(path, '=') - path;
+	return (len);
 }

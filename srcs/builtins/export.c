@@ -6,7 +6,7 @@
 /*   By: yeolee2 <yeolee2@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 20:03:24 by yeolee2           #+#    #+#             */
-/*   Updated: 2023/12/22 18:06:34 by yeolee2          ###   ########.fr       */
+/*   Updated: 2023/12/24 15:36:36 by yeolee2          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,9 +90,7 @@ void	set_each_attribute(char ***env, char *path)
 	int		len;
 	char	*name;
 
-	len = ft_strlen(path);
-	if (ft_strchr(path, '='))
-		len = ft_strchr(path, '=') - path;
+	len = extract_name_from_path(path);
 	name = ft_substr(path, 0, len);
 	if (check_bash_var_name_convention(name) == FAILURE)
 	{
