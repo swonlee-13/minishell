@@ -6,7 +6,7 @@
 /*   By: yeolee2 <yeolee2@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 19:22:52 by yeolee2           #+#    #+#             */
-/*   Updated: 2023/12/22 14:52:04 by yeolee2          ###   ########.fr       */
+/*   Updated: 2023/12/24 15:29:01 by yeolee2          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,14 +34,15 @@ char	**copy_env_list(char **env)
 char	*get_env_data(char **env, char *str)
 {
 	int		idx;
+	int		len;
 	char	*res;
 
+	len = ft_strlen(str);
 	idx = 0;
-
 	while (env[idx])
 	{
-		if (!ft_strncmp(str, env[idx], ft_strlen(str)) \
-			&& (env[idx][ft_strlen(str)] == '=' || env[idx][ft_strlen(str)] == '\0'))
+		if (!ft_strncmp(str, env[idx], len) && \
+			(env[idx][len] == '=' || env[idx][len] == '\0'))
 		{
 			res = env[idx];
 			break ;
@@ -51,7 +52,7 @@ char	*get_env_data(char **env, char *str)
 	if (env[idx] == NULL)
 		return (NULL);
 	if (ft_strchr(env[idx], '=') == NULL)
-		return (res + ft_strlen(str));
+		return (res + len);
 	while (*res != '=')
 		res++;
 	return (res + 1);

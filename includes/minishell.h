@@ -6,7 +6,7 @@
 /*   By: yeolee2 <yeolee2@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 03:09:36 by yeolee2           #+#    #+#             */
-/*   Updated: 2023/12/23 17:24:24 by yeolee2          ###   ########.fr       */
+/*   Updated: 2023/12/24 15:37:41 by yeolee2          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,5 +116,6 @@ t_node	*find_redirection_root(t_node *root, int cmd_idx);
 
 // Others
 void	setup_exit_status(pid_t pid);
+int		extract_name_from_path(char *path);
 
 #endif
